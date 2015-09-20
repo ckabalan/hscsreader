@@ -43,12 +43,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HearthstoneReplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\Enumerations\CardClass.cs" />
+    <Compile Include="Support\Enumerations\CardSet.cs" />
+    <Compile Include="Support\Enumerations\CardType.cs" />
+    <Compile Include="Support\Enumerations\ChoiceType.cs" />
+    <Compile Include="Support\Enumerations\EnchantmentVisual.cs" />
+    <Compile Include="Support\Enumerations\Faction.cs" />
+    <Compile Include="Support\Enumerations\GameTag.cs" />
+    <Compile Include="Support\Enumerations\GoldRewardState.cs" />
+    <Compile Include="Support\Enumerations\MetaDataType.cs" />
+    <Compile Include="Support\Enumerations\Mulligan.cs" />
+    <Compile Include="Support\Enumerations\OptionType.cs" />
+    <Compile Include="Support\Enumerations\PlayReq.cs" />
+    <Compile Include="Support\Enumerations\PlayState.cs" />
+    <Compile Include="Support\Enumerations\PowSubType.cs" />
+    <Compile Include="Support\Enumerations\PowType.cs" />
+    <Compile Include="Support\Enumerations\Race.cs" />
+    <Compile Include="Support\Enumerations\Rarity.cs" />
+    <Compile Include="Support\Enumerations\State.cs" />
+    <Compile Include="Support\Enumerations\Step.cs" />
+    <Compile Include="Support\Enumerations\Type.cs" />
+    <Compile Include="Support\Enumerations\Zone.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName)==Debug "$(SolutionDir)\_External\IncreBuild.exe" DEBUG "$(ProjectDir)"
