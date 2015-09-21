@@ -1,20 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Schema;
 
-namespace HSCSReader {
-	class HearthstoneReplay {
-		private String FilePath = String.Empty;
+namespace HSCSReader.Replay {
+	class HSReplay {
+		private readonly String _filePath;
+		private double _version;
+		private List<Game> _games = new List<Game>(); 
 
-		public HearthstoneReplay(String filePath) {
-			FilePath = filePath;
+		public HSReplay(String filePath) {
+			_filePath = filePath;
 			if (Validate()) {
 				Parse();
 			}
 		}
 
 		private void Parse() {
-			
+			XmlDocument replayDoc = new XmlDocument();
+			replayDoc.Load(_filePath);
+
+			XmlNode rootNode = replayDoc.SelectSingleNode("/HSReplay");
+			Double.TryParse(rootNode.Attributes["version"].Value, out _version);
+
+			XmlNodeList gameNodeList = replayDoc.SelectNodes("/HSReplay/Game");
+			foreach (XmlNode curGame in gameNodeList) {
+				_games.Add(new Game(curGame));
+				Console.Write(".");
+			}
 		}
 
 		private Boolean Validate() {
@@ -26,7 +41,7 @@ namespace HSCSReader {
 			//validationSettings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
 			//
 			//// Create the XmlReader object.
-			//XmlReader reader = XmlReader.Create(FilePath, validationSettings);
+			//XmlReader reader = XmlReader.Create(_filePath, validationSettings);
 			//
 			//// Parse the file. 
 			//while (reader.Read());
@@ -37,5 +52,7 @@ namespace HSCSReader {
 		//private static void ValidationCallBack(object sender, ValidationEventArgs e) {
 		//	Console.WriteLine("Validation Error: {0}", e.Message);
 		//}
+
+
 	}
 }

@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HearthstoneReplay.cs" />
+    <Compile Include="Replay\Entity.cs" />
+    <Compile Include="Replay\Game.cs" />
+    <Compile Include="Replay\HSReplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Enumerations\CardClass.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Support\Enumerations\Step.cs" />
     <Compile Include="Support\Enumerations\Type.cs" />
     <Compile Include="Support\Enumerations\Zone.cs" />
+    <Compile Include="Support\Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
