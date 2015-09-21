@@ -48,6 +48,7 @@
     <Compile Include="Replay\HSReplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Replay\TagChange.cs" />
     <Compile Include="Support\Enumerations\CardClass.cs" />
     <Compile Include="Support\Enumerations\CardSet.cs" />
     <Compile Include="Support\Enumerations\CardType.cs" />
