@@ -9,15 +9,15 @@ using HSCSReader.Support.HSEnumerations;
 namespace HSCSReader.Replay {
 	class Game {
 		private String _ts;
-		private Dictionary<Int32, Entity> _entities = new Dictionary<Int32, Entity>();
+		public Dictionary<Int32, Entity> Entities = new Dictionary<Int32, Entity>();
 
 		public Game(XmlNode gameNode) {
 			_ts = gameNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in gameNode.ChildNodes) {
 				ProcessNode(childNode);
 			}
-			foreach (KeyValuePair<Int32, Entity> curKVP in _entities) {
-				//curKVP.Value.PrintHistory();
+			foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
+				//curKVP.Value.PrintMetrics();
 			}
 		}
 
@@ -69,13 +69,13 @@ namespace HSCSReader.Replay {
 			// id % gameTag; #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			_entities.Add(newId, new Entity(xmlNode));
+			Entities.Add(newId, new Entity(xmlNode));
         }
 
 		private void GameEntity(XmlNode xmlNode) {
 			// id %entity; #REQUIRED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			_entities.Add(newId, new Entity(xmlNode));
+			Entities.Add(newId, new Entity(xmlNode));
 		}
 
 		private void HideEntity(XmlNode xmlNode) {
@@ -111,7 +111,7 @@ namespace HSCSReader.Replay {
 			// accountLo NMTOKEN #IMPLIED
 			// ts NMTOKEN #IMPLIED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			_entities.Add(newId, new Entity(xmlNode));
+			Entities.Add(newId, new Entity(xmlNode));
 		}
 		private void SendChoices(XmlNode xmlNode) {
 			// entity % entity; #REQUIRED
@@ -139,7 +139,7 @@ namespace HSCSReader.Replay {
 			Int32 entityId = Convert.ToInt32(xmlNode.Attributes?["entity"].Value);
             GameTag entityTag = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"].Value);
 			Int32 newValue = Convert.ToInt32(xmlNode.Attributes?["value"].Value);
-			_entities[entityId].ChangeOrAddTag(entityTag, newValue);
+			Entities[entityId].ChangeOrAddTag(entityTag, newValue);
 		}
 
 		private void Target(XmlNode xmlNode) {

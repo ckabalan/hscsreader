@@ -53,8 +53,10 @@ namespace HSCSReader.Replay {
 				Tags[tagToChange] = newValue;
 			} else {
 				TagHistory.Add(new TagChange() { IsNew = true, Tag = tagToChange, OldValue = 0, NewValue = newValue, Timestamp = timestamp });
+				// I think I need something here to parse initial metrics. Refactor UpdateMetrics() or do a seperate one? Probably refactor.
+				// For example, I think CS2_101t (Silver Hand Recruit) doesn't change zone when it enters play, it just sets ZONE to Zone.PLAY.
 				//Console.WriteLine("\t{0} = {1}", tagToChange, Helpers.GameTagValueToString(tagToChange, newValue));
-                Tags.Add(tagToChange, newValue);
+				Tags.Add(tagToChange, newValue);
 			}
 		}
 
@@ -69,29 +71,64 @@ namespace HSCSReader.Replay {
 			}
 		}
 
-		private void UpdateMetrics(GameTag tagToChange, Int32 oldValue, Int32 newValue) {
-			if (MetricTable.Table.ContainsKey(tagToChange)) {
-				dynamic oldTypedValue;
-				dynamic newTypedValue;
-				switch (tagToChange) {
-					case GameTag.ZONE:
-						oldTypedValue = (Zone)oldValue;
-						newTypedValue = (Zone)newValue;
-						break;
-					default:
-						return;
-				}
-				if (MetricTable.Table[tagToChange].ContainsKey(oldTypedValue)) {
-					if (MetricTable.Table[tagToChange][oldTypedValue].ContainsKey(newTypedValue)) {
-						String metricName = MetricTable.Table[tagToChange][oldTypedValue][newTypedValue];
-						Metrics[metricName] = Metrics.GetValueOrDefault(metricName) + 1;
-					} else {
-						throw new NotImplementedException(String.Format("Update Metrics: {0}: {1} -> {2}", tagToChange, oldTypedValue, newTypedValue));
-					}
-				} else {
-					throw new NotImplementedException(String.Format("Update Metrics: {0}: {1} -> {2}", tagToChange, oldTypedValue, newTypedValue));
-				}
+		public void PrintMetrics() {
+			Console.WriteLine("Entity Metrics: {0}", Description);
+			foreach (KeyValuePair<String, Int32> metricKVP in Metrics) {
+				Console.WriteLine("\t{0} = {1}", metricKVP.Key, metricKVP.Value);
 			}
+		}
+
+		private void UpdateMetrics(GameTag tagToChange, Int32 oldValue, Int32 newValue) {
+			String metricName;
+            switch (tagToChange) {
+				case GameTag.ZONE:
+					metricName = $"CHANGE.{tagToChange}.{(Zone)oldValue}.{(Zone)newValue}";
+					Metrics[metricName] = Metrics.GetValueOrDefault(metricName) + 1;
+					break;
+				case GameTag.ATTACKING:
+		            if (newValue > oldValue) {
+			            metricName = $"COUNT.ATTACK.START";
+		            } else if (oldValue > newValue) {
+			            metricName = $"COUNT.ATTACK.END";
+		            } else {
+						throw new NotImplementedException($"Update Metrics: {tagToChange}: {oldValue} -> {newValue}");
+		            }
+		            Metrics[metricName] = Metrics.GetValueOrDefault(metricName) + 1;
+		            break;
+				case GameTag.DEFENDING:
+					if (newValue > oldValue) {
+						metricName = $"COUNT.DEFEND.START";
+					} else if (oldValue > newValue) {
+						metricName = $"COUNT.DEFEND.END";
+					} else {
+						throw new NotImplementedException($"Update Metrics: {tagToChange}: {oldValue} -> {newValue}");
+					}
+					Metrics[metricName] = Metrics.GetValueOrDefault(metricName) + 1;
+					break;
+			}
+
+			//if (MetricTable.Table.ContainsKey(tagToChange)) {
+			//	dynamic oldTypedValue;
+			//	dynamic newTypedValue;
+			//	switch (tagToChange) {
+			//		case GameTag.ZONE:
+			//			oldTypedValue = (Zone)oldValue;
+			//			newTypedValue = (Zone)newValue;
+			//			break;
+			//		default:
+			//			return;
+			//	}
+			//	if (MetricTable.Table[tagToChange].ContainsKey(oldTypedValue)) {
+			//		if (MetricTable.Table[tagToChange][oldTypedValue].ContainsKey(newTypedValue)) {
+			//			String metricName = MetricTable.Table[tagToChange][oldTypedValue][newTypedValue];
+			//			Metrics[metricName] = Metrics.GetValueOrDefault(metricName) + 1;
+			//		} else {
+			//			throw new NotImplementedException(String.Format("Update Metrics: {0}: {1} -> {2}", tagToChange, oldTypedValue, newTypedValue));
+			//		}
+			//	} else {
+			//		throw new NotImplementedException(String.Format("Update Metrics: {0}: {1} -> {2}", tagToChange, oldTypedValue, newTypedValue));
+			//	}
+			//}
 			//	switch (tagToChange) {
 			//		case GameTag.ZONE:
 			//			if (oldValue == (Int32)Zone.DECK) {
@@ -115,5 +152,5 @@ namespace HSCSReader.Replay {
 			//			break;
 			//	}
 		}
-    }
+	}
 }
