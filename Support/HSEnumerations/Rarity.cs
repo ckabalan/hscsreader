@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSCSReader.Support.Enumerations {
-	enum Faction {
+namespace HSCSReader.Support.HSEnumerations {
+	enum Rarity {
 		INVALID = 0,
-		HORDE = 1,
-		ALLIANCE = 2,
-		NEUTRAL = 3,
+		COMMON = 1,
+		FREE = 2,
+		RARE = 3,
+		EPIC = 4,
+		LEGENDARY = 5,
 	}
 }

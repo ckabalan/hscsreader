@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using HSCSReader.Support.Enumerations;
+using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay {
 	class Game {
@@ -17,7 +17,7 @@ namespace HSCSReader.Replay {
 				ProcessNode(childNode);
 			}
 			foreach (KeyValuePair<Int32, Entity> curKVP in _entities) {
-				curKVP.Value.PrintHistory();
+				//curKVP.Value.PrintHistory();
 			}
 		}
 
@@ -47,9 +47,11 @@ namespace HSCSReader.Replay {
 			// target NMTOKEN #IMPLIED
 			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
+			//Console.WriteLine("Action Start.");
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				ProcessNode(childNode);
 			}
+			//Console.WriteLine("Action End.");
 		}
 
 		private void Choices(XmlNode xmlNode) {

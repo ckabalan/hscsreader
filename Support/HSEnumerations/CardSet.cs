@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSCSReader.Support.Enumerations {
+namespace HSCSReader.Support.HSEnumerations {
 	enum CardSet {
 		INVALID = 0,
 		TEST_TEMPORARY = 1,

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSCSReader.Support.Enumerations {
+namespace HSCSReader.Support.HSEnumerations {
 	enum Zone {
 		INVALID = 0,
 		PLAY = 1,

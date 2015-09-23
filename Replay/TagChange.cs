@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HSCSReader.Support.Enumerations;
+using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay {
 	struct TagChange {

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSCSReader.Support.Enumerations {
-	enum GameTag {
+namespace HSCSReader.Support.HSEnumerations {
+	public enum GameTag {
 		IGNORE_DAMAGE = 1,
 		MISSION_EVENT = 6,
 		TIMEOUT = 7,

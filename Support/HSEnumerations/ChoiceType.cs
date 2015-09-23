@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSCSReader.Support.Enumerations {
-	enum State {
+namespace HSCSReader.Support.HSEnumerations {
+	enum ChoiceType {
 		INVALID = 0,
-		LOADING = 1,
-		RUNNING = 2,
-		COMPLETE = 3,
+		MULLIGAN = 1,
+		GENERAL = 2,
 	}
 }
