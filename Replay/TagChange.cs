@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay {
-	struct TagChange {
+	public struct TagChange {
 		public GameTag Tag;
 		public Int32 OldValue;
 		public Int32 NewValue;

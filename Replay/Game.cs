@@ -7,18 +7,19 @@ using System.Xml;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay {
-	class Game {
+	public class Game {
 		private String _ts;
 		public Dictionary<Int32, Entity> Entities = new Dictionary<Int32, Entity>();
+		public Entity GameEntityObj;
 
 		public Game(XmlNode gameNode) {
 			_ts = gameNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in gameNode.ChildNodes) {
 				ProcessNode(childNode);
 			}
-			foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
-				//curKVP.Value.PrintMetrics();
-			}
+			//foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
+			//	curKVP.Value.PrintMetrics();
+			//}
 		}
 
 		private void ProcessNode(XmlNode xmlNode) {
@@ -69,13 +70,14 @@ namespace HSCSReader.Replay {
 			// id % gameTag; #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			Entities.Add(newId, new Entity(xmlNode));
+			Entities.Add(newId, new Entity(xmlNode, this));
         }
 
 		private void GameEntity(XmlNode xmlNode) {
 			// id %entity; #REQUIRED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			Entities.Add(newId, new Entity(xmlNode));
+			GameEntityObj = new Entity(xmlNode, this);
+            Entities.Add(newId, GameEntityObj);
 		}
 
 		private void HideEntity(XmlNode xmlNode) {
@@ -111,7 +113,7 @@ namespace HSCSReader.Replay {
 			// accountLo NMTOKEN #IMPLIED
 			// ts NMTOKEN #IMPLIED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			Entities.Add(newId, new Entity(xmlNode));
+			Entities.Add(newId, new Entity(xmlNode, this));
 		}
 		private void SendChoices(XmlNode xmlNode) {
 			// entity % entity; #REQUIRED
@@ -139,7 +141,7 @@ namespace HSCSReader.Replay {
 			Int32 entityId = Convert.ToInt32(xmlNode.Attributes?["entity"].Value);
             GameTag entityTag = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"].Value);
 			Int32 newValue = Convert.ToInt32(xmlNode.Attributes?["value"].Value);
-			Entities[entityId].ChangeOrAddTag(entityTag, newValue);
+			Entities[entityId].ChangeOrAddTag(this, entityTag, newValue);
 		}
 
 		private void Target(XmlNode xmlNode) {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.Support;
 
 namespace HSCSReader.Replay {
 	class HSReplay {
@@ -16,37 +17,32 @@ namespace HSCSReader.Replay {
 			if (Validate()) {
 				Parse();
 				Console.WriteLine();
-				Dictionary<String, Dictionary<String, Int32>> collapsedMetrics = CollapseMetrics();
+				Dictionary<String, List<Metric>> collapsedMetrics = CollapseMetrics();
 				PrintMetrics(collapsedMetrics);
 			}
 		}
 
-		public Dictionary<String, Dictionary<String, Int32>> CollapseMetrics() {
-			Dictionary<String, Dictionary<String, Int32>> metrics = new Dictionary<String, Dictionary<String, Int32>>();
+		public Dictionary<String, List<Metric>> CollapseMetrics() {
+			Dictionary<String, List<Metric>> metrics = new Dictionary<String, List<Metric>>();
 			foreach (Game curGame in _games) {
 				foreach (KeyValuePair<Int32, Entity> entityKVP in curGame.Entities) {
 					Entity curEntity = entityKVP.Value;
 					if (curEntity.Attributes.ContainsKey("cardID")) {
-						foreach (KeyValuePair<String, Int32> metricKVP in curEntity.Metrics) {
-							if (!metrics.ContainsKey(curEntity.Attributes["cardID"])) {
-								metrics.Add(curEntity.Attributes["cardID"], new Dictionary<String, Int32>());
-							}
-							if (!metrics[curEntity.Attributes["cardID"]].ContainsKey(metricKVP.Key)) {
-								metrics[curEntity.Attributes["cardID"]].Add(metricKVP.Key, 0);
-                            }
-							metrics[curEntity.Attributes["cardID"]][metricKVP.Key] += metricKVP.Value;
+						if (!metrics.ContainsKey(curEntity.Attributes["cardID"])) {
+                            metrics.Add(curEntity.Attributes["cardID"], new List<Metric>());
 						}
+						Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]]);
 					}
 				}
 			}
 			return metrics;
 		}
 
-		public void PrintMetrics(Dictionary<String, Dictionary<String, Int32>> metrics) {
-			foreach (KeyValuePair<String, Dictionary<String, Int32>> curCardID in metrics) {
+		public void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
+			foreach (KeyValuePair<String, List<Metric>> curCardID in metrics) {
 				Console.WriteLine($"Card {curCardID.Key}");
-				foreach (KeyValuePair<String, Int32> metricKVP in curCardID.Value) {
-					Console.WriteLine($"\t{metricKVP.Key} = {metricKVP.Value}");
+				foreach (Metric curMetric in curCardID.Value) {
+					Console.WriteLine("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
 				}
 			}
 		}

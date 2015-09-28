@@ -5,13 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HSCSReader.Support.Enumerations {
-	public enum EntityMetric {
-		DrawnCount,
-		DiscardedCount,
-		DirectlyToPlayCount,
-		DamageReceived,
-		DamageDealt,
-		HealingReceived,
-		HealingDealt
+	public enum MetricType {
+		AddToList,
+		AddToValue,
+		Overwrite
 	}
 }
