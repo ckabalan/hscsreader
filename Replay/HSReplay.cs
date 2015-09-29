@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using HSCSReader.Support;
+using HSCSReader.Support.CardDefinitions;
 
 namespace HSCSReader.Replay {
 	class HSReplay {
@@ -31,7 +32,7 @@ namespace HSCSReader.Replay {
 						if (!metrics.ContainsKey(curEntity.Attributes["cardID"])) {
                             metrics.Add(curEntity.Attributes["cardID"], new List<Metric>());
 						}
-						Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]]);
+						Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]], true);
 					}
 				}
 			}
@@ -40,7 +41,7 @@ namespace HSCSReader.Replay {
 
 		public void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
 			foreach (KeyValuePair<String, List<Metric>> curCardID in metrics) {
-				Console.WriteLine($"Card {curCardID.Key}");
+				Console.WriteLine("Entity: " + CardDefs.Cards[curCardID.Key].ShortDescription);
 				foreach (Metric curMetric in curCardID.Value) {
 					Console.WriteLine("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
 				}

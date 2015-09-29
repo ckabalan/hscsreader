@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using HSCSReader.Support;
+using HSCSReader.Support.CardDefinitions;
 using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
 using HSCSReader.Support.Extensions;
@@ -17,14 +18,13 @@ namespace HSCSReader.Replay {
 		public Dictionary<String, String> Attributes = new Dictionary<String, String>();
 		public Dictionary<GameTag, Int32> Tags = new Dictionary<GameTag, Int32>();
 		public List<TagChange> TagHistory = new List<TagChange>();
-		//public Dictionary<String, Int32> Metrics = new Dictionary<String, Int32>();
 		public List<Metric> Metrics = new List<Metric>();
 
 		public String Description {
 			get {
 				String returnStr = "ID " + Id;
 				if (Attributes.ContainsKey("cardID")) {
-					returnStr += " - " + Attributes["cardID"];
+					returnStr += " - " + CardDefs.Cards[Attributes["cardID"]].ShortDescription;
 				}
 				return returnStr;
 			}
@@ -46,23 +46,30 @@ namespace HSCSReader.Replay {
 			}
 		}
 
-		public void ChangeOrAddTag(Game game, GameTag tagToChange, Int32 newValue, String timestamp = "") {
+		public virtual void ChangeOrAddTag(Game game, GameTag tagToChange, Int32 newValue, String timestamp = "") {
 			if (Tags.ContainsKey(tagToChange)) {
 				TagHistory.Add(new TagChange() { IsNew = false, Tag = tagToChange, OldValue = Tags[tagToChange], NewValue = newValue, Timestamp = timestamp });
 				if (game.GameEntityObj != null) {
-					Metrics = Helpers.IntegrateMetrics(MetricParser.ExtractMetrics(tagToChange, Tags[tagToChange], newValue, false, this, game), Metrics);
+					Metrics = Helpers.IntegrateMetrics(MetricParser.ExtractTagChangeMetrics(tagToChange, Tags[tagToChange], newValue, false, this, game), Metrics);
 
 				}
 				Tags[tagToChange] = newValue;
 			} else {
 				TagHistory.Add(new TagChange() { IsNew = true, Tag = tagToChange, OldValue = 0, NewValue = newValue, Timestamp = timestamp });
 				if (game.GameEntityObj != null) {
-					Metrics = Helpers.IntegrateMetrics(MetricParser.ExtractMetrics(tagToChange, -1, newValue, true, this, game), Metrics);
+					Metrics = Helpers.IntegrateMetrics(MetricParser.ExtractTagChangeMetrics(tagToChange, -1, newValue, true, this, game), Metrics);
 				}
 				Tags.Add(tagToChange, newValue);
 			}
 		}
 
+		public void StartTurn(Game game, String timestamp = "") {
+			Metrics = Helpers.IntegrateMetrics(MetricParser.CalculateStartTurnMetrics(this, game), Metrics);
+		}
+
+		public void EndTurn(Game game, String timestamp = "") {
+			Metrics = Helpers.IntegrateMetrics(MetricParser.CalculateEndTurnMetrics(this, game), Metrics);
+		}
 
 		public void PrintHistory() {
 			Console.WriteLine("Entity History: {0}", Description);

@@ -10,13 +10,14 @@ namespace HSCSReader.Replay {
 	public class Game {
 		private String _ts;
 		public Dictionary<Int32, Entity> Entities = new Dictionary<Int32, Entity>();
-		public Entity GameEntityObj;
+		public GameEntity GameEntityObj;
 
 		public Game(XmlNode gameNode) {
 			_ts = gameNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in gameNode.ChildNodes) {
 				ProcessNode(childNode);
 			}
+			//GameEntityObj.PrintHistory();
 			//foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
 			//	curKVP.Value.PrintMetrics();
 			//}
@@ -76,7 +77,7 @@ namespace HSCSReader.Replay {
 		private void GameEntity(XmlNode xmlNode) {
 			// id %entity; #REQUIRED
 			Int32 newId = Convert.ToInt32(xmlNode.Attributes?["id"].Value);
-			GameEntityObj = new Entity(xmlNode, this);
+			GameEntityObj = new GameEntity(xmlNode, this);
             Entities.Add(newId, GameEntityObj);
 		}
 

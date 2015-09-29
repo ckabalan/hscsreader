@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HSCSReader.Support.HSEnumerations {
-	enum PlayReq {
+	public enum PlayReq {
 		REQ_MINION_TARGET = 1,
 		REQ_FRIENDLY_TARGET = 2,
 		REQ_ENEMY_TARGET = 3,

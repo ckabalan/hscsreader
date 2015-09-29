@@ -19,5 +19,6 @@ namespace HSCSReader.Support.HSEnumerations {
 		WARRIOR = 10,
 		DREAM = 11,
 		COUNT = 12,
+		NEUTRAL = INVALID
 	}
 }
