@@ -46,7 +46,8 @@ namespace HSCSReader.Support.HSEnumerations {
 		OWNER = 51,
 		DEFINITION = 52,
 		ENTITY_ID = 53,
-		ELITE = 114,
+		HISTORY_PROXY = 54,
+        ELITE = 114,
 		MAXRESOURCES = 176,
 		CARD_SET = 183,
 		CARD_ID = 186,
@@ -215,6 +216,7 @@ namespace HSCSReader.Support.HSEnumerations {
 		NUM_FRIENDLY_MINIONS_THAT_DIED_THIS_GAME = 412,
 		CANNOT_ATTACK_HEROES = 413,
 		LOCK_AND_LOAD = 414,
+		SHADOWFORM = 416,
 
 		// Only in card definitions,
 		Collectible = 321,
