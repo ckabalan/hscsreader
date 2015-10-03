@@ -8,7 +8,7 @@ using HSCSReader.Support;
 using HSCSReader.Support.CardDefinitions;
 
 namespace HSCSReader.Replay {
-	class HSReplay {
+	public class HSReplay {
 		private readonly String _filePath;
 		private double _version;
 		private List<Game> _games = new List<Game>(); 
@@ -32,7 +32,7 @@ namespace HSCSReader.Replay {
 						if (!metrics.ContainsKey(curEntity.Attributes["cardID"])) {
                             metrics.Add(curEntity.Attributes["cardID"], new List<Metric>());
 						}
-						Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]], true);
+						Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]], false);
 					}
 				}
 			}
