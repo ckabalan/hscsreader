@@ -84,20 +84,20 @@ namespace HSCSReader.Replay {
 					returnList.Add(new Metric($"VALUE.LATEST.NUM_TURNS_IN_PLAY", MetricType.Overwrite, newValue));
 					break;
 				case GameTag.ATK:
-					returnList.Add(new Metric($"COUNT.ATK." + newValue, MetricType.AddToValue, 1));
+					returnList.Add(new Metric($"COUNT_ATK." + newValue, MetricType.AddToValue, 1));
 					break;
 				case GameTag.ZONE_POSITION:
-					returnList.Add(new Metric($"COUNT.ZONE_POSITION." + newValue, MetricType.AddToValue, 1));
+					returnList.Add(new Metric($"COUNT_ZONE_POSITION." + newValue, MetricType.AddToValue, 1));
 					break;
 				case GameTag.ZONE:
 					if ((Enum.IsDefined(typeof(Zone), oldValue)) && (Enum.IsDefined(typeof(Zone), newValue))) {
-						returnList.Add(new Metric($"COUNT.TURNS.ZONE." + ((Zone)oldValue).ToString() + "_TO_" + ((Zone)newValue).ToString() + "." + game.GameEntityObj.Tags[GameTag.TURN], MetricType.AddToValue, 1));
+						returnList.Add(new Metric($"COUNT_ZONE_" + ((Zone)oldValue).ToString() + "_TO_" + ((Zone)newValue).ToString() + "." + game.GameEntityObj.Tags[GameTag.TURN], MetricType.AddToValue, 1));
 					} else if (oldValue == -1) {
-						returnList.Add(new Metric($"COUNT.SEEN", MetricType.AddToValue, 1));
+						returnList.Add(new Metric($"COUNT_SEEN", MetricType.AddToValue, 1));
 					}
 					break;
 				case GameTag.DAMAGE:
-					returnList.Add(new Metric($"COUNT.DAMAGE." + newValue, MetricType.AddToValue, 1));
+					returnList.Add(new Metric($"COUNT_DAMAGE." + newValue, MetricType.AddToValue, 1));
 					break;
 			}
 			return returnList;

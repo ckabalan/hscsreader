@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.DataStorage;
 using HSCSReader.Support;
 using HSCSReader.Support.CardDefinitions;
+using NLog;
 
 namespace HSCSReader.Replay {
 	public class HSReplay {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private readonly String _filePath;
 		private double _version;
 		private List<Game> _games = new List<Game>(); 
@@ -17,22 +20,25 @@ namespace HSCSReader.Replay {
 			_filePath = filePath;
 			if (Validate()) {
 				Parse();
-				Console.WriteLine();
 				Dictionary<String, List<Metric>> collapsedMetrics = CollapseMetrics();
 				PrintMetrics(collapsedMetrics);
+				Uploader.UploadReplay(collapsedMetrics);
+				Uploader.MarkGamesConsumed(_games);
 			}
 		}
 
 		public Dictionary<String, List<Metric>> CollapseMetrics() {
 			Dictionary<String, List<Metric>> metrics = new Dictionary<String, List<Metric>>();
 			foreach (Game curGame in _games) {
-				foreach (KeyValuePair<Int32, Entity> entityKVP in curGame.Entities) {
-					Entity curEntity = entityKVP.Value;
-					if (curEntity.Attributes.ContainsKey("cardID")) {
-						if (!metrics.ContainsKey(curEntity.Attributes["cardID"])) {
-                            metrics.Add(curEntity.Attributes["cardID"], new List<Metric>());
+				if (curGame.IsNewGame) {
+					foreach (KeyValuePair<Int32, Entity> entityKVP in curGame.Entities) {
+						Entity curEntity = entityKVP.Value;
+						if (curEntity.Attributes.ContainsKey("cardID")) {
+							if (!metrics.ContainsKey(curEntity.Attributes["cardID"])) {
+								metrics.Add(curEntity.Attributes["cardID"], new List<Metric>());
+							}
+							Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]], false);
 						}
-						Helpers.IntegrateMetrics(entityKVP.Value.Metrics, metrics[curEntity.Attributes["cardID"]], false);
 					}
 				}
 			}
@@ -41,9 +47,9 @@ namespace HSCSReader.Replay {
 
 		public void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
 			foreach (KeyValuePair<String, List<Metric>> curCardID in metrics) {
-				Console.WriteLine("Entity: " + CardDefs.Cards[curCardID.Key].ShortDescription);
+				logger.Debug("Entity: " + CardDefs.Cards[curCardID.Key].ShortDescription);
 				foreach (Metric curMetric in curCardID.Value) {
-					Console.WriteLine("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
+					logger.Debug("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
 				}
 			}
 		}
@@ -58,7 +64,7 @@ namespace HSCSReader.Replay {
 			XmlNodeList gameNodeList = replayDoc.SelectNodes("/HSReplay/Game");
 			foreach (XmlNode curGame in gameNodeList) {
 				_games.Add(new Game(curGame));
-				Console.Write(".");
+				logger.Info("Game Complete.");
 				//return;
 			}
 		}

@@ -1,26 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.DataStorage;
+using HSCSReader.Support;
 using HSCSReader.Support.HSEnumerations;
+using NLog;
 
 namespace HSCSReader.Replay {
 	public class Game {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private String _ts;
 		public Dictionary<Int32, Entity> Entities = new Dictionary<Int32, Entity>();
 		public GameEntity GameEntityObj;
+		public String Md5Hash = String.Empty;
+		public Boolean IsNewGame = false;
 
 		public Game(XmlNode gameNode) {
-			_ts = gameNode.Attributes?["ts"]?.Value;
-			foreach (XmlNode childNode in gameNode.ChildNodes) {
-				ProcessNode(childNode);
+            Md5Hash = Helpers.GetMd5Hash(MD5.Create(), gameNode.OuterXml);
+			logger.Trace($"Calculated MD5 from Game XML: {Md5Hash}");
+			IsNewGame = Uploader.IsNewGame(Md5Hash);
+            if (IsNewGame) {
+				logger.Info($"MD5 Hash did not exist, parsing game...");
+				_ts = gameNode.Attributes?["ts"]?.Value;
+				foreach (XmlNode childNode in gameNode.ChildNodes) {
+					ProcessNode(childNode);
+				}
+				//GameEntityObj.PrintHistory();
+				//foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
+				//	curKVP.Value.PrintMetrics();
+				//}
+			} else {
+				logger.Info($"MD5 Hash exists, skipping game...");
 			}
-			//GameEntityObj.PrintHistory();
-			//foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
-			//	curKVP.Value.PrintMetrics();
-			//}
 		}
 
 		private void ProcessNode(XmlNode xmlNode) {
@@ -139,10 +154,12 @@ namespace HSCSReader.Replay {
 			// tag % gameTag; #REQUIRED
 			// value NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
-			Int32 entityId = Convert.ToInt32(xmlNode.Attributes?["entity"].Value);
-            GameTag entityTag = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"].Value);
-			Int32 newValue = Convert.ToInt32(xmlNode.Attributes?["value"].Value);
-			Entities[entityId].ChangeOrAddTag(this, entityTag, newValue);
+			if (xmlNode.Attributes?["entity"].Value != "[UNKNOWN HUMAN PLAYER]") {
+				Int32 entityId = Convert.ToInt32(xmlNode.Attributes?["entity"].Value);
+				GameTag entityTag = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"].Value);
+				Int32 newValue = Convert.ToInt32(xmlNode.Attributes?["value"].Value);
+				Entities[entityId].ChangeOrAddTag(this, entityTag, newValue);
+			}
 		}
 
 		private void Target(XmlNode xmlNode) {

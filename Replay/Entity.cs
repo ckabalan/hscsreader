@@ -10,10 +10,12 @@ using HSCSReader.Support.CardDefinitions;
 using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
 using HSCSReader.Support.Extensions;
+using NLog;
 
 namespace HSCSReader.Replay {
 	[DebuggerDisplay("{Description}")]
 	public class Entity {
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		public readonly Int32 Id;
 		public Dictionary<String, String> Attributes = new Dictionary<String, String>();
 		public Dictionary<GameTag, Int32> Tags = new Dictionary<GameTag, Int32>();
@@ -72,20 +74,20 @@ namespace HSCSReader.Replay {
 		}
 
 		public void PrintHistory() {
-			Console.WriteLine("Entity History: {0}", Description);
+			logger.Debug("Entity History: {0}", Description);
 			foreach (TagChange curChange in TagHistory) {
 				if (curChange.IsNew) {
-					Console.WriteLine("\t{0} = {1}", curChange.Tag, Helpers.GameTagValueToString(curChange.Tag, curChange.NewValue));
+					logger.Debug("\t{0} = {1}", curChange.Tag, Helpers.GameTagValueToString(curChange.Tag, curChange.NewValue));
 				} else {
-					Console.WriteLine("\t{0} = {1} -> {2}", curChange.Tag, Helpers.GameTagValueToString(curChange.Tag, curChange.OldValue), Helpers.GameTagValueToString(curChange.Tag, curChange.NewValue));
+					logger.Debug("\t{0} = {1} -> {2}", curChange.Tag, Helpers.GameTagValueToString(curChange.Tag, curChange.OldValue), Helpers.GameTagValueToString(curChange.Tag, curChange.NewValue));
 				}
 			}
 		}
 
 		public void PrintMetrics() {
-			Console.WriteLine("Entity Metrics: {0}", Description);
+			logger.Debug("Entity Metrics: {0}", Description);
 			foreach (Metric curMetric in Metrics) {
-				Console.WriteLine("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
+				logger.Debug("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
 			}
 		}
 
