@@ -10,6 +10,11 @@ using HSCSReader.Support.HSEnumerations;
 namespace HSCSReader.Support.CardDefinitions {
 	public class CardTag {
 		public dynamic Value;
+
+		/// <summary>
+		/// Initializes a new instance of the CardTag class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node which describes the card's tag.</param>
 		public CardTag(XmlNode xmlNode) {
 			switch (xmlNode.Attributes["type"].Value) {
 				case "LocString":

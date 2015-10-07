@@ -16,6 +16,10 @@ namespace HSCSReader.Replay {
 		private double _version;
 		private List<Game> _games = new List<Game>(); 
 
+		/// <summary>
+		/// Initializes an instance of the HSReplay class.
+		/// </summary>
+		/// <param name="filePath">Path of the HSReplay XML file.</param>
 		public HSReplay(String filePath) {
 			_filePath = filePath;
 			if (Validate()) {
@@ -27,6 +31,10 @@ namespace HSCSReader.Replay {
 			}
 		}
 
+		/// <summary>
+		/// Returns a list of metrics by card.
+		/// </summary>
+		/// <returns>A Dictionary containing a list of Metrics by card.</returns>
 		public Dictionary<String, List<Metric>> CollapseMetrics() {
 			Dictionary<String, List<Metric>> metrics = new Dictionary<String, List<Metric>>();
 			foreach (Game curGame in _games) {
@@ -45,6 +53,10 @@ namespace HSCSReader.Replay {
 			return metrics;
 		}
 
+		/// <summary>
+		/// Print all the metrics from this replay.
+		/// </summary>
+		/// <param name="metrics">A Dictionary containing a list of Metrics by card.</param>
 		public void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
 			foreach (KeyValuePair<String, List<Metric>> curCardID in metrics) {
 				logger.Debug("Entity: " + CardDefs.Cards[curCardID.Key].ShortDescription);
@@ -54,6 +66,9 @@ namespace HSCSReader.Replay {
 			}
 		}
 
+		/// <summary>
+		/// Parses the HSReplay XML file.
+		/// </summary>
 		private void Parse() {
 			XmlDocument replayDoc = new XmlDocument();
 			replayDoc.Load(_filePath);
@@ -69,6 +84,10 @@ namespace HSCSReader.Replay {
 			}
 		}
 
+		/// <summary>
+		/// Validates a HSReplay file is in a valid format.
+		/// </summary>
+		/// <returns>A Boolean indicating whether or not the file is valid.</returns>
 		private Boolean Validate() {
 			// TODO: Fix this so that validation actually does something. Maybe after jleclanche finishes the XML spec and DTD.
 			//// Set the validation settings.

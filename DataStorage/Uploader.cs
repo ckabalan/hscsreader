@@ -14,6 +14,9 @@ namespace HSCSReader.DataStorage {
 		private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 		private static ISession session;
 
+		/// <summary>
+		/// Creates a session with the Cassandra server.
+		/// </summary>
 		private static void CreateSession() {
 			if (session == null) {
 				Cluster cluster = Cluster.Builder().AddContactPoint("192.168.1.197").Build();
@@ -21,6 +24,10 @@ namespace HSCSReader.DataStorage {
 			}
 		}
 
+		/// <summary>
+		/// Compiles and commits the metrics for a specific replay.
+		/// </summary>
+		/// <param name="metrics">A Dictionary containing a list of Metrics by card.</param>
 		public static void UploadReplay(Dictionary<String, List<Metric>> metrics) {
 			CreateSession();
             foreach (KeyValuePair<String, List<Metric>> metricKVP in metrics) {
@@ -28,6 +35,11 @@ namespace HSCSReader.DataStorage {
 			}
 		}
 
+		/// <summary>
+		/// Commit metrics for a specific card.
+		/// </summary>
+		/// <param name="cardID">The ID of the card to commit metrics for.</param>
+		/// <param name="metrics">The list of metrics to commit.</param>
 		private static void SubmitCardMetrics(String cardID, List<Metric> metrics) {
 			CreateSession();
 			Row result = session.Execute("SELECT * FROM cards WHERE cardid='" + cardID + "'").FirstOrDefault();
@@ -65,6 +77,10 @@ namespace HSCSReader.DataStorage {
 			//Console.WriteLine("{0} {1}", result["firstname"], result["age"]);
 		}
 
+		/// <summary>
+		/// Marks the list of games as having been consumed and commited by the application.
+		/// </summary>
+		/// <param name="games">A list of Game objects to commit.</param>
 		public static void MarkGamesConsumed(List<Game> games) {
 			CreateSession();
 			String cql = $"INSERT INTO games (id, filename, submitted, xmlmd5) VALUES (:ID, :FILENAME, :SUBMITTED, :XMLMD5)";
@@ -78,6 +94,11 @@ namespace HSCSReader.DataStorage {
 			}
 		}
 
+		/// <summary>
+		/// Checks if the game has already been fully analyzed and commited by the application.
+		/// </summary>
+		/// <param name="md5String">The md5 string to check.</param>
+		/// <returns>A Boolean indicating whether or not a game has not been previously seen.</returns>
 		public static Boolean IsNewGame(String md5String) {
 			CreateSession();
 			logger.Trace($"Checking if MD5 Exists in Games table...");

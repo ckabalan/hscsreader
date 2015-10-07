@@ -19,22 +19,11 @@ namespace HSCSReader.Support.CardDefinitions {
 		public String MasterPower;
 		public Dictionary<String, Dictionary<PlayReq, String>> Powers = new Dictionary<string, Dictionary<PlayReq, String>>();
 
+		/// <summary>
+		/// Gets the abbreviated form on the card's description.
+		/// </summary>
 		public String ShortDescription {
 			get {
-
-
-// if c.CardType == 3 then-- Hero
-// return ("%s [%s][%s][%s %s][%d HP]%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Health, cardRace, flavorText)
-// elseif c.CardType == 4 then-- Minion
-// return ("%s [%s][%s][%s %s][%d mana, %d/%d]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Cost, c.Atk, c.Health, c.CardTextInHand, cardRace, flavorText)
-// elseif c.CardType == 5 or c.CardType == 10 then-- Spell or Hero Power
-// return ("%s [%s][%s][%s %s][%d mana]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Cost, c.CardTextInHand, cardRace, flavorText)
-// elseif c.CardType == 6 then-- Enchantment
-// return ("%s [%s][%s][%s %s]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.CardTextInHand, cardRace, flavorText)
-// elseif c.CardType == 7 then-- Weapon
-// return ("%s [%s][%s][%s %s][%d mana, %d/%d]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Cost, c.Atk, c.Durability, c.CardTextInHand, cardRace, flavorText)
-// end
-
 				String returnStr = "";
                 switch ((CardType)Tags[GameTag.CARDTYPE].Value) {
 					case CardType.HERO:
@@ -116,6 +105,10 @@ namespace HSCSReader.Support.CardDefinitions {
 			}
 		}
 
+		/// <summary>
+		/// Initializes the instance of the Card class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node which described the card.</param>
 		public Card(XmlNode xmlNode) {
 			CardID = xmlNode.Attributes?["CardID"]?.Value;
 			Version = Convert.ToInt32(xmlNode.Attributes?["version"]?.Value);

@@ -10,6 +10,10 @@ namespace HSCSReader.Support.CardDefinitions {
 	public static class CardDefs {
 		public static Dictionary<String, Card> Cards = new Dictionary<string, Card>();
 
+		/// <summary>
+		/// Loads Card Definitions from a CardDefs.xml file.
+		/// </summary>
+		/// <param name="filePath">Path to CardDefs.xml</param>
 		public static void Load(String filePath) {
 			XmlDocument cardsDoc = new XmlDocument();
 			cardsDoc.Load(filePath);

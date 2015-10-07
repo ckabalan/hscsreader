@@ -11,6 +11,13 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Support {
 	public static class Helpers {
+
+		/// <summary>
+		/// Converts a GameTag to a string.
+		/// </summary>
+		/// <param name="gameTagType">The type of GameTag.</param>
+		/// <param name="enumValue">The related value.</param>
+		/// <returns>A string descibing the GameTag's type.</returns>
 		public static String GameTagValueToString(GameTag gameTagType, Int32 enumValue) {
 			if (Enum.IsDefined(typeof(GameTag), gameTagType)) {
 				switch (gameTagType) {
@@ -27,6 +34,13 @@ namespace HSCSReader.Support {
 			return enumValue.ToString();
 		}
 
+		/// <summary>
+		/// Combines all metrics together by removing duplicate entries, overriding previous values, or adding to a list.
+		/// </summary>
+		/// <param name="metricsNew">The list of metrics to add.</param>
+		/// <param name="metricsExisting">The existing metric list.</param>
+		/// <param name="forceAdditive">Forces override entries to be additive.</param>
+		/// <returns></returns>
 		public static List<Metric> IntegrateMetrics(List<Metric> metricsNew, List<Metric> metricsExisting, Boolean forceAdditive = false) {
 			foreach (Metric curNewMetric in metricsNew) {
 				Boolean isNewMetric = true;
@@ -67,7 +81,13 @@ namespace HSCSReader.Support {
 			return metricsExisting;
 		}
 
-		public static string GetMd5Hash(MD5 md5Hash, string input) {
+		/// <summary>
+		/// Returns the MD5 Hash of the input string.
+		/// </summary>
+		/// <param name="md5Hash">The MD5 Hash Object.</param>
+		/// <param name="input">The string to compute the MD5 hash of.</param>
+		/// <returns>A string containing the MD5 hash of the input string.</returns>
+		public static String GetMd5Hash(MD5 md5Hash, String input) {
 
 			// Convert the input string to a byte array and compute the hash.
 			byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));

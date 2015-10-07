@@ -76,6 +76,16 @@ namespace HSCSReader.Replay {
 			return returnList;
 		}
 
+		/// <summary>
+		/// Extracts a list of metrics that should be changed due to this tag being changed.
+		/// </summary>
+		/// <param name="tagToChange">The tag which was changed.</param>
+		/// <param name="oldValue">The previous value of the tag.</param>
+		/// <param name="newValue">The new value of the tag.</param>
+		/// <param name="isInitialValue">Whether or not this is the first value for the tag.</param>
+		/// <param name="entity">The entity object this tag is modifying.</param>
+		/// <param name="game">The game object related to the tag.</param>
+		/// <returns>A list of metrics to be changed.</returns>
 		public static List<Metric> ExtractTagChangeMetrics(GameTag tagToChange, Int32 oldValue, Int32 newValue, Boolean isInitialValue, Entity entity, Game game) {
 			List<Metric> returnList = new List<Metric>();
 			//returnList.Add(new Metric($"{tagToChange}: {oldValue} > {newValue}", MetricType.AddToValue, 1));
