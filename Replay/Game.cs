@@ -23,6 +23,7 @@ namespace HSCSReader.Replay {
             Md5Hash = Helpers.GetMd5Hash(MD5.Create(), gameNode.OuterXml);
 			logger.Trace($"Calculated MD5 from Game XML: {Md5Hash}");
 			IsNewGame = Uploader.IsNewGame(Md5Hash);
+			IsNewGame = true;
             if (IsNewGame) {
 				logger.Info($"MD5 Hash did not exist, parsing game...");
 				_ts = gameNode.Attributes?["ts"]?.Value;
@@ -30,9 +31,9 @@ namespace HSCSReader.Replay {
 					ProcessNode(childNode);
 				}
 				//GameEntityObj.PrintHistory();
-				//foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
-				//	curKVP.Value.PrintMetrics();
-				//}
+				foreach (KeyValuePair<Int32, Entity> curKVP in Entities) {
+					curKVP.Value.PrintMetrics();
+				}
 			} else {
 				logger.Info($"MD5 Hash exists, skipping game...");
 			}

@@ -54,18 +54,20 @@ namespace HSCSReader.Support {
 							} else {
 								if (curExistingMetric.MetricType == MetricType.AddToList) {
 									curExistingMetric.Values.AddRange(curNewMetric.Values);
-								}
-								else if (curExistingMetric.MetricType == MetricType.AddToValue) {
+								} else if (curExistingMetric.MetricType == MetricType.AddToValue) {
 									if ((curExistingMetric.Values.Count > 1) || (curNewMetric.Values.Count > 1)) {
 										throw new NotSupportedException(
 											$"Cannot use {curExistingMetric.MetricType} with a List<Int32> with multiple items.");
 									}
 									curExistingMetric.Values[0] += curNewMetric.Values[0];
-								}
-								else if (curExistingMetric.MetricType == MetricType.Overwrite) {
+								} else if (curExistingMetric.MetricType == MetricType.Overwrite) {
 									// Can't assign Values so have to clear and copy.
 									curExistingMetric.Values.Clear();
 									curExistingMetric.Values.AddRange(curNewMetric.Values);
+								} else if (curExistingMetric.MetricType == MetricType.OverwriteMax) {
+									if (curExistingMetric.Values.FirstOrDefault() < curNewMetric.Values.FirstOrDefault()) {
+										curExistingMetric.Values[0] = curNewMetric.Values.FirstOrDefault();
+									}
 								}
 							}
 							isNewMetric = false;

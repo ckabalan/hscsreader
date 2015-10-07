@@ -8,6 +8,7 @@ namespace HSCSReader.Support.Enumerations {
 	public enum MetricType {
 		AddToList,
 		AddToValue,
-		Overwrite
+		Overwrite,
+		OverwriteMax
 	}
 }

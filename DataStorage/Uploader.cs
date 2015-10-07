@@ -55,7 +55,6 @@ namespace HSCSReader.DataStorage {
 				Int32 metricSubIndex = -1;
                 if (nameValSplit.Length == 2) { metricSubIndex = Convert.ToInt32(nameValSplit[1]); }
 				String metricType = nameSplit[0];
-
 				if (metricType == "COUNT") {
 					if (nameValSplit.Length == 2) {
 						SortedDictionary<Int32, Int32> existingMap = (SortedDictionary<Int32, Int32>)result[metricName];
@@ -64,11 +63,18 @@ namespace HSCSReader.DataStorage {
 							oldValue = existingMap[metricSubIndex];
 						}
 						String cql = $"UPDATE cards SET \"{metricName}\"[{nameValSplit[1]}] = :NEWVALUE WHERE cardid = :CARDID";
-                        PreparedStatement statement = session.Prepare(cql);
+						PreparedStatement statement = session.Prepare(cql);
 						session.Execute(statement.Bind(new {CARDID = cardID, NEWVALUE = (oldValue + curMetric.Values[0])}));
 						logger.Debug($"Updating {cardID}: {metricName}[{nameValSplit[1]}] {oldValue} -> {(oldValue + curMetric.Values[0])}");
 					} else {
 						
+					}
+				} else if (metricType == "MAX") {
+					if (Convert.ToInt32(result[metricName]) < curMetric.Values[0]) {
+						String cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
+						PreparedStatement statement = session.Prepare(cql);
+						session.Execute(statement.Bind(new { CARDID = cardID, NEWVALUE = curMetric.Values[0] }));
+						logger.Debug($"Updating {cardID}: {metricName} {result[metricName]} -> {curMetric.Values[0]}");
 					}
 				} else {
 					

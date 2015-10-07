@@ -92,9 +92,11 @@ namespace HSCSReader.Replay {
 			switch (tagToChange) {
 				case GameTag.NUM_TURNS_IN_PLAY:
 					returnList.Add(new Metric($"VALUE.LATEST.NUM_TURNS_IN_PLAY", MetricType.Overwrite, newValue));
+					returnList.Add(new Metric($"MAX_NUM_TURNS_IN_PLAY", MetricType.OverwriteMax, newValue));
 					break;
 				case GameTag.ATK:
 					returnList.Add(new Metric($"COUNT_ATK." + newValue, MetricType.AddToValue, 1));
+					returnList.Add(new Metric($"MAX_ATK", MetricType.OverwriteMax, newValue));
 					break;
 				case GameTag.ZONE_POSITION:
 					returnList.Add(new Metric($"COUNT_ZONE_POSITION." + newValue, MetricType.AddToValue, 1));
@@ -108,10 +110,16 @@ namespace HSCSReader.Replay {
 					break;
 				case GameTag.DAMAGE:
 					returnList.Add(new Metric($"COUNT_DAMAGE." + newValue, MetricType.AddToValue, 1));
+					returnList.Add(new Metric($"MAX_DAMAGE", MetricType.OverwriteMax, newValue));
+					break;
+				case GameTag.ARMOR:
 					break;
 			}
 			return returnList;
 		}
 
+		public static List<Metric> ExtractActionMetrics() {
+			
+		}
 	}
 }

@@ -25,7 +25,7 @@ namespace HSCSReader.Replay {
 			if (Validate()) {
 				Parse();
 				Dictionary<String, List<Metric>> collapsedMetrics = CollapseMetrics();
-				PrintMetrics(collapsedMetrics);
+				//PrintMetrics(collapsedMetrics);
 				Uploader.UploadReplay(collapsedMetrics);
 				Uploader.MarkGamesConsumed(_games);
 			}
