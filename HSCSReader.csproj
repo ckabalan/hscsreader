@@ -57,15 +57,26 @@
   <ItemGroup>
     <Compile Include="DataStorage\Uploader.cs" />
     <Compile Include="Replay\Action.cs" />
+    <Compile Include="Replay\Choices.cs" />
     <Compile Include="Replay\Entity.cs" />
+    <Compile Include="Replay\FullEntity.cs" />
     <Compile Include="Replay\Game.cs" />
     <Compile Include="Replay\GameEntity.cs" />
+    <Compile Include="Replay\HideEntity.cs" />
     <Compile Include="Replay\HSReplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Replay\MetricParser.cs" />
+    <Compile Include="Replay\Info.cs" />
+    <Compile Include="Replay\MetaData.cs" />
+    <Compile Include="Replay\NodeProcessor.cs" />
     <Compile Include="Replay\Options.cs" />
+    <Compile Include="Replay\Player.cs" />
+    <Compile Include="Replay\SendChoices.cs" />
+    <Compile Include="Replay\SendOption.cs" />
+    <Compile Include="Replay\ShowEntity.cs" />
+    <Compile Include="Replay\Tag.cs" />
     <Compile Include="Replay\TagChange.cs" />
+    <Compile Include="Replay\Target.cs" />
     <Compile Include="Support\CardDefinitions\Card.cs" />
     <Compile Include="Support\CardDefinitions\CardDefs.cs" />
     <Compile Include="Support\CardDefinitions\CardTag.cs" />
@@ -94,7 +105,6 @@
     <Compile Include="Support\HSEnumerations\Type.cs" />
     <Compile Include="Support\HSEnumerations\Zone.cs" />
     <Compile Include="Support\Helpers.cs" />
-    <Compile Include="Replay\Metric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

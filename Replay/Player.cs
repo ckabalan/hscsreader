@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using System.Xml;
 
 namespace HSCSReader.Replay {
-	class Action {
+	class Player {
 		private Game _game;
 
-		public Action(XmlNode xmlNode, Game game) {
+		public Player(XmlNode xmlNode, Game game) {
 			_game = game;
 		}
+
 	}
 }

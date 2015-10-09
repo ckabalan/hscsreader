@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Xml;
 
 namespace HSCSReader.Replay {
-	class Action {
+	class Choices {
 		private Game _game;
 
-		public Action(XmlNode xmlNode, Game game) {
+		public Choices(XmlNode xmlNode, Game game) {
 			_game = game;
 		}
 	}
