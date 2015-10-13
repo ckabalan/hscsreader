@@ -29,15 +29,15 @@ using System.Xml;
 namespace HSCSReader.Replay {
 	internal class Tag {
 		private Game _game;
-		public int Name;
-		public double Ts;
-		public int Value;
+		public Int32 Name;
+		public Int32 Value;
+		public String Ts;
 
 		public Tag(XmlNode xmlNode, Game game) {
 			_game = game;
-			int.TryParse(xmlNode.Attributes?["tag"]?.Value, out Name);
-			int.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
-			double.TryParse(xmlNode.Attributes?["ts"]?.Value, out Ts);
+			Int32.TryParse(xmlNode.Attributes?["tag"]?.Value, out Name);
+			Int32.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 	}
 }

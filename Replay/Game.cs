@@ -50,7 +50,7 @@ namespace HSCSReader.Replay {
 				Logger.Info($"MD5 Hash did not exist, parsing game...");
 				Ts = gameNode.Attributes?["ts"]?.Value;
 				foreach (XmlNode childNode in gameNode.ChildNodes) {
-					NodeProcessor.Process(childNode, this);
+					_nodes.Add(NodeProcessor.Process(childNode, this));
 				}
 			} else {
 				Logger.Info($"MD5 Hash exists, skipping game...");

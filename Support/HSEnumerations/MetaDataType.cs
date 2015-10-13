@@ -31,6 +31,9 @@ namespace HSCSReader.Support.HSEnumerations {
 		TARGET = 0,
 		DAMAGE = 1,
 		HEALING = 2,
-		JOUST = 3
+		JOUST = 3,
+		META_TARGET = TARGET,
+		META_DAMAGE = DAMAGE,
+		META_HEALING = HEALING
 	}
 }

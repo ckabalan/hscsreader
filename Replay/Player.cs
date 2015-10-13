@@ -29,9 +29,31 @@ using System.Xml;
 namespace HSCSReader.Replay {
 	internal class Player {
 		private Game _game;
+		public List<object> Children = new List<object>();
+		public Int32 Id;
+		public Int32 PlayerId;
+		public String Name;
+		public String AccountHi;
+		public String AccountLo;
+		public String Ts;
 
 		public Player(XmlNode xmlNode, Game game) {
+			// id NMTOKEN #REQUIRED
+			// playerID NMTOKEN #REQUIRED
+			// name CDATA #IMPLIED
+			// accountHi NMTOKEN #IMPLIED
+			// accountLo NMTOKEN #IMPLIED
+			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			Int32.TryParse(xmlNode.Attributes?["playerID"]?.Value, out PlayerId);
+			Name = xmlNode.Attributes?["name"]?.Value;
+			AccountHi = xmlNode.Attributes?["accountHi"]?.Value;
+			AccountLo = xmlNode.Attributes?["accountLo"]?.Value;
+			Ts = xmlNode.Attributes?["ts"]?.Value;
+			foreach (XmlNode childNode in xmlNode.ChildNodes) {
+				Children.Add(NodeProcessor.Process(childNode, game));
+			}
 		}
 	}
 }

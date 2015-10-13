@@ -32,6 +32,8 @@ namespace HSCSReader.Replay {
 			switch (xmlNode.Name) {
 				case "Action":
 					return Action(xmlNode, game);
+				case "Choice":
+					return Choice(xmlNode, game);
 				case "Choices":
 					return Choices(xmlNode, game);
 				case "FullEntity":
@@ -44,6 +46,8 @@ namespace HSCSReader.Replay {
 					return Info(xmlNode, game);
 				case "MetaData":
 					return MetaData(xmlNode, game);
+				case "Option":
+					return Option(xmlNode, game);
 				case "Options":
 					return Options(xmlNode, game);
 				case "Player":
@@ -72,6 +76,13 @@ namespace HSCSReader.Replay {
 			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			return new Action(xmlNode, game);
+		}
+
+		private static Choice Choice(XmlNode xmlNode, Game game) {
+			// entity %entity; #REQUIRED
+			// index NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
+			return new Choice(xmlNode, game);
 		}
 
 		private static Choices Choices(XmlNode xmlNode, Game game) {
@@ -118,6 +129,14 @@ namespace HSCSReader.Replay {
 			// id % entity; #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			return new Info(xmlNode, game);
+		}
+
+		private static Option Option(XmlNode xmlNode, Game game) {
+			// entity % entity; #IMPLIED
+			// index NMTOKEN #REQUIRED
+			// type NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
+			return new Option(xmlNode, game);
 		}
 
 		private static Options Options(XmlNode xmlNode, Game game) {

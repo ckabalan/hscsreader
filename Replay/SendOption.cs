@@ -29,9 +29,25 @@ using System.Xml;
 namespace HSCSReader.Replay {
 	internal class SendOption {
 		private Game _game;
+		public Int32 Option;
+		public Int32 SubOption;
+		public Int32 Position;
+		public Int32 Target;
+		public String Ts;
 
 		public SendOption(XmlNode xmlNode, Game game) {
+			// option NMTOKEN #REQUIRED
+			// subOption NMTOKEN #IMPLIED
+			// position NMTOKEN #IMPLIED
+			// target NMTOKEN #IMPLIED
+			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["option"]?.Value, out Option);
+			Int32.TryParse(xmlNode.Attributes?["subOption"]?.Value, out SubOption);
+			Int32.TryParse(xmlNode.Attributes?["position"]?.Value, out Position);
+			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
+
 		}
 	}
 }

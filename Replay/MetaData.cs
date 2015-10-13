@@ -29,9 +29,21 @@ using System.Xml;
 namespace HSCSReader.Replay {
 	internal class MetaData {
 		private Game _game;
+		public Int32 Meta;
+		public Int32 Data;
+		public Int32 Info;
+		public String Ts;
 
 		public MetaData(XmlNode xmlNode, Game game) {
+			// meta NMTOKEN #REQUIRED
+			// data % entity; #IMPLIED
+			// info NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["meta"]?.Value, out Meta);
+			Int32.TryParse(xmlNode.Attributes?["data"]?.Value, out Data);
+			Int32.TryParse(xmlNode.Attributes?["info"]?.Value, out Info);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 	}
 }

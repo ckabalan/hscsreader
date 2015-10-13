@@ -68,7 +68,7 @@ namespace HSCSReader.Replay {
 			foreach (XmlNode curGame in gameNodeList) {
 				_games.Add(new Game(curGame));
 				logger.Info("Game Complete.");
-				return;
+				//return;
 			}
 		}
 

@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="DataStorage\Uploader.cs" />
     <Compile Include="Replay\Action.cs" />
+    <Compile Include="Replay\Choice.cs" />
     <Compile Include="Replay\Choices.cs" />
     <Compile Include="Replay\Entity.cs" />
     <Compile Include="Replay\FullEntity.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Replay\Info.cs" />
     <Compile Include="Replay\MetaData.cs" />
     <Compile Include="Replay\NodeProcessor.cs" />
+    <Compile Include="Replay\Option.cs" />
     <Compile Include="Replay\Options.cs" />
     <Compile Include="Replay\Player.cs" />
     <Compile Include="Replay\SendChoices.cs" />
@@ -112,9 +114,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Support\Structs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.TXT" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

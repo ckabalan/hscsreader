@@ -29,9 +29,18 @@ using System.Xml;
 namespace HSCSReader.Replay {
 	internal class Target {
 		private Game _game;
+		public Int32 Entity;
+		public Int32 Index;
+		public String Ts;
 
 		public Target(XmlNode xmlNode, Game game) {
+			// entity %entity; #REQUIRED
+			// index NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 	}
 }

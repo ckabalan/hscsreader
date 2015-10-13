@@ -1,4 +1,4 @@
-﻿// <copyright file="FullEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="Options.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -27,24 +27,23 @@ using System.Threading.Tasks;
 using System.Xml;
 
 namespace HSCSReader.Replay {
-	internal class FullEntity {
+	internal class Option {
 		private Game _game;
-		public List<object> Children = new List<object>();
-		private String cardId;
-		private Int32 Id;
-		private String Ts;
+		public Int32 Entity;
+		public Int32 Index;
+		public Int32 Type;
+		public String Ts;
 
-		public FullEntity(XmlNode xmlNode, Game game) {
-			// cardID NMTOKEN #IMPLIED
-			// id % gameTag; #REQUIRED
+		public Option(XmlNode xmlNode, Game game) {
+			// entity % entity; #IMPLIED
+			// index NMTOKEN #REQUIRED
+			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			cardId = xmlNode.Attributes?["cardID"]?.Value;
-            Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			Int32.TryParse(xmlNode.Attributes?["type"]?.Value, out Type);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
-			}
 		}
 	}
 }

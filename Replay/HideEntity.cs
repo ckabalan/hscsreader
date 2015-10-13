@@ -29,9 +29,21 @@ using System.Xml;
 namespace HSCSReader.Replay {
 	internal class HideEntity {
 		private Game _game;
+		public Int32 Entity;
+		public Int32 Tag;
+		public Int32 Value;
+		public String Ts;
 
 		public HideEntity(XmlNode xmlNode, Game game) {
+			// entity % entity; #REQUIRED
+			// tag % gameTag; #REQUIRED
+			// value NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["tag"]?.Value, out Tag);
+			Int32.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 	}
 }

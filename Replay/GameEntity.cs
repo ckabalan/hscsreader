@@ -30,12 +30,12 @@ namespace HSCSReader.Replay {
 	internal class GameEntity {
 		private Game _game;
 		public List<object> Children = new List<object>();
-		public int Id;
+		public Int32 Id;
 
 		public GameEntity(XmlNode xmlNode, Game game) {
 			// id %entity; #REQUIRED
 			_game = game;
-			int.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				Children.Add(NodeProcessor.Process(childNode, game));
 			}

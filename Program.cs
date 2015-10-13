@@ -43,8 +43,8 @@ namespace HSCSReader {
 			logger.Info("HSCSReader v" + Assembly.GetExecutingAssembly().GetName().Version + " started.");
 			CardDefs.Load(@"E:\Programming\C#\150920 HSCSReader\_External\CardDefs.xml");
 			HSReplay Temp;
-			//Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\jleclanche.xml");
-			Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\ControlWarRecording.xml");
+			Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\jleclanche.xml");
+			//Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\ControlWarRecording.xml");
 			//Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\DandelockLogs\Dandelock-Druid_vs_Ascension-Paladin_1731-011015.xml");
 			//Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\DandelockLogs\Dandelock-Druid_vs_TuwixTuwo-Mage_1724-011015.xml");
 			//Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\DandelockLogs\Dandelock-Warrior_vs_AnHerbWorm-Shaman_2046-190915.xml");
