@@ -1,4 +1,25 @@
-﻿using System;
+﻿// /// <copyright file="MetricParser.cs" company="SpectralCoding.com">
+// ///     Copyright (c) 2015 SpectralCoding
+// /// </copyright>
+// /// <license>
+// /// This file is part of HSCSReader.
+// ///
+// /// HSCSReader is free software: you can redistribute it and/or modify
+// /// it under the terms of the GNU General Public License as published by
+// /// the Free Software Foundation, either version 3 of the License, or
+// /// (at your option) any later version.
+// ///
+// /// HSCSReader is distributed in the hope that it will be useful,
+// /// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// /// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// /// GNU General Public License for more details.
+// ///
+// /// You should have received a copy of the GNU General Public License
+// /// along with HSCSReader.  If not, see <http://www.gnu.org/licenses/>.
+// /// </license>
+// /// <author>Caesar Kabalan</author>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +29,6 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay {
 	public static class MetricParser {
-
 		public static List<Metric> CalculateStartTurnMetrics(Entity entity, Game game) {
 			List<Metric> returnList = new List<Metric>();
 			//switch (entity.Tags[GameTag.ZONE]) {
@@ -42,6 +62,7 @@ namespace HSCSReader.Replay {
 			//}
 			return returnList;
 		}
+
 		public static List<Metric> CalculateEndTurnMetrics(Entity entity, Game game) {
 			List<Metric> returnList = new List<Metric>();
 			//switch (entity.Tags[GameTag.ZONE]) {
@@ -86,7 +107,8 @@ namespace HSCSReader.Replay {
 		/// <param name="entity">The entity object this tag is modifying.</param>
 		/// <param name="game">The game object related to the tag.</param>
 		/// <returns>A list of metrics to be changed.</returns>
-		public static List<Metric> ExtractTagChangeMetrics(GameTag tagToChange, Int32 oldValue, Int32 newValue, Boolean isInitialValue, Entity entity, Game game) {
+		public static List<Metric> ExtractTagChangeMetrics(GameTag tagToChange, int oldValue, int newValue,
+															bool isInitialValue, Entity entity, Game game) {
 			List<Metric> returnList = new List<Metric>();
 			//returnList.Add(new Metric($"{tagToChange}: {oldValue} > {newValue}", MetricType.AddToValue, 1));
 			switch (tagToChange) {
@@ -103,7 +125,10 @@ namespace HSCSReader.Replay {
 					break;
 				case GameTag.ZONE:
 					if ((Enum.IsDefined(typeof(Zone), oldValue)) && (Enum.IsDefined(typeof(Zone), newValue))) {
-						returnList.Add(new Metric($"COUNT_ZONE_" + ((Zone)oldValue).ToString() + "_TO_" + ((Zone)newValue).ToString() + "." + game.GameEntityObj.Tags[GameTag.TURN], MetricType.AddToValue, 1));
+						returnList.Add(
+									 new Metric(
+										$"COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)newValue) + "." + game.GameEntityObj.Tags[GameTag.TURN],
+										MetricType.AddToValue, 1));
 					} else if (oldValue == -1) {
 						returnList.Add(new Metric($"COUNT_SEEN", MetricType.AddToValue, 1));
 					}
@@ -118,8 +143,6 @@ namespace HSCSReader.Replay {
 			return returnList;
 		}
 
-		public static List<Metric> ExtractActionMetrics() {
-			
-		}
+		public static List<Metric> ExtractActionMetrics() { }
 	}
 }

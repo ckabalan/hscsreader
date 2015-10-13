@@ -1,4 +1,25 @@
-﻿using System;
+﻿// /// <copyright file="CardTag.cs" company="SpectralCoding.com">
+// ///     Copyright (c) 2015 SpectralCoding
+// /// </copyright>
+// /// <license>
+// /// This file is part of HSCSReader.
+// ///
+// /// HSCSReader is free software: you can redistribute it and/or modify
+// /// it under the terms of the GNU General Public License as published by
+// /// the Free Software Foundation, either version 3 of the License, or
+// /// (at your option) any later version.
+// ///
+// /// HSCSReader is distributed in the hope that it will be useful,
+// /// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// /// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// /// GNU General Public License for more details.
+// ///
+// /// You should have received a copy of the GNU General Public License
+// /// along with HSCSReader.  If not, see <http://www.gnu.org/licenses/>.
+// /// </license>
+// /// <author>Caesar Kabalan</author>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,7 +39,7 @@ namespace HSCSReader.Support.CardDefinitions {
 		public CardTag(XmlNode xmlNode) {
 			switch (xmlNode.Attributes["type"].Value) {
 				case "LocString":
-					Dictionary<String, String> tempLocDict = new Dictionary<String, String>();
+					Dictionary<string, string> tempLocDict = new Dictionary<string, string>();
 					foreach (XmlNode curLangNode in xmlNode.ChildNodes) {
 						tempLocDict.Add(curLangNode.Name, curLangNode.InnerText);
 					}
@@ -62,8 +83,8 @@ namespace HSCSReader.Support.CardDefinitions {
 					}
 					break;
 				case "Int":
-				case "AttackVisualType":	// Unused
-				case "DevState":			// Unused
+				case "AttackVisualType": // Unused
+				case "DevState": // Unused
 				case "":
 					// <Dandelock> jleclanche, FYI in CardDefs.xml you have a few Tag's without a data type. Example: <Tag enumID="380" type="" value="2381"/>
 					// <jleclanche> Dandelock: type is not a guarantee
