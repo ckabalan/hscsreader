@@ -1,4 +1,25 @@
-﻿using System;
+﻿// /// <copyright file="Helpers.cs" company="SpectralCoding.com">
+// ///     Copyright (c) 2015 SpectralCoding
+// /// </copyright>
+// /// <license>
+// /// This file is part of HSCSReader.
+// ///
+// /// HSCSReader is free software: you can redistribute it and/or modify
+// /// it under the terms of the GNU General Public License as published by
+// /// the Free Software Foundation, either version 3 of the License, or
+// /// (at your option) any later version.
+// ///
+// /// HSCSReader is distributed in the hope that it will be useful,
+// /// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// /// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// /// GNU General Public License for more details.
+// ///
+// /// You should have received a copy of the GNU General Public License
+// /// along with HSCSReader.  If not, see <http://www.gnu.org/licenses/>.
+// /// </license>
+// /// <author>Caesar Kabalan</author>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,28 +32,35 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Support {
 	public static class Helpers {
-
 		/// <summary>
 		/// Converts a GameTag to a string.
 		/// </summary>
 		/// <param name="gameTagType">The type of GameTag.</param>
 		/// <param name="enumValue">The related value.</param>
 		/// <returns>A string descibing the GameTag's type.</returns>
-		public static String GameTagValueToString(GameTag gameTagType, Int32 enumValue) {
+		public static string GameTagValueToString(GameTag gameTagType, int enumValue) {
 			if (Enum.IsDefined(typeof(GameTag), gameTagType)) {
 				switch (gameTagType) {
-					case GameTag.CARDTYPE: return ((CardType)enumValue).ToString();
-					case GameTag.RARITY: return ((Rarity)enumValue).ToString();
-					case GameTag.ZONE: return ((Zone)enumValue).ToString();
-					case GameTag.STEP: return ((Step)enumValue).ToString();
-					case GameTag.NEXT_STEP: return ((Step)enumValue).ToString();
-					case GameTag.STATE: return ((State)enumValue).ToString();
-					case GameTag.CLASS: return ((CardClass)enumValue).ToString();
+					case GameTag.CARDTYPE:
+						return ((CardType)enumValue).ToString();
+					case GameTag.RARITY:
+						return ((Rarity)enumValue).ToString();
+					case GameTag.ZONE:
+						return ((Zone)enumValue).ToString();
+					case GameTag.STEP:
+						return ((Step)enumValue).ToString();
+					case GameTag.NEXT_STEP:
+						return ((Step)enumValue).ToString();
+					case GameTag.STATE:
+						return ((State)enumValue).ToString();
+					case GameTag.CLASS:
+						return ((CardClass)enumValue).ToString();
 				}
 				return enumValue.ToString();
 			}
 			return enumValue.ToString();
 		}
+
 		/*
 		/// <summary>
 		/// Combines all metrics together by removing duplicate entries, overriding previous values, or adding to a list.
@@ -83,14 +111,14 @@ namespace HSCSReader.Support {
 			return metricsExisting;
 		}
 		*/
+
 		/// <summary>
 		/// Returns the MD5 Hash of the input string.
 		/// </summary>
 		/// <param name="md5Hash">The MD5 Hash Object.</param>
 		/// <param name="input">The string to compute the MD5 hash of.</param>
 		/// <returns>A string containing the MD5 hash of the input string.</returns>
-		public static String GetMd5Hash(MD5 md5Hash, String input) {
-
+		public static string GetMd5Hash(MD5 md5Hash, string input) {
 			// Convert the input string to a byte array and compute the hash.
 			byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
@@ -107,6 +135,5 @@ namespace HSCSReader.Support {
 			// Return the hexadecimal string.
 			return sBuilder.ToString();
 		}
-
 	}
 }

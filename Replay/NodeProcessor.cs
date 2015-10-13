@@ -1,4 +1,25 @@
-﻿using System;
+﻿// /// <copyright file="NodeProcessor.cs" company="SpectralCoding.com">
+// ///     Copyright (c) 2015 SpectralCoding
+// /// </copyright>
+// /// <license>
+// /// This file is part of HSCSReader.
+// ///
+// /// HSCSReader is free software: you can redistribute it and/or modify
+// /// it under the terms of the GNU General Public License as published by
+// /// the Free Software Foundation, either version 3 of the License, or
+// /// (at your option) any later version.
+// ///
+// /// HSCSReader is distributed in the hope that it will be useful,
+// /// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// /// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// /// GNU General Public License for more details.
+// ///
+// /// You should have received a copy of the GNU General Public License
+// /// along with HSCSReader.  If not, see <http://www.gnu.org/licenses/>.
+// /// </license>
+// /// <author>Caesar Kabalan</author>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,26 +27,41 @@ using System.Threading.Tasks;
 using System.Xml;
 
 namespace HSCSReader.Replay {
-	static class NodeProcessor {
-
+	internal static class NodeProcessor {
 		public static object Process(XmlNode xmlNode, Game game) {
 			switch (xmlNode.Name) {
-				case "Action": return Action(xmlNode, game);
-				case "Choices": return Choices(xmlNode, game);
-				case "FullEntity": return FullEntity(xmlNode, game);
-				case "GameEntity": return GameEntity(xmlNode, game);
-				case "HideEntity": return HideEntity(xmlNode, game);
-				case "Info": return Info(xmlNode, game);
-				case "MetaData": return MetaData(xmlNode, game);
-				case "Options": return Options(xmlNode, game);
-				case "Player": return Player(xmlNode, game);
-				case "SendChoices": return SendChoices(xmlNode, game);
-				case "SendOption": return SendOption(xmlNode, game);
-				case "ShowEntity": return ShowEntity(xmlNode, game);
-				case "TagChange": return TagChange(xmlNode, game);
-				case "Tag": return Tag(xmlNode, game);
-				case "Target": return Target(xmlNode, game);
-				default: throw new NotImplementedException();
+				case "Action":
+					return Action(xmlNode, game);
+				case "Choices":
+					return Choices(xmlNode, game);
+				case "FullEntity":
+					return FullEntity(xmlNode, game);
+				case "GameEntity":
+					return GameEntity(xmlNode, game);
+				case "HideEntity":
+					return HideEntity(xmlNode, game);
+				case "Info":
+					return Info(xmlNode, game);
+				case "MetaData":
+					return MetaData(xmlNode, game);
+				case "Options":
+					return Options(xmlNode, game);
+				case "Player":
+					return Player(xmlNode, game);
+				case "SendChoices":
+					return SendChoices(xmlNode, game);
+				case "SendOption":
+					return SendOption(xmlNode, game);
+				case "ShowEntity":
+					return ShowEntity(xmlNode, game);
+				case "TagChange":
+					return TagChange(xmlNode, game);
+				case "Tag":
+					return Tag(xmlNode, game);
+				case "Target":
+					return Target(xmlNode, game);
+				default:
+					throw new NotImplementedException();
 			}
 		}
 
@@ -106,6 +142,7 @@ namespace HSCSReader.Replay {
 			// ts NMTOKEN #IMPLIED
 			return new SendChoices(xmlNode, game);
 		}
+
 		private static SendOption SendOption(XmlNode xmlNode, Game game) {
 			// option NMTOKEN #REQUIRED
 			// subOption NMTOKEN #IMPLIED
@@ -114,6 +151,7 @@ namespace HSCSReader.Replay {
 			// ts NMTOKEN #IMPLIED
 			return new SendOption(xmlNode, game);
 		}
+
 		private static ShowEntity ShowEntity(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
 			// entity % entity; #REQUIRED
@@ -148,6 +186,5 @@ namespace HSCSReader.Replay {
 			// ts NMTOKEN #IMPLIED
 			return new Target(xmlNode, game);
 		}
-
 	}
 }
