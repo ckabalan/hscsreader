@@ -1,4 +1,4 @@
-﻿// <copyright file="MetaData.cs" company="SpectralCoding.com">
+﻿// <copyright file="Action.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,29 +21,33 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class MetaData {
+namespace HSCSReader.Replay.LogNodes {
+	internal class Action : LogNode {
 		private Game _game;
-		public Int32 Meta;
-		public Int32 Data;
-		public Int32 Info;
-		public String Ts;
+		public List<object> Children = new List<object>();
+		public Int32 Entity;
+		public Int32 Index;
+		public Int32 Target;
+		public Int32 Type;
+		public Double Ts;
 
-		public MetaData(XmlNode xmlNode, Game game) {
-			// meta NMTOKEN #REQUIRED
-			// data % entity; #IMPLIED
-			// info NMTOKEN #REQUIRED
+		public Action(XmlNode xmlNode, Game game) {
+			// entity % entity; #REQUIRED
+			// index NMTOKEN #IMPLIED
+			// target NMTOKEN #IMPLIED
+			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["meta"]?.Value, out Meta);
-			Int32.TryParse(xmlNode.Attributes?["data"]?.Value, out Data);
-			Int32.TryParse(xmlNode.Attributes?["info"]?.Value, out Info);
-			Ts = xmlNode.Attributes?["ts"]?.Value;
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
+			Int32.TryParse(xmlNode.Attributes?["typr"]?.Value, out Type);
+			Double.TryParse(xmlNode.Attributes?["ts"]?.Value, out Ts);
+			foreach (XmlNode childNode in xmlNode.ChildNodes) {
+				Children.Add(NodeProcessor.Process(childNode, game));
+			}
 		}
 	}
 }

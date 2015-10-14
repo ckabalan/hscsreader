@@ -1,4 +1,4 @@
-﻿// <copyright file="Options.cs" company="SpectralCoding.com">
+﻿// <copyright file="Info.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,28 +20,23 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class Options {
+namespace HSCSReader.Replay.LogNodes {
+	internal class Info : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
+		public Int32 Index;
 		public Int32 Id;
 		public String Ts;
 
-		public Options(XmlNode xmlNode, Game game) {
-			// id NMTOKEN #REQUIRED
+		public Info(XmlNode xmlNode, Game game) {
+			// index NMTOKEN #REQUIRED
+			// id % entity; #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
 			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
-			}
 		}
 	}
 }

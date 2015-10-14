@@ -1,4 +1,4 @@
-﻿// <copyright file="SendOption.cs" company="SpectralCoding.com">
+﻿// <copyright file="TagChange.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,34 +20,28 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.Support.HSEnumerations;
 
-namespace HSCSReader.Replay {
-	internal class SendOption {
+namespace HSCSReader.Replay.LogNodes {
+	internal class TagChange : LogNode {
 		private Game _game;
-		public Int32 Option;
-		public Int32 SubOption;
-		public Int32 Position;
-		public Int32 Target;
+		public Int32 Entity;
+		public GameTag Tag;
+		public Int32 Value;
 		public String Ts;
 
-		public SendOption(XmlNode xmlNode, Game game) {
-			// option NMTOKEN #REQUIRED
-			// subOption NMTOKEN #IMPLIED
-			// position NMTOKEN #IMPLIED
-			// target NMTOKEN #IMPLIED
+		public TagChange(XmlNode xmlNode, Game game) {
+			// entity % entity; #REQUIRED
+			// tag % gameTag; #REQUIRED
+			// value NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["option"]?.Value, out Option);
-			Int32.TryParse(xmlNode.Attributes?["subOption"]?.Value, out SubOption);
-			Int32.TryParse(xmlNode.Attributes?["position"]?.Value, out Position);
-			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			if (xmlNode.Attributes?["tag"]?.Value == null) { throw new NullReferenceException(); }
+			Tag = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"]?.Value);
+			Int32.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-
 		}
 	}
 }

@@ -25,10 +25,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.Replay.LogNodes;
+using Action = HSCSReader.Replay.LogNodes.Action;
 
 namespace HSCSReader.Replay {
 	internal static class NodeProcessor {
-		public static object Process(XmlNode xmlNode, Game game) {
+		public static LogNode Process(XmlNode xmlNode, Game game) {
 			switch (xmlNode.Name) {
 				case "Action":
 					return Action(xmlNode, game);

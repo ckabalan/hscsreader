@@ -1,4 +1,4 @@
-﻿// <copyright file="Target.cs" company="SpectralCoding.com">
+﻿// <copyright file="SendChoices.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,26 +21,27 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class Target {
+namespace HSCSReader.Replay.LogNodes {
+	internal class SendChoices : LogNode {
 		private Game _game;
+		public List<object> Children = new List<object>();
 		public Int32 Entity;
-		public Int32 Index;
+		public Int32 Type;
 		public String Ts;
 
-		public Target(XmlNode xmlNode, Game game) {
-			// entity %entity; #REQUIRED
-			// index NMTOKEN #REQUIRED
+		public SendChoices(XmlNode xmlNode, Game game) {
+			// entity % entity; #REQUIRED
+			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			Int32.TryParse(xmlNode.Attributes?["type"]?.Value, out Type);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
+			foreach (XmlNode childNode in xmlNode.ChildNodes) {
+				Children.Add(NodeProcessor.Process(childNode, game));
+			}
 		}
 	}
 }

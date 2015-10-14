@@ -1,4 +1,4 @@
-﻿// <copyright file="FullEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,27 +21,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class FullEntity {
+namespace HSCSReader.Replay.LogNodes {
+	internal class GameEntity : LogNode {
 		private Game _game;
 		public List<object> Children = new List<object>();
-		private String cardId;
-		private Int32 Id;
-		private String Ts;
+		public Int32 Id;
 
-		public FullEntity(XmlNode xmlNode, Game game) {
-			// cardID NMTOKEN #IMPLIED
-			// id % gameTag; #REQUIRED
-			// ts NMTOKEN #IMPLIED
+		public GameEntity(XmlNode xmlNode, Game game) {
+			// id %entity; #REQUIRED
 			_game = game;
-			cardId = xmlNode.Attributes?["cardID"]?.Value;
-            Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
-			Ts = xmlNode.Attributes?["ts"]?.Value;
+			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				Children.Add(NodeProcessor.Process(childNode, game));
 			}

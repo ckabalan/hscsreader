@@ -1,4 +1,4 @@
-﻿// <copyright file="Info.cs" company="SpectralCoding.com">
+﻿// <copyright file="Tag.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,26 +20,24 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.Support.HSEnumerations;
 
-namespace HSCSReader.Replay {
-	internal class Info {
+namespace HSCSReader.Replay.LogNodes {
+	internal class Tag : LogNode {
 		private Game _game;
-		public Int32 Index;
-		public Int32 Id;
+		public GameTag Name;
+		public Int32 Value;
 		public String Ts;
 
-		public Info(XmlNode xmlNode, Game game) {
-			// index NMTOKEN #REQUIRED
-			// id % entity; #REQUIRED
+		public Tag(XmlNode xmlNode, Game game) {
+			// tag % gameTag; #REQUIRED
+			// value NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
-			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			if (xmlNode.Attributes?["tag"]?.Value == null) { throw new NullReferenceException(); }
+			Name = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"]?.Value);
+			Int32.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 	}

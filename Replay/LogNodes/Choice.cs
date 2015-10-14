@@ -1,4 +1,4 @@
-﻿// <copyright file="Choices.cs" company="SpectralCoding.com">
+﻿// <copyright file="Choice.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,43 +20,23 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class Choices {
+namespace HSCSReader.Replay.LogNodes {
+	internal class Choice : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
 		public Int32 Entity;
-		public Int32 PlayerId;
-		public Int32 Source;
-		public Int32 Type;
-		public Int32 Min;
-		public Int32 Max;
+		public Int32 Index;
 		public String Ts;
 
-		public Choices(XmlNode xmlNode, Game game) {
-			// entity % entity; #REQUIRED
-			// playerID NMTOKEN #REQUIRED
-			// source NMTOKEN #REQUIRED
-			// type NMTOKEN #REQUIRED
-			// min NMTOKEN #IMPLIED
-			// max NMTOKEN #IMPLIED
+		public Choice(XmlNode xmlNode, Game game) {
+			// entity %entity; #REQUIRED
+			// index NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			Int32.TryParse(xmlNode.Attributes?["playerID"]?.Value, out PlayerId);
-			Int32.TryParse(xmlNode.Attributes?["source"]?.Value, out Source);
-			Int32.TryParse(xmlNode.Attributes?["type"]?.Value, out Type);
-			Int32.TryParse(xmlNode.Attributes?["min"]?.Value, out Min);
-			Int32.TryParse(xmlNode.Attributes?["max"]?.Value, out Max);
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
-			}
 		}
 	}
 }

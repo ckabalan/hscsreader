@@ -34,12 +34,12 @@ using NLog;
 namespace HSCSReader.Replay {
 	public class Game {
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-		private List<object> _nodes = new List<object>();
-		public bool IsNewGame;
+		private List<LogNode> _nodes = new List<LogNode>();
+		public Boolean IsNewGame;
 		//public Dictionary<Int32, Entity> Entities = new Dictionary<Int32, Entity>();
 		//public GameEntity GameEntityObj;
-		public string Md5Hash;
-		public string Ts;
+		public String Md5Hash;
+		public String Ts;
 
 		public Game(XmlNode gameNode) {
 			Md5Hash = Helpers.GetMd5Hash(MD5.Create(), gameNode.OuterXml);
@@ -50,7 +50,12 @@ namespace HSCSReader.Replay {
 				Logger.Info($"MD5 Hash did not exist, parsing game...");
 				Ts = gameNode.Attributes?["ts"]?.Value;
 				foreach (XmlNode childNode in gameNode.ChildNodes) {
+					// Import all the Node XML into C# objects
 					_nodes.Add(NodeProcessor.Process(childNode, this));
+				}
+				foreach (LogNode curNode in _nodes) {
+					// Process each node's data.
+					curNode.Process();
 				}
 			} else {
 				Logger.Info($"MD5 Hash exists, skipping game...");

@@ -1,4 +1,4 @@
-﻿// <copyright file="HideEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="SendOption.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,30 +20,30 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class HideEntity {
+namespace HSCSReader.Replay.LogNodes {
+	internal class SendOption : LogNode {
 		private Game _game;
-		public Int32 Entity;
-		public Int32 Tag;
-		public Int32 Value;
+		public Int32 Option;
+		public Int32 SubOption;
+		public Int32 Position;
+		public Int32 Target;
 		public String Ts;
 
-		public HideEntity(XmlNode xmlNode, Game game) {
-			// entity % entity; #REQUIRED
-			// tag % gameTag; #REQUIRED
-			// value NMTOKEN #REQUIRED
+		public SendOption(XmlNode xmlNode, Game game) {
+			// option NMTOKEN #REQUIRED
+			// subOption NMTOKEN #IMPLIED
+			// position NMTOKEN #IMPLIED
+			// target NMTOKEN #IMPLIED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			Int32.TryParse(xmlNode.Attributes?["tag"]?.Value, out Tag);
-			Int32.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
+			Int32.TryParse(xmlNode.Attributes?["option"]?.Value, out Option);
+			Int32.TryParse(xmlNode.Attributes?["subOption"]?.Value, out SubOption);
+			Int32.TryParse(xmlNode.Attributes?["position"]?.Value, out Position);
+			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
+
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="SendChoices.cs" company="SpectralCoding.com">
+﻿// <copyright file="Options.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,31 +20,28 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using HSCSReader.Support.HSEnumerations;
 
-namespace HSCSReader.Replay {
-	internal class SendChoices {
+namespace HSCSReader.Replay.LogNodes {
+	internal class Option : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
 		public Int32 Entity;
-		public Int32 Type;
+		public Int32 Index;
+		public OptionType Type;
 		public String Ts;
 
-		public SendChoices(XmlNode xmlNode, Game game) {
-			// entity % entity; #REQUIRED
+		public Option(XmlNode xmlNode, Game game) {
+			// entity % entity; #IMPLIED
+			// index NMTOKEN #REQUIRED
 			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			Int32.TryParse(xmlNode.Attributes?["type"]?.Value, out Type);
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			if (xmlNode.Attributes?["type"]?.Value == null) { throw new NullReferenceException(); }
+			Type = (OptionType)Enum.Parse(typeof(OptionType), xmlNode.Attributes?["type"]?.Value);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
-			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="ShowEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="Player.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,26 +21,32 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class ShowEntity {
+namespace HSCSReader.Replay.LogNodes {
+	internal class Player : LogNode {
 		private Game _game;
 		public List<object> Children = new List<object>();
-		private String cardId;
-		private Int32 Entity;
-		private String Ts;
+		public Int32 Id;
+		public Int32 PlayerId;
+		public String Name;
+		public String AccountHi;
+		public String AccountLo;
+		public String Ts;
 
-		public ShowEntity(XmlNode xmlNode, Game game) {
-			// cardID NMTOKEN #IMPLIED
-			// entity % entity; #REQUIRED
+		public Player(XmlNode xmlNode, Game game) {
+			// id NMTOKEN #REQUIRED
+			// playerID NMTOKEN #REQUIRED
+			// name CDATA #IMPLIED
+			// accountHi NMTOKEN #IMPLIED
+			// accountLo NMTOKEN #IMPLIED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			cardId = xmlNode.Attributes?["cardID"]?.Value;
-			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			Int32.TryParse(xmlNode.Attributes?["playerID"]?.Value, out PlayerId);
+			Name = xmlNode.Attributes?["name"]?.Value;
+			AccountHi = xmlNode.Attributes?["accountHi"]?.Value;
+			AccountLo = xmlNode.Attributes?["accountLo"]?.Value;
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				Children.Add(NodeProcessor.Process(childNode, game));

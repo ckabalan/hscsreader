@@ -1,4 +1,4 @@
-﻿// <copyright file="Action.cs" company="SpectralCoding.com">
+﻿// <copyright file="ShowEntity.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,33 +21,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
-namespace HSCSReader.Replay {
-	internal class Action {
+namespace HSCSReader.Replay.LogNodes {
+	internal class ShowEntity : LogNode {
 		private Game _game;
 		public List<object> Children = new List<object>();
-		public Int32 Entity;
-		public Int32 Index;
-		public Int32 Target;
-		public Int32 Type;
-		public Double Ts;
+		private String cardId;
+		private Int32 Entity;
+		private String Ts;
 
-		public Action(XmlNode xmlNode, Game game) {
+		public ShowEntity(XmlNode xmlNode, Game game) {
+			// cardID NMTOKEN #IMPLIED
 			// entity % entity; #REQUIRED
-			// index NMTOKEN #IMPLIED
-			// target NMTOKEN #IMPLIED
-			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
+			cardId = xmlNode.Attributes?["cardID"]?.Value;
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
-			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
-			Int32.TryParse(xmlNode.Attributes?["typr"]?.Value, out Type);
-			Double.TryParse(xmlNode.Attributes?["ts"]?.Value, out Ts);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				Children.Add(NodeProcessor.Process(childNode, game));
 			}
