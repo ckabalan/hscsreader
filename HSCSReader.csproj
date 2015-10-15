@@ -56,16 +56,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStorage\Uploader.cs" />
-    <Compile Include="Replay\Action.cs" />
-    <Compile Include="Replay\Entity.cs" />
+    <Compile Include="Replay\EntityState.cs" />
+    <Compile Include="Replay\EntityStates\FullEntityState.cs" />
+    <Compile Include="Replay\EntityStates\PlayerState.cs" />
+    <Compile Include="Replay\EntityStates\GameEntityState.cs" />
+    <Compile Include="Replay\LogNodes\ActionNode.cs" />
+    <Compile Include="Replay\LogNodes\ChoiceNode.cs" />
+    <Compile Include="Replay\LogNodes\ChoicesNode.cs" />
+    <Compile Include="Replay\LogNodes\EntityNode.cs" />
+    <Compile Include="Replay\LogNodes\FullEntityNode.cs" />
     <Compile Include="Replay\Game.cs" />
-    <Compile Include="Replay\GameEntity.cs" />
+    <Compile Include="Replay\LogNodes\GameEntityNode.cs" />
+    <Compile Include="Replay\LogNodes\HideEntityNode.cs" />
     <Compile Include="Replay\HSReplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Replay\MetricParser.cs" />
-    <Compile Include="Replay\Options.cs" />
-    <Compile Include="Replay\TagChange.cs" />
+    <Compile Include="Replay\LogNodes\InfoNode.cs" />
+    <Compile Include="Replay\LogNode.cs" />
+    <Compile Include="Replay\LogNodes\MetaDataNode.cs" />
+    <Compile Include="Replay\Metric.cs" />
+    <Compile Include="Replay\NodeImporter.cs" />
+    <Compile Include="Replay\LogNodes\OptionNode.cs" />
+    <Compile Include="Replay\LogNodes\OptionsNode.cs" />
+    <Compile Include="Replay\LogNodes\PlayerNode.cs" />
+    <Compile Include="Replay\LogNodes\SendChoicesNode.cs" />
+    <Compile Include="Replay\LogNodes\SendOptionNode.cs" />
+    <Compile Include="Replay\LogNodes\ShowEntityNode.cs" />
+    <Compile Include="Replay\LogNodes\TagNode.cs" />
+    <Compile Include="Replay\LogNodes\TagChangeNode.cs" />
+    <Compile Include="Replay\LogNodes\TargetNode.cs" />
     <Compile Include="Support\CardDefinitions\Card.cs" />
     <Compile Include="Support\CardDefinitions\CardDefs.cs" />
     <Compile Include="Support\CardDefinitions\CardTag.cs" />
@@ -94,7 +113,6 @@
     <Compile Include="Support\HSEnumerations\Type.cs" />
     <Compile Include="Support\HSEnumerations\Zone.cs" />
     <Compile Include="Support\Helpers.cs" />
-    <Compile Include="Replay\Metric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

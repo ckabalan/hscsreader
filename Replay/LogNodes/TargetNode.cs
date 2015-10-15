@@ -1,4 +1,4 @@
-﻿// <copyright file="Faction.cs" company="SpectralCoding.com">
+﻿// <copyright file="Target.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,16 +20,27 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
-namespace HSCSReader.Support.HSEnumerations {
-	internal enum Faction {
-		INVALID = 0,
-		HORDE = 1,
-		ALLIANCE = 2,
-		NEUTRAL = 3
+namespace HSCSReader.Replay.LogNodes {
+	internal class TargetNode : LogNode {
+		private Game _game;
+		public Int32 Entity;
+		public Int32 Index;
+		public String Ts;
+
+		public TargetNode(XmlNode xmlNode, Game game) {
+			// entity %entity; #REQUIRED
+			// index NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
+			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
+		}
+
+		public override void Process() {
+
+		}
 	}
 }

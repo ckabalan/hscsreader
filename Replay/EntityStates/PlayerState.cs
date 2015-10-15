@@ -1,4 +1,4 @@
-﻿// <copyright file="Faction.cs" company="SpectralCoding.com">
+﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,16 +20,17 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NLog;
 
-namespace HSCSReader.Support.HSEnumerations {
-	internal enum Faction {
-		INVALID = 0,
-		HORDE = 1,
-		ALLIANCE = 2,
-		NEUTRAL = 3
+namespace HSCSReader.Replay.EntityStates {
+	public class PlayerState : EntityState {
+		public Int32 PlayerId;
+		public String Name;
+		public String AccountHi;
+		public String AccountLo;
+		public String Ts;
+
+		public PlayerState() : base() {
+		}
 	}
 }

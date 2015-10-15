@@ -1,4 +1,4 @@
-﻿// <copyright file="Faction.cs" company="SpectralCoding.com">
+﻿// <copyright file="SendChoices.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,15 +21,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
-namespace HSCSReader.Support.HSEnumerations {
-	internal enum Faction {
-		INVALID = 0,
-		HORDE = 1,
-		ALLIANCE = 2,
-		NEUTRAL = 3
+namespace HSCSReader.Replay.LogNodes {
+	internal class SendChoicesNode : LogNode {
+		private Game _game;
+		public List<LogNode> Children = new List<LogNode>();
+		public Int32 Entity;
+		public Int32 Type;
+		public String Ts;
+
+		public SendChoicesNode(XmlNode xmlNode, Game game) {
+			// entity % entity; #REQUIRED
+			// type NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
+			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
+			Int32.TryParse(xmlNode.Attributes?["type"]?.Value, out Type);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
+			foreach (XmlNode childNode in xmlNode.ChildNodes) {
+				Children.Add(NodeImporter.Import(childNode, game));
+			}
+		}
+
+		public override void Process() {
+
+		}
 	}
 }
