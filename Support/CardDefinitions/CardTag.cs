@@ -39,7 +39,7 @@ namespace HSCSReader.Support.CardDefinitions {
 		public CardTag(XmlNode xmlNode) {
 			switch (xmlNode.Attributes["type"].Value) {
 				case "LocString":
-					Dictionary<string, string> tempLocDict = new Dictionary<string, string>();
+					Dictionary<String, String> tempLocDict = new Dictionary<String, String>();
 					foreach (XmlNode curLangNode in xmlNode.ChildNodes) {
 						tempLocDict.Add(curLangNode.Name, curLangNode.InnerText);
 					}

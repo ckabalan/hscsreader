@@ -38,7 +38,7 @@ namespace HSCSReader.Support {
 		/// <param name="gameTagType">The type of GameTag.</param>
 		/// <param name="enumValue">The related value.</param>
 		/// <returns>A string descibing the GameTag's type.</returns>
-		public static string GameTagValueToString(GameTag gameTagType, int enumValue) {
+		public static String GameTagValueToString(GameTag gameTagType, Int32 enumValue) {
 			if (Enum.IsDefined(typeof(GameTag), gameTagType)) {
 				switch (gameTagType) {
 					case GameTag.CARDTYPE:
@@ -69,9 +69,9 @@ namespace HSCSReader.Support {
 		/// <param name="forceAdditive">Forces override entries to be additive.</param>
 		/// <returns></returns>
 		public static List<Metric> IntegrateMetrics(List<Metric> metricsNew, List<Metric> metricsExisting,
-													bool forceAdditive = false) {
+													Boolean forceAdditive = false) {
 			foreach (Metric curNewMetric in metricsNew) {
-				bool isNewMetric = true;
+				Boolean isNewMetric = true;
 				foreach (Metric curExistingMetric in metricsExisting) {
 					if (curExistingMetric.Name == curNewMetric.Name) {
 						if (curExistingMetric.MetricType == curNewMetric.MetricType) {
@@ -118,9 +118,9 @@ namespace HSCSReader.Support {
 		/// <param name="md5Hash">The MD5 Hash Object.</param>
 		/// <param name="input">The string to compute the MD5 hash of.</param>
 		/// <returns>A string containing the MD5 hash of the input string.</returns>
-		public static string GetMd5Hash(MD5 md5Hash, string input) {
+		public static String GetMd5Hash(MD5 md5Hash, String input) {
 			// Convert the input string to a byte array and compute the hash.
-			byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+			Byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
 			// Create a new Stringbuilder to collect the bytes
 			// and create a string.
@@ -128,7 +128,7 @@ namespace HSCSReader.Support {
 
 			// Loop through each byte of the hashed data 
 			// and format each one as a hexadecimal string.
-			for (int i = 0; i < data.Length; i++) {
+			for (Int32 i = 0; i < data.Length; i++) {
 				sBuilder.Append(data[i].ToString("x2"));
 			}
 

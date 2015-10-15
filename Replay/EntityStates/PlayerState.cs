@@ -1,4 +1,4 @@
-﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="PlayerState.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -24,13 +24,10 @@ using NLog;
 
 namespace HSCSReader.Replay.EntityStates {
 	public class PlayerState : EntityState {
-		public Int32 PlayerId;
-		public String Name;
 		public String AccountHi;
 		public String AccountLo;
+		public String Name;
+		public Int32 PlayerId;
 		public String Ts;
-
-		public PlayerState() : base() {
-		}
 	}
 }

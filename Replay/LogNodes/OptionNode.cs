@@ -1,4 +1,4 @@
-﻿// <copyright file="Options.cs" company="SpectralCoding.com">
+﻿// <copyright file="OptionNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -28,8 +28,8 @@ namespace HSCSReader.Replay.LogNodes {
 		private Game _game;
 		public Int32 Entity;
 		public Int32 Index;
-		public OptionType Type;
 		public String Ts;
+		public OptionType Type;
 
 		public OptionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #IMPLIED
@@ -44,8 +44,6 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="Target.cs" company="SpectralCoding.com">
+﻿// <copyright file="TargetNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -39,8 +39,6 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

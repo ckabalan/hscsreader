@@ -49,9 +49,9 @@ namespace HSCSReader.DataStorage {
 		/// Compiles and commits the metrics for a specific replay.
 		/// </summary>
 		/// <param name="metrics">A Dictionary containing a list of Metrics by card.</param>
-		public static void UploadReplay(Dictionary<string, List<Metric>> metrics) {
+		public static void UploadReplay(Dictionary<String, List<Metric>> metrics) {
 			CreateSession();
-			foreach (KeyValuePair<string, List<Metric>> metricKVP in metrics) {
+			foreach (KeyValuePair<String, List<Metric>> metricKVP in metrics) {
 				SubmitCardMetrics(metricKVP.Key, metricKVP.Value);
 			}
 		}
@@ -61,7 +61,7 @@ namespace HSCSReader.DataStorage {
 		/// </summary>
 		/// <param name="cardID">The ID of the card to commit metrics for.</param>
 		/// <param name="metrics">The list of metrics to commit.</param>
-		private static void SubmitCardMetrics(string cardID, List<Metric> metrics) {
+		private static void SubmitCardMetrics(String cardID, List<Metric> metrics) {
 			CreateSession();
 			Row result = session.Execute("SELECT * FROM cards WHERE cardid='" + cardID + "'").FirstOrDefault();
 			if (result == null) {
@@ -70,20 +70,20 @@ namespace HSCSReader.DataStorage {
 				result = session.Execute("SELECT * FROM cards WHERE cardid='" + cardID + "'").FirstOrDefault();
 			}
 			foreach (Metric curMetric in metrics) {
-				string[] nameValSplit = curMetric.Name.Split('.');
-				string[] nameSplit = nameValSplit[0].Split('_');
-				string metricName = nameValSplit[0];
-				int metricSubIndex = -1;
+				String[] nameValSplit = curMetric.Name.Split('.');
+				String[] nameSplit = nameValSplit[0].Split('_');
+				String metricName = nameValSplit[0];
+				Int32 metricSubIndex = -1;
 				if (nameValSplit.Length == 2) { metricSubIndex = Convert.ToInt32(nameValSplit[1]); }
-				string metricType = nameSplit[0];
+				String metricType = nameSplit[0];
 				if (metricType == "COUNT") {
 					if (nameValSplit.Length == 2) {
-						SortedDictionary<int, int> existingMap = (SortedDictionary<int, int>)result[metricName];
-						int oldValue = 0;
+						SortedDictionary<Int32, Int32> existingMap = (SortedDictionary<Int32, Int32>)result[metricName];
+						Int32 oldValue = 0;
 						if ((existingMap != null) && (existingMap.ContainsKey(metricSubIndex))) {
 							oldValue = existingMap[metricSubIndex];
 						}
-						string cql = $"UPDATE cards SET \"{metricName}\"[{nameValSplit[1]}] = :NEWVALUE WHERE cardid = :CARDID";
+						String cql = $"UPDATE cards SET \"{metricName}\"[{nameValSplit[1]}] = :NEWVALUE WHERE cardid = :CARDID";
 						PreparedStatement statement = session.Prepare(cql);
 						session.Execute(statement.Bind(new {CARDID = cardID, NEWVALUE = (oldValue + curMetric.Values[0])}));
 						logger.Debug(
@@ -91,7 +91,7 @@ namespace HSCSReader.DataStorage {
 					}
 				} else if (metricType == "MAX") {
 					if (Convert.ToInt32(result[metricName]) < curMetric.Values[0]) {
-						string cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
+						String cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
 						PreparedStatement statement = session.Prepare(cql);
 						session.Execute(statement.Bind(new {CARDID = cardID, NEWVALUE = curMetric.Values[0]}));
 						logger.Debug($"Updating {cardID}: {metricName} {result[metricName]} -> {curMetric.Values[0]}");
@@ -107,7 +107,7 @@ namespace HSCSReader.DataStorage {
 		/// <param name="games">A list of Game objects to commit.</param>
 		public static void MarkGamesConsumed(List<Game> games) {
 			CreateSession();
-			string cql = $"INSERT INTO games (id, filename, submitted, xmlmd5) VALUES (:ID, :FILENAME, :SUBMITTED, :XMLMD5)";
+			String cql = $"INSERT INTO games (id, filename, submitted, xmlmd5) VALUES (:ID, :FILENAME, :SUBMITTED, :XMLMD5)";
 			foreach (Game curGame in games) {
 				if (curGame.IsNewGame) {
 					PreparedStatement statement = session.Prepare(cql);
@@ -130,7 +130,7 @@ namespace HSCSReader.DataStorage {
 		/// </summary>
 		/// <param name="md5String">The md5 string to check.</param>
 		/// <returns>A Boolean indicating whether or not a game has not been previously seen.</returns>
-		public static bool IsNewGame(string md5String) {
+		public static Boolean IsNewGame(String md5String) {
 			CreateSession();
 			logger.Trace($"Checking if MD5 Exists in Games table...");
 			PreparedStatement statement = session.Prepare("SELECT * FROM games WHERE xmlmd5=:MD5STR");

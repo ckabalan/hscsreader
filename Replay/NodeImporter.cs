@@ -1,4 +1,4 @@
-﻿// <copyright file="NodeProcessor.cs" company="SpectralCoding.com">
+﻿// <copyright file="NodeImporter.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>

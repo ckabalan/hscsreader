@@ -1,4 +1,4 @@
-﻿// <copyright file="HideEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="HideEntityNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -27,8 +27,8 @@ namespace HSCSReader.Replay.LogNodes {
 		private Game _game;
 		public Int32 Entity;
 		public Int32 Tag;
-		public Int32 Value;
 		public String Ts;
+		public Int32 Value;
 
 		public HideEntityNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
@@ -42,8 +42,6 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

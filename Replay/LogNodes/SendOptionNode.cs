@@ -1,4 +1,4 @@
-﻿// <copyright file="SendOption.cs" company="SpectralCoding.com">
+﻿// <copyright file="SendOptionNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -26,8 +26,8 @@ namespace HSCSReader.Replay.LogNodes {
 	internal class SendOptionNode : LogNode {
 		private Game _game;
 		public Int32 Option;
-		public Int32 SubOption;
 		public Int32 Position;
+		public Int32 SubOption;
 		public Int32 Target;
 		public String Ts;
 
@@ -43,11 +43,8 @@ namespace HSCSReader.Replay.LogNodes {
 			Int32.TryParse(xmlNode.Attributes?["position"]?.Value, out Position);
 			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

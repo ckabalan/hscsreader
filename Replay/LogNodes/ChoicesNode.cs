@@ -1,4 +1,4 @@
-﻿// <copyright file="Choices.cs" company="SpectralCoding.com">
+﻿// <copyright file="ChoicesNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -29,12 +29,12 @@ namespace HSCSReader.Replay.LogNodes {
 		private Game _game;
 		public List<LogNode> Children = new List<LogNode>();
 		public Int32 Entity;
+		public Int32 Max;
+		public Int32 Min;
 		public Int32 PlayerId;
 		public Int32 Source;
-		public ChoiceType Type;
-		public Int32 Min;
-		public Int32 Max;
 		public String Ts;
+		public ChoiceType Type;
 
 		public ChoicesNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
@@ -58,8 +58,6 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="ShowEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="ShowEntityNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -27,8 +27,8 @@ using HSCSReader.Replay.EntityStates;
 namespace HSCSReader.Replay.LogNodes {
 	internal class ShowEntityNode : LogNode {
 		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
 		public String CardId;
+		public List<LogNode> Children = new List<LogNode>();
 		public Int32 Entity;
 		public String Ts;
 

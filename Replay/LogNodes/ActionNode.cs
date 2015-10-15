@@ -1,4 +1,4 @@
-﻿// <copyright file="Action.cs" company="SpectralCoding.com">
+﻿// <copyright file="ActionNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -31,8 +31,8 @@ namespace HSCSReader.Replay.LogNodes {
 		public Int32 Entity;
 		public Int32 Index;
 		public Int32 Target;
-		public Int32 Type;
 		public Double Ts;
+		public Int32 Type;
 
 		public ActionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED

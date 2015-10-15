@@ -1,4 +1,4 @@
-﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="FullEntityState.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -26,9 +26,5 @@ namespace HSCSReader.Replay.EntityStates {
 	public class FullEntityState : EntityState {
 		public String CardId;
 		public String Ts;
-
-		public FullEntityState() : base() {
-			
-		}
 	}
 }

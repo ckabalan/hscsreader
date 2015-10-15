@@ -1,4 +1,4 @@
-﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="GameEntityState.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -22,9 +22,5 @@
 using NLog;
 
 namespace HSCSReader.Replay.EntityStates {
-	public class GameEntityState : EntityState {
-		public GameEntityState() : base() {
-			
-		}
-	}
+	public class GameEntityState : EntityState { }
 }

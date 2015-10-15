@@ -1,4 +1,4 @@
-﻿// <copyright file="Options.cs" company="SpectralCoding.com">
+﻿// <copyright file="OptionsNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -41,8 +41,6 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

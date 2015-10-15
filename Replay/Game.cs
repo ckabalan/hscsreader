@@ -35,8 +35,8 @@ namespace HSCSReader.Replay {
 	public class Game {
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 		private readonly List<LogNode> _nodes = new List<LogNode>();
-		public Boolean IsNewGame;
 		public Dictionary<Int32, EntityState> ActorStates = new Dictionary<Int32, EntityState>();
+		public Boolean IsNewGame;
 		//public GameEntity GameEntityObj;
 		public String Md5Hash;
 		public String Ts;

@@ -29,13 +29,13 @@ using HSCSReader.Replay;
 
 namespace HSCSReader.Support.CardDefinitions {
 	public static class CardDefs {
-		public static Dictionary<string, Card> Cards = new Dictionary<string, Card>();
+		public static Dictionary<String, Card> Cards = new Dictionary<String, Card>();
 
 		/// <summary>
 		/// Loads Card Definitions from a CardDefs.xml file.
 		/// </summary>
 		/// <param name="filePath">Path to CardDefs.xml</param>
-		public static void Load(string filePath) {
+		public static void Load(String filePath) {
 			XmlDocument cardsDoc = new XmlDocument();
 			cardsDoc.Load(filePath);
 			XmlNode rootNode = cardsDoc.SelectSingleNode("/CardDefs");

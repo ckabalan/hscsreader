@@ -1,4 +1,4 @@
-﻿// <copyright file="TagChange.cs" company="SpectralCoding.com">
+﻿// <copyright file="TagChangeNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -32,8 +32,8 @@ namespace HSCSReader.Replay.LogNodes {
 		private Game _game;
 		public Int32 Entity;
 		public GameTag Tag;
-		public Int32 Value;
 		public String Ts;
+		public Int32 Value;
 
 		public TagChangeNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
@@ -77,7 +77,10 @@ namespace HSCSReader.Replay.LogNodes {
 					break;
 				case GameTag.ZONE:
 					if ((Enum.IsDefined(typeof(Zone), oldValue)) && (Enum.IsDefined(typeof(Zone), Value))) {
-                        newMetrics.Add(new Metric($"COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN], MetricType.AddToValue, 1));
+						newMetrics.Add(
+									 new Metric(
+										$"COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN],
+										MetricType.AddToValue, 1));
 					} else if (oldValue == -1) {
 						newMetrics.Add(new Metric($"COUNT_SEEN", MetricType.AddToValue, 1));
 					}

@@ -34,11 +34,11 @@ using HSCSReader.Support.Extensions;
 namespace HSCSReader.Support.CardDefinitions {
 	[DebuggerDisplay("{ShortDescription}")]
 	public class Card {
-		public string CardID;
-		public string MasterPower;
-		public Dictionary<string, Dictionary<PlayReq, string>> Powers = new Dictionary<string, Dictionary<PlayReq, string>>();
+		public String CardID;
+		public String MasterPower;
+		public Dictionary<String, Dictionary<PlayReq, String>> Powers = new Dictionary<String, Dictionary<PlayReq, String>>();
 		public Dictionary<GameTag, CardTag> Tags = new Dictionary<GameTag, CardTag>();
-		public int Version;
+		public Int32 Version;
 
 		/// <summary>
 		/// Initializes the instance of the Card class.
@@ -50,7 +50,7 @@ namespace HSCSReader.Support.CardDefinitions {
 			foreach (XmlNode curSubNode in xmlNode.ChildNodes) {
 				switch (curSubNode.Name) {
 					case "Tag":
-						int tempTagID = Convert.ToInt32(curSubNode.Attributes["enumID"].Value);
+						Int32 tempTagID = Convert.ToInt32(curSubNode.Attributes["enumID"].Value);
 						if (Tags.ContainsKey((GameTag)tempTagID)) {
 							Tags[(GameTag)tempTagID] = new CardTag(curSubNode);
 						} else {
@@ -61,10 +61,10 @@ namespace HSCSReader.Support.CardDefinitions {
 						MasterPower = curSubNode.Value;
 						break;
 					case "Power":
-						Dictionary<PlayReq, string> tempPower = new Dictionary<PlayReq, string>();
+						Dictionary<PlayReq, String> tempPower = new Dictionary<PlayReq, String>();
 						foreach (XmlNode curPlayReq in curSubNode.ChildNodes) {
 							if (curPlayReq.Name == "PlayRequirement") {
-								int tempReqID = Convert.ToInt32(curPlayReq.Attributes["reqID"].Value);
+								Int32 tempReqID = Convert.ToInt32(curPlayReq.Attributes["reqID"].Value);
 								tempPower.Add((PlayReq)tempReqID, curPlayReq.Attributes["param"].Value);
 							} else {
 								throw new NotImplementedException("No Power sub-tag: " + curPlayReq.Name);
@@ -81,13 +81,13 @@ namespace HSCSReader.Support.CardDefinitions {
 		/// <summary>
 		/// Gets the abbreviated form on the card's description.
 		/// </summary>
-		public string ShortDescription {
+		public String ShortDescription {
 			get {
-				string returnStr = "";
+				String returnStr = "";
 				switch ((CardType)Tags[GameTag.CARDTYPE].Value) {
 					case CardType.HERO:
 						// return ("%s [%s][%s][%s %s][%d HP]%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Health, cardRace, flavorText)
-						returnStr = string.Format("{0} [{1}][{2}][{3} {4}][{5} HP]",
+						returnStr = String.Format("{0} [{1}][{2}][{3} {4}][{5} HP]",
 												Tags[GameTag.CARDNAME]?.Value?["enUS"],
 												CardID,
 												Tags.ContainsKey(GameTag.CARD_SET) ? Tags[GameTag.CARD_SET].Value : (CardSet)0,
@@ -101,7 +101,7 @@ namespace HSCSReader.Support.CardDefinitions {
 						break;
 					case CardType.MINION:
 						// return ("%s [%s][%s][%s %s][%d mana, %d/%d]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Cost, c.Atk, c.Health, c.CardTextInHand, cardRace, flavorText)
-						returnStr = string.Format("{0} [{1}][{2}][{3} {4}][{5} mana, {6}/{7}]",
+						returnStr = String.Format("{0} [{1}][{2}][{3} {4}][{5} mana, {6}/{7}]",
 												Tags[GameTag.CARDNAME]?.Value?["enUS"],
 												CardID,
 												Tags.ContainsKey(GameTag.RARITY) ? Tags[GameTag.RARITY].Value : (Rarity)0,
@@ -118,7 +118,7 @@ namespace HSCSReader.Support.CardDefinitions {
 					case CardType.SPELL:
 					case CardType.HERO_POWER:
 						// return ("%s [%s][%s][%s %s][%d mana]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Cost, c.CardTextInHand, cardRace, flavorText)
-						returnStr = string.Format("{0} [{1}][{2}][{3} {4}][{5} mana]",
+						returnStr = String.Format("{0} [{1}][{2}][{3} {4}][{5} mana]",
 												Tags[GameTag.CARDNAME]?.Value?["enUS"],
 												CardID,
 												Tags.ContainsKey(GameTag.CARD_SET) ? Tags[GameTag.CARD_SET].Value : (CardSet)0,
@@ -132,7 +132,7 @@ namespace HSCSReader.Support.CardDefinitions {
 						break;
 					case CardType.ENCHANTMENT:
 						// return ("%s [%s][%s][%s %s]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.CardTextInHand, cardRace, flavorText)
-						returnStr = string.Format("{0} [{1}][{2}][{3} {4}]",
+						returnStr = String.Format("{0} [{1}][{2}][{3} {4}]",
 												Tags[GameTag.CARDNAME]?.Value?["enUS"],
 												CardID,
 												Tags.ContainsKey(GameTag.CARD_SET) ? Tags[GameTag.CARD_SET].Value : (CardSet)0,
@@ -145,7 +145,7 @@ namespace HSCSReader.Support.CardDefinitions {
 						break;
 					case CardType.WEAPON:
 						// return ("%s [%s][%s][%s %s][%d mana, %d/%d]: %s%s%s"):format(cardName, c.CardID, CardSet[c.CardSet], CardClass[c.Class], CardType[c.CardType], c.Cost, c.Atk, c.Durability, c.CardTextInHand, cardRace, flavorText)
-						returnStr = string.Format("{0} [{1}][{2}][{3} {4}][{5} mana, {6}/{7}]",
+						returnStr = String.Format("{0} [{1}][{2}][{3} {4}][{5} mana, {6}/{7}]",
 												Tags[GameTag.CARDNAME]?.Value?["enUS"],
 												CardID,
 												Tags.ContainsKey(GameTag.CARD_SET) ? Tags[GameTag.CARD_SET].Value : (CardSet)0,

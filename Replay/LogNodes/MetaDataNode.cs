@@ -1,4 +1,4 @@
-﻿// <copyright file="MetaData.cs" company="SpectralCoding.com">
+﻿// <copyright file="MetaDataNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -26,9 +26,9 @@ using HSCSReader.Support.HSEnumerations;
 namespace HSCSReader.Replay.LogNodes {
 	internal class MetaDataNode : LogNode {
 		private Game _game;
-		public MetaDataType Meta;
 		public Int32 Data;
 		public Int32 Info;
+		public MetaDataType Meta;
 		public String Ts;
 
 		public MetaDataNode(XmlNode xmlNode, Game game) {
@@ -44,8 +44,6 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

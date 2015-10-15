@@ -1,4 +1,4 @@
-﻿// <copyright file="Player.cs" company="SpectralCoding.com">
+﻿// <copyright file="PlayerNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -27,12 +27,12 @@ using HSCSReader.Replay.EntityStates;
 namespace HSCSReader.Replay.LogNodes {
 	internal class PlayerNode : LogNode {
 		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Id;
-		public Int32 PlayerId;
-		public String Name;
 		public String AccountHi;
 		public String AccountLo;
+		public List<LogNode> Children = new List<LogNode>();
+		public Int32 Id;
+		public String Name;
+		public Int32 PlayerId;
 		public String Ts;
 
 		public PlayerNode(XmlNode xmlNode, Game game) {

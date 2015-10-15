@@ -1,4 +1,4 @@
-﻿// <copyright file="Entity.cs" company="SpectralCoding.com">
+﻿// <copyright file="EntityNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -28,7 +28,7 @@ using NLog;
 
 namespace HSCSReader.Replay.LogNodes {
 	[DebuggerDisplay("{Description}")]
-	public class EntityNode : LogNode  {
+	public class EntityNode : LogNode {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		public readonly Int32 Id;
 		public Dictionary<String, String> Attributes = new Dictionary<String, String>();
@@ -68,8 +68,6 @@ namespace HSCSReader.Replay.LogNodes {
 		//		}
 		//	}
 		//}
-		public override void Process() {
-
-		}
+		public override void Process() { }
 	}
 }

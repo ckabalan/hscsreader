@@ -1,4 +1,4 @@
-﻿// <copyright file="Tag.cs" company="SpectralCoding.com">
+﻿// <copyright file="TagNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -27,8 +27,8 @@ namespace HSCSReader.Replay.LogNodes {
 	internal class TagNode : LogNode {
 		private Game _game;
 		public GameTag Name;
-		public Int32 Value;
 		public String Ts;
+		public Int32 Value;
 
 		public TagNode(XmlNode xmlNode, Game game) {
 			// tag % gameTag; #REQUIRED
@@ -41,9 +41,7 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
-		public override void Process() {
-			
-		}
+		public override void Process() { }
 
 		public void Process(Int32 id) {
 			Process();
