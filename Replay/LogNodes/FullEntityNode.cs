@@ -26,11 +26,11 @@ using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class FullEntityNode : LogNode {
-		private Game _game;
-		public String CardId;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Id;
-		public String Ts;
+		private readonly Game _game;
+		public readonly String CardId;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Id;
+		public readonly String Ts;
 
 		public FullEntityNode(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
@@ -46,10 +46,11 @@ namespace HSCSReader.Replay.LogNodes {
 		}
 
 		public override void Process() {
-			FullEntityState tempState = new FullEntityState();
-			tempState.Id = Id;
-			tempState.CardId = CardId;
-			tempState.Ts = Ts;
+			FullEntityState tempState = new FullEntityState {
+																Id = Id,
+																CardId = CardId,
+																Ts = Ts
+															};
 			_game.ActorStates.Add(Id, tempState);
 			foreach (LogNode curLogNode in Children) {
 				if (curLogNode.GetType() == typeof(TagNode)) {

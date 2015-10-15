@@ -57,5 +57,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyFileVersion("0.0.326.16722")]
-[assembly: AssemblyVersion("0.0.326.16722")]
+[assembly: AssemblyFileVersion("0.0.330.16723")]
+[assembly: AssemblyVersion("0.0.330.16723")]
+
+// Keeps Lines after Versions

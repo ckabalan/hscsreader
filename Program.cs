@@ -20,18 +20,14 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using HSCSReader.Replay;
 using HSCSReader.Support.CardDefinitions;
 using NLog;
 
 namespace HSCSReader {
 	internal class Program {
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 		/// <summary>
 		/// The main entry function for the application.
@@ -40,7 +36,7 @@ namespace HSCSReader {
 		private static void Main(String[] args) {
 			Console.SetBufferSize(150, 20000);
 			Console.SetWindowSize(150, 50);
-			logger.Info("HSCSReader v" + Assembly.GetExecutingAssembly().GetName().Version + " started.");
+			Logger.Info("HSCSReader v" + Assembly.GetExecutingAssembly().GetName().Version + " started.");
 			CardDefs.Load(@"E:\Programming\C#\150920 HSCSReader\_External\CardDefs.xml");
 			HSReplay Temp;
 			Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\jleclanche.xml");
@@ -147,7 +143,7 @@ namespace HSCSReader {
 			Temp =
 				new HSReplay(
 					@"E:\Programming\C#\150920 HSCSReader\_External\Samples\DandelockLogs\e0a5150f9be265f8891af4f0309b7c05.xml");
-			logger.Info("Waiting for User Input before exiting.");
+			Logger.Info("Waiting for User Input before exiting.");
 			Console.ReadLine();
 		}
 	}

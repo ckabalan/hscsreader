@@ -25,10 +25,10 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class TagNode : LogNode {
-		private Game _game;
-		public GameTag Name;
-		public String Ts;
-		public Int32 Value;
+		private readonly Game _game;
+		public readonly GameTag Name;
+		public readonly String Ts;
+		public readonly Int32 Value;
 
 		public TagNode(XmlNode xmlNode, Game game) {
 			// tag % gameTag; #REQUIRED

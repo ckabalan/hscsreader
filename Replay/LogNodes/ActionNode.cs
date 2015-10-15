@@ -22,17 +22,16 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ActionNode : LogNode {
-		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Entity;
-		public Int32 Index;
-		public Int32 Target;
-		public Double Ts;
-		public Int32 Type;
+		private readonly Game _game;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Entity;
+		public readonly Int32 Index;
+		public readonly Int32 Target;
+		public readonly Double Ts;
+		public readonly Int32 Type;
 
 		public ActionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED

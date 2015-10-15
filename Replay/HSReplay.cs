@@ -21,23 +21,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using HSCSReader.DataStorage;
 using HSCSReader.Replay.EntityStates;
-using HSCSReader.Replay.LogNodes;
 using HSCSReader.Support;
 using HSCSReader.Support.CardDefinitions;
 using NLog;
 
 namespace HSCSReader.Replay {
 	public class HSReplay {
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 		private readonly String _filePath;
+		private readonly List<Game> _games = new List<Game>();
 		private Double _build;
-		private List<Game> _games = new List<Game>();
 		private Double _version;
 
 		/// <summary>
@@ -67,9 +63,10 @@ namespace HSCSReader.Replay {
 			Double.TryParse(rootNode?.Attributes?["build"]?.Value, out _build);
 
 			XmlNodeList gameNodeList = replayDoc.SelectNodes("/HSReplay/Game");
+			if (gameNodeList == null) { return; }
 			foreach (XmlNode curGame in gameNodeList) {
 				_games.Add(new Game(curGame));
-				logger.Info("Game Complete.");
+				Logger.Info("Game Complete.");
 				//return;
 			}
 		}
@@ -78,7 +75,7 @@ namespace HSCSReader.Replay {
 		/// Returns a list of metrics by card.
 		/// </summary>
 		/// <returns>A Dictionary containing a list of Metrics by card.</returns>
-		public Dictionary<String, List<Metric>> CollapseMetrics() {
+		private Dictionary<String, List<Metric>> CollapseMetrics() {
 			Dictionary<String, List<Metric>> metrics = new Dictionary<String, List<Metric>>();
 			foreach (Game curGame in _games) {
 				if (curGame.IsNewGame) {
@@ -89,7 +86,7 @@ namespace HSCSReader.Replay {
 								if (!metrics.ContainsKey(curEntity.CardId)) {
 									metrics.Add(curEntity.CardId, new List<Metric>());
 								}
-								Helpers.IntegrateMetrics(curEntity.Metrics, metrics[curEntity.CardId], false);
+								Helpers.IntegrateMetrics(curEntity.Metrics, metrics[curEntity.CardId]);
 							}
 						}
 					}
@@ -103,10 +100,10 @@ namespace HSCSReader.Replay {
 		/// </summary>
 		/// <param name="metrics">A Dictionary containing a list of Metrics by card.</param>
 		public void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
-			foreach (KeyValuePair<String, List<Metric>> curCardID in metrics) {
-				logger.Debug("Entity: " + CardDefs.Cards[curCardID.Key].ShortDescription);
-				foreach (Metric curMetric in curCardID.Value) {
-					logger.Debug("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
+			foreach (KeyValuePair<String, List<Metric>> curCardId in metrics) {
+				Logger.Debug("Entity: " + CardDefs.Cards[curCardId.Key].ShortDescription);
+				foreach (Metric curMetric in curCardId.Value) {
+					Logger.Debug("\t{0} = {1}", curMetric.Name, String.Join(",", curMetric.Values));
 				}
 			}
 		}
@@ -132,9 +129,9 @@ namespace HSCSReader.Replay {
 			return true;
 		}
 
-		//}
+		//private static void ValidationCallBack(object sender, ValidationEventArgs e) {
 		//	Console.WriteLine("Validation Error: {0}", e.Message);
 
-		//private static void ValidationCallBack(object sender, ValidationEventArgs e) {
+		//}
 	}
 }

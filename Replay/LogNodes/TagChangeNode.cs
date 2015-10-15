@@ -22,18 +22,17 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using HSCSReader.Replay.EntityStates;
 using HSCSReader.Support;
 using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class TagChangeNode : LogNode {
-		private Game _game;
-		public Int32 Entity;
-		public GameTag Tag;
-		public String Ts;
-		public Int32 Value;
+		private readonly Game _game;
+		public readonly Int32 Entity;
+		public readonly GameTag Tag;
+		public readonly String Ts;
+		public readonly Int32 Value;
 
 		public TagChangeNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
@@ -65,29 +64,29 @@ namespace HSCSReader.Replay.LogNodes {
 			List<Metric> newMetrics = new List<Metric>();
 			switch (Tag) {
 				case GameTag.NUM_TURNS_IN_PLAY:
-					newMetrics.Add(new Metric($"VALUE.LATEST.NUM_TURNS_IN_PLAY", MetricType.Overwrite, Value));
-					newMetrics.Add(new Metric($"MAX_NUM_TURNS_IN_PLAY", MetricType.OverwriteMax, Value));
+					newMetrics.Add(new Metric("VALUE.LATEST.NUM_TURNS_IN_PLAY", MetricType.Overwrite, Value));
+					newMetrics.Add(new Metric("MAX_NUM_TURNS_IN_PLAY", MetricType.OverwriteMax, Value));
 					break;
 				case GameTag.ATK:
-					newMetrics.Add(new Metric($"COUNT_ATK." + Value, MetricType.AddToValue, 1));
-					newMetrics.Add(new Metric($"MAX_ATK", MetricType.OverwriteMax, Value));
+					newMetrics.Add(new Metric("COUNT_ATK." + Value, MetricType.AddToValue, 1));
+					newMetrics.Add(new Metric("MAX_ATK", MetricType.OverwriteMax, Value));
 					break;
 				case GameTag.ZONE_POSITION:
-					newMetrics.Add(new Metric($"COUNT_ZONE_POSITION." + Value, MetricType.AddToValue, 1));
+					newMetrics.Add(new Metric("COUNT_ZONE_POSITION." + Value, MetricType.AddToValue, 1));
 					break;
 				case GameTag.ZONE:
 					if ((Enum.IsDefined(typeof(Zone), oldValue)) && (Enum.IsDefined(typeof(Zone), Value))) {
 						newMetrics.Add(
 									 new Metric(
-										$"COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN],
+										"COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN],
 										MetricType.AddToValue, 1));
 					} else if (oldValue == -1) {
-						newMetrics.Add(new Metric($"COUNT_SEEN", MetricType.AddToValue, 1));
+						newMetrics.Add(new Metric("COUNT_SEEN", MetricType.AddToValue, 1));
 					}
 					break;
 				case GameTag.DAMAGE:
-					newMetrics.Add(new Metric($"COUNT_DAMAGE." + Value, MetricType.AddToValue, 1));
-					newMetrics.Add(new Metric($"MAX_DAMAGE", MetricType.OverwriteMax, Value));
+					newMetrics.Add(new Metric("COUNT_DAMAGE." + Value, MetricType.AddToValue, 1));
+					newMetrics.Add(new Metric("MAX_DAMAGE", MetricType.OverwriteMax, Value));
 					break;
 				case GameTag.ARMOR:
 					break;

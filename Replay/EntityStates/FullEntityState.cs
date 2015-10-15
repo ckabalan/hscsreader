@@ -20,7 +20,6 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using NLog;
 
 namespace HSCSReader.Replay.EntityStates {
 	public class FullEntityState : EntityState {

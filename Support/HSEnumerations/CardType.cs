@@ -19,12 +19,6 @@
 // </license>
 // <author>Caesar Kabalan</author>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HSCSReader.Support.HSEnumerations {
 	internal enum CardType {
 		INVALID = 0,

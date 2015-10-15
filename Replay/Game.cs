@@ -21,25 +21,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using HSCSReader.DataStorage;
 using HSCSReader.Support;
-using HSCSReader.Support.HSEnumerations;
 using NLog;
 
 namespace HSCSReader.Replay {
 	public class Game {
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 		private readonly List<LogNode> _nodes = new List<LogNode>();
-		public Dictionary<Int32, EntityState> ActorStates = new Dictionary<Int32, EntityState>();
-		public Boolean IsNewGame;
+		private readonly String _ts;
+		public readonly Dictionary<Int32, EntityState> ActorStates = new Dictionary<Int32, EntityState>();
+		public readonly Boolean IsNewGame;
 		//public GameEntity GameEntityObj;
-		public String Md5Hash;
-		public String Ts;
+		public readonly String Md5Hash;
 
 		public Game(XmlNode gameNode) {
 			Md5Hash = Helpers.GetMd5Hash(MD5.Create(), gameNode.OuterXml);
@@ -47,8 +42,8 @@ namespace HSCSReader.Replay {
 			//IsNewGame = Uploader.IsNewGame(Md5Hash);
 			IsNewGame = true;
 			if (IsNewGame) {
-				Logger.Info($"MD5 Hash did not exist, parsing game...");
-				Ts = gameNode.Attributes?["ts"]?.Value;
+				Logger.Info("MD5 Hash did not exist, parsing game...");
+				_ts = gameNode.Attributes?["ts"]?.Value;
 				foreach (XmlNode childNode in gameNode.ChildNodes) {
 					// Import all the Node XML into C# objects
 					_nodes.Add(NodeImporter.Import(childNode, this));
@@ -58,7 +53,7 @@ namespace HSCSReader.Replay {
 					curNode.Process();
 				}
 			} else {
-				Logger.Info($"MD5 Hash exists, skipping game...");
+				Logger.Info("MD5 Hash exists, skipping game...");
 			}
 		}
 	}

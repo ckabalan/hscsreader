@@ -24,8 +24,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using HSCSReader.Replay;
 using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
@@ -68,8 +66,8 @@ namespace HSCSReader.Support {
 		/// <param name="metricsExisting">The existing metric list.</param>
 		/// <param name="forceAdditive">Forces override entries to be additive.</param>
 		/// <returns></returns>
-		public static List<Metric> IntegrateMetrics(List<Metric> metricsNew, List<Metric> metricsExisting,
-													Boolean forceAdditive = false) {
+		public static void IntegrateMetrics(List<Metric> metricsNew, List<Metric> metricsExisting,
+											Boolean forceAdditive = false) {
 			foreach (Metric curNewMetric in metricsNew) {
 				Boolean isNewMetric = true;
 				foreach (Metric curExistingMetric in metricsExisting) {
@@ -109,7 +107,6 @@ namespace HSCSReader.Support {
 					metricsExisting.Add(curNewMetric);
 				}
 			}
-			return metricsExisting;
 		}
 
 		/// <summary>
@@ -128,8 +125,8 @@ namespace HSCSReader.Support {
 
 			// Loop through each byte of the hashed data 
 			// and format each one as a hexadecimal string.
-			for (Int32 i = 0; i < data.Length; i++) {
-				sBuilder.Append(data[i].ToString("x2"));
+			foreach (Byte t in data) {
+				sBuilder.Append(t.ToString("x2"));
 			}
 
 			// Return the hexadecimal string.

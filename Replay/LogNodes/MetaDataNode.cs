@@ -25,11 +25,11 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class MetaDataNode : LogNode {
-		private Game _game;
-		public Int32 Data;
-		public Int32 Info;
-		public MetaDataType Meta;
-		public String Ts;
+		private readonly Game _game;
+		public readonly Int32 Data;
+		public readonly Int32 Info;
+		public readonly MetaDataType Meta;
+		public readonly String Ts;
 
 		public MetaDataNode(XmlNode xmlNode, Game game) {
 			// meta NMTOKEN #REQUIRED

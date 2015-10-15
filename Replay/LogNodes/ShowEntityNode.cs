@@ -22,15 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ShowEntityNode : LogNode {
-		private Game _game;
-		public String CardId;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Entity;
-		public String Ts;
+		private readonly Game _game;
+		public readonly String CardId;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Entity;
+		public readonly String Ts;
 
 		public ShowEntityNode(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED

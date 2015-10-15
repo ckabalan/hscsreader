@@ -24,11 +24,11 @@ using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class HideEntityNode : LogNode {
-		private Game _game;
-		public Int32 Entity;
-		public Int32 Tag;
-		public String Ts;
-		public Int32 Value;
+		private readonly Game _game;
+		public readonly Int32 Entity;
+		public readonly Int32 Tag;
+		public readonly String Ts;
+		public readonly Int32 Value;
 
 		public HideEntityNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED

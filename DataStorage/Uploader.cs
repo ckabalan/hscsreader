@@ -22,26 +22,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Cassandra;
 using HSCSReader.Replay;
 using NLog;
-using Logger = Cassandra.Logger;
 
 namespace HSCSReader.DataStorage {
 	public static class Uploader {
-		private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
-		private static ISession session;
+		private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+		private static ISession _session;
 
 		/// <summary>
 		/// Creates a session with the Cassandra server.
 		/// </summary>
 		private static void CreateSession() {
-			if (session == null) {
+			if (_session == null) {
 				Cluster cluster = Cluster.Builder().AddContactPoint("192.168.1.197").Build();
-				session = cluster.Connect("hscs");
+				_session = cluster.Connect("hscs");
 			}
 		}
 
@@ -59,15 +55,15 @@ namespace HSCSReader.DataStorage {
 		/// <summary>
 		/// Commit metrics for a specific card.
 		/// </summary>
-		/// <param name="cardID">The ID of the card to commit metrics for.</param>
+		/// <param name="cardId">The ID of the card to commit metrics for.</param>
 		/// <param name="metrics">The list of metrics to commit.</param>
-		private static void SubmitCardMetrics(String cardID, List<Metric> metrics) {
+		private static void SubmitCardMetrics(String cardId, List<Metric> metrics) {
 			CreateSession();
-			Row result = session.Execute("SELECT * FROM cards WHERE cardid='" + cardID + "'").FirstOrDefault();
+			Row result = _session.Execute("SELECT * FROM cards WHERE cardid='" + cardId + "'").FirstOrDefault();
 			if (result == null) {
-				PreparedStatement statement = session.Prepare("INSERT INTO cards (cardid) VALUES (:CARDID)");
-				session.Execute(statement.Bind(new {CARDID = cardID}));
-				result = session.Execute("SELECT * FROM cards WHERE cardid='" + cardID + "'").FirstOrDefault();
+				PreparedStatement statement = _session.Prepare("INSERT INTO cards (cardid) VALUES (:CARDID)");
+				_session.Execute(statement.Bind(new {CARDID = cardId}));
+				result = _session.Execute("SELECT * FROM cards WHERE cardid='" + cardId + "'").FirstOrDefault();
 			}
 			foreach (Metric curMetric in metrics) {
 				String[] nameValSplit = curMetric.Name.Split('.');
@@ -78,23 +74,23 @@ namespace HSCSReader.DataStorage {
 				String metricType = nameSplit[0];
 				if (metricType == "COUNT") {
 					if (nameValSplit.Length == 2) {
-						SortedDictionary<Int32, Int32> existingMap = (SortedDictionary<Int32, Int32>)result[metricName];
+						SortedDictionary<Int32, Int32> existingMap = (SortedDictionary<Int32, Int32>)result?[metricName];
 						Int32 oldValue = 0;
 						if ((existingMap != null) && (existingMap.ContainsKey(metricSubIndex))) {
 							oldValue = existingMap[metricSubIndex];
 						}
 						String cql = $"UPDATE cards SET \"{metricName}\"[{nameValSplit[1]}] = :NEWVALUE WHERE cardid = :CARDID";
-						PreparedStatement statement = session.Prepare(cql);
-						session.Execute(statement.Bind(new {CARDID = cardID, NEWVALUE = (oldValue + curMetric.Values[0])}));
-						logger.Debug(
-									 $"Updating {cardID}: {metricName}[{nameValSplit[1]}] {oldValue} -> {(oldValue + curMetric.Values[0])}");
+						PreparedStatement statement = _session.Prepare(cql);
+						_session.Execute(statement.Bind(new {CARDID = cardId, NEWVALUE = (oldValue + curMetric.Values[0])}));
+						Logger.Debug(
+									 $"Updating {cardId}: {metricName}[{nameValSplit[1]}] {oldValue} -> {(oldValue + curMetric.Values[0])}");
 					}
 				} else if (metricType == "MAX") {
-					if (Convert.ToInt32(result[metricName]) < curMetric.Values[0]) {
+					if (Convert.ToInt32(result?[metricName]) < curMetric.Values[0]) {
 						String cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
-						PreparedStatement statement = session.Prepare(cql);
-						session.Execute(statement.Bind(new {CARDID = cardID, NEWVALUE = curMetric.Values[0]}));
-						logger.Debug($"Updating {cardID}: {metricName} {result[metricName]} -> {curMetric.Values[0]}");
+						PreparedStatement statement = _session.Prepare(cql);
+						_session.Execute(statement.Bind(new {CARDID = cardId, NEWVALUE = curMetric.Values[0]}));
+						Logger.Debug($"Updating {cardId}: {metricName} {result?[metricName]} -> {curMetric.Values[0]}");
 					}
 				}
 			}
@@ -107,12 +103,12 @@ namespace HSCSReader.DataStorage {
 		/// <param name="games">A list of Game objects to commit.</param>
 		public static void MarkGamesConsumed(List<Game> games) {
 			CreateSession();
-			String cql = $"INSERT INTO games (id, filename, submitted, xmlmd5) VALUES (:ID, :FILENAME, :SUBMITTED, :XMLMD5)";
+			String cql = "INSERT INTO games (id, filename, submitted, xmlmd5) VALUES (:ID, :FILENAME, :SUBMITTED, :XMLMD5)";
 			foreach (Game curGame in games) {
 				if (curGame.IsNewGame) {
-					PreparedStatement statement = session.Prepare(cql);
+					PreparedStatement statement = _session.Prepare(cql);
 					// TODO: Get Filename of Game.
-					session.Execute(
+					_session.Execute(
 									 statement.Bind(
 													 new {
 															ID = Guid.NewGuid(),
@@ -120,7 +116,7 @@ namespace HSCSReader.DataStorage {
 															SUBMITTED = new DateTimeOffset(DateTime.Now),
 															XMLMD5 = curGame.Md5Hash
 														}));
-					logger.Debug($"Marking Game Consumed: {curGame.Md5Hash}");
+					Logger.Debug($"Marking Game Consumed: {curGame.Md5Hash}");
 				}
 			}
 		}
@@ -132,9 +128,9 @@ namespace HSCSReader.DataStorage {
 		/// <returns>A Boolean indicating whether or not a game has not been previously seen.</returns>
 		public static Boolean IsNewGame(String md5String) {
 			CreateSession();
-			logger.Trace($"Checking if MD5 Exists in Games table...");
-			PreparedStatement statement = session.Prepare("SELECT * FROM games WHERE xmlmd5=:MD5STR");
-			Row result = session.Execute(statement.Bind(new {MD5STR = md5String})).FirstOrDefault();
+			Logger.Trace("Checking if MD5 Exists in Games table...");
+			PreparedStatement statement = _session.Prepare("SELECT * FROM games WHERE xmlmd5=:MD5STR");
+			Row result = _session.Execute(statement.Bind(new {MD5STR = md5String})).FirstOrDefault();
 			if (result == null) {
 				// No existing game with this MD5 Hash so assume it is new.
 				return true;

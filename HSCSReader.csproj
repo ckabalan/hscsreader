@@ -63,7 +63,6 @@
     <Compile Include="Replay\LogNodes\ActionNode.cs" />
     <Compile Include="Replay\LogNodes\ChoiceNode.cs" />
     <Compile Include="Replay\LogNodes\ChoicesNode.cs" />
-    <Compile Include="Replay\LogNodes\EntityNode.cs" />
     <Compile Include="Replay\LogNodes\FullEntityNode.cs" />
     <Compile Include="Replay\Game.cs" />
     <Compile Include="Replay\LogNodes\GameEntityNode.cs" />

@@ -25,11 +25,11 @@ using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class SendChoicesNode : LogNode {
-		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Entity;
-		public String Ts;
-		public Int32 Type;
+		private readonly Game _game;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Entity;
+		public readonly String Ts;
+		public readonly Int32 Type;
 
 		public SendChoicesNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED

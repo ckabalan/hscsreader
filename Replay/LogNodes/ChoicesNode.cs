@@ -26,15 +26,15 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ChoicesNode : LogNode {
-		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Entity;
-		public Int32 Max;
-		public Int32 Min;
-		public Int32 PlayerId;
-		public Int32 Source;
-		public String Ts;
-		public ChoiceType Type;
+		private readonly Game _game;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Entity;
+		public readonly Int32 Max;
+		public readonly Int32 Min;
+		public readonly Int32 PlayerId;
+		public readonly Int32 Source;
+		public readonly String Ts;
+		public readonly ChoiceType Type;
 
 		public ChoicesNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED

@@ -25,10 +25,10 @@ using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class OptionsNode : LogNode {
-		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Id;
-		public String Ts;
+		private readonly Game _game;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Id;
+		public readonly String Ts;
 
 		public OptionsNode(XmlNode xmlNode, Game game) {
 			// id NMTOKEN #REQUIRED

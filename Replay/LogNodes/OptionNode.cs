@@ -25,11 +25,11 @@ using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class OptionNode : LogNode {
-		private Game _game;
-		public Int32 Entity;
-		public Int32 Index;
-		public String Ts;
-		public OptionType Type;
+		private readonly Game _game;
+		public readonly Int32 Entity;
+		public readonly Int32 Index;
+		public readonly String Ts;
+		public readonly OptionType Type;
 
 		public OptionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #IMPLIED

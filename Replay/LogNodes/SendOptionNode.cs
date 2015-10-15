@@ -24,12 +24,12 @@ using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class SendOptionNode : LogNode {
-		private Game _game;
-		public Int32 Option;
-		public Int32 Position;
-		public Int32 SubOption;
-		public Int32 Target;
-		public String Ts;
+		private readonly Game _game;
+		public readonly Int32 Option;
+		public readonly Int32 Position;
+		public readonly Int32 SubOption;
+		public readonly Int32 Target;
+		public readonly String Ts;
 
 		public SendOptionNode(XmlNode xmlNode, Game game) {
 			// option NMTOKEN #REQUIRED

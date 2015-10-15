@@ -24,10 +24,10 @@ using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ChoiceNode : LogNode {
-		private Game _game;
-		public Int32 Entity;
-		public Int32 Index;
-		public String Ts;
+		private readonly Game _game;
+		public readonly Int32 Entity;
+		public readonly Int32 Index;
+		public readonly String Ts;
 
 		public ChoiceNode(XmlNode xmlNode, Game game) {
 			// entity %entity; #REQUIRED

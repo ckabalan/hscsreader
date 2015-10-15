@@ -21,15 +21,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using HSCSReader.Replay;
 
 namespace HSCSReader.Support.CardDefinitions {
 	public static class CardDefs {
-		public static Dictionary<String, Card> Cards = new Dictionary<String, Card>();
+		public static readonly Dictionary<String, Card> Cards = new Dictionary<String, Card>();
 
 		/// <summary>
 		/// Loads Card Definitions from a CardDefs.xml file.
@@ -38,10 +34,17 @@ namespace HSCSReader.Support.CardDefinitions {
 		public static void Load(String filePath) {
 			XmlDocument cardsDoc = new XmlDocument();
 			cardsDoc.Load(filePath);
-			XmlNode rootNode = cardsDoc.SelectSingleNode("/CardDefs");
+			//XmlNode rootNode = cardsDoc.SelectSingleNode("/CardDefs");
 			XmlNodeList entityNodeList = cardsDoc.SelectNodes("/CardDefs/Entity");
-			foreach (XmlNode curEntityNode in entityNodeList) {
-				Cards.Add(curEntityNode.Attributes["CardID"].Value, new Card(curEntityNode));
+			if (entityNodeList != null) {
+				foreach (XmlNode curEntityNode in entityNodeList) {
+					String value = curEntityNode.Attributes?["CardID"].Value;
+					if (value != null) {
+						Cards.Add(value, new Card(curEntityNode));
+					} else {
+						throw new NotSupportedException();
+					}
+				}
 			}
 			//foreach (KeyValuePair<String, Card> curCard in Cards) {
 			//	Console.WriteLine(curCard.Value.ShortDescription);

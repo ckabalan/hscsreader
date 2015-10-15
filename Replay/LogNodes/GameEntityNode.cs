@@ -26,9 +26,9 @@ using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
 	public class GameEntityNode : LogNode {
-		private Game _game;
-		public List<LogNode> Children = new List<LogNode>();
-		public Int32 Id;
+		private readonly Game _game;
+		public readonly List<LogNode> Children = new List<LogNode>();
+		public readonly Int32 Id;
 
 		public GameEntityNode(XmlNode xmlNode, Game game) {
 			// id %entity; #REQUIRED
@@ -40,8 +40,7 @@ namespace HSCSReader.Replay.LogNodes {
 		}
 
 		public override void Process() {
-			GameEntityState tempState = new GameEntityState();
-			tempState.Id = Id;
+			GameEntityState tempState = new GameEntityState {Id = Id};
 			_game.ActorStates.Add(Id, tempState);
 			foreach (LogNode curLogNode in Children) {
 				if (curLogNode.GetType() == typeof(TagNode)) {

@@ -21,23 +21,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HSCSReader.Support.HSEnumerations;
 using NLog;
 
 namespace HSCSReader.Replay {
 	public class EntityState {
-		protected static Logger Logger = LogManager.GetCurrentClassLogger();
-		public Dictionary<String, String> Attributes;
+		protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+		public readonly List<Metric> Metrics;
+		public readonly Dictionary<GameTag, Int32> Tags;
+		//public Dictionary<String, String> Attributes;
 		public Int32 Id;
-		public List<Metric> Metrics;
-		public Dictionary<GameTag, Int32> Tags;
 
-		public EntityState() {
+		protected EntityState() {
 			Tags = new Dictionary<GameTag, Int32>();
-			Attributes = new Dictionary<String, String>();
+			//Attributes = new Dictionary<String, String>();
 			Metrics = new List<Metric>();
 		}
 	}
