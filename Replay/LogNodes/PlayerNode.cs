@@ -22,11 +22,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class Player : LogNode {
+	internal class PlayerNode : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
+		public List<LogNode> Children = new List<LogNode>();
 		public Int32 Id;
 		public Int32 PlayerId;
 		public String Name;
@@ -34,7 +35,7 @@ namespace HSCSReader.Replay.LogNodes {
 		public String AccountLo;
 		public String Ts;
 
-		public Player(XmlNode xmlNode, Game game) {
+		public PlayerNode(XmlNode xmlNode, Game game) {
 			// id NMTOKEN #REQUIRED
 			// playerID NMTOKEN #REQUIRED
 			// name CDATA #IMPLIED
@@ -49,7 +50,25 @@ namespace HSCSReader.Replay.LogNodes {
 			AccountLo = xmlNode.Attributes?["accountLo"]?.Value;
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
+				Children.Add(NodeImporter.Import(childNode, game));
+			}
+		}
+
+		public override void Process() {
+			PlayerState tempState = new PlayerState();
+			tempState.Id = Id;
+			tempState.PlayerId = PlayerId;
+			tempState.Name = Name;
+			tempState.AccountHi = AccountHi;
+			tempState.AccountLo = AccountLo;
+			tempState.Ts = Ts;
+			_game.ActorStates.Add(Id, tempState);
+			foreach (LogNode curLogNode in Children) {
+				if (curLogNode.GetType() == typeof(TagNode)) {
+					((TagNode)curLogNode).Process(Id);
+				} else {
+					throw new NotSupportedException();
+				}
 			}
 		}
 	}

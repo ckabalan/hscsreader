@@ -28,7 +28,7 @@ using NLog;
 
 namespace HSCSReader.Replay.LogNodes {
 	[DebuggerDisplay("{Description}")]
-	public class Entity : LogNode  {
+	public class EntityNode : LogNode  {
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		public readonly Int32 Id;
 		public Dictionary<String, String> Attributes = new Dictionary<String, String>();
@@ -68,5 +68,8 @@ namespace HSCSReader.Replay.LogNodes {
 		//		}
 		//	}
 		//}
+		public override void Process() {
+
+		}
 	}
 }

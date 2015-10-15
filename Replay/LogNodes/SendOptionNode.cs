@@ -1,4 +1,4 @@
-﻿// <copyright file="Options.cs" company="SpectralCoding.com">
+﻿// <copyright file="SendOption.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,25 +20,34 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
 using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class Options : LogNode {
+	internal class SendOptionNode : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
-		public Int32 Id;
+		public Int32 Option;
+		public Int32 SubOption;
+		public Int32 Position;
+		public Int32 Target;
 		public String Ts;
 
-		public Options(XmlNode xmlNode, Game game) {
-			// id NMTOKEN #REQUIRED
+		public SendOptionNode(XmlNode xmlNode, Game game) {
+			// option NMTOKEN #REQUIRED
+			// subOption NMTOKEN #IMPLIED
+			// position NMTOKEN #IMPLIED
+			// target NMTOKEN #IMPLIED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			Int32.TryParse(xmlNode.Attributes?["option"]?.Value, out Option);
+			Int32.TryParse(xmlNode.Attributes?["subOption"]?.Value, out SubOption);
+			Int32.TryParse(xmlNode.Attributes?["position"]?.Value, out Position);
+			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
-			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
-			}
+
+		}
+
+		public override void Process() {
+
 		}
 	}
 }

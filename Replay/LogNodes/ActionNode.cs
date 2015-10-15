@@ -22,18 +22,19 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class Action : LogNode {
+	internal class ActionNode : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
+		public List<LogNode> Children = new List<LogNode>();
 		public Int32 Entity;
 		public Int32 Index;
 		public Int32 Target;
 		public Int32 Type;
 		public Double Ts;
 
-		public Action(XmlNode xmlNode, Game game) {
+		public ActionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// index NMTOKEN #IMPLIED
 			// target NMTOKEN #IMPLIED
@@ -46,7 +47,27 @@ namespace HSCSReader.Replay.LogNodes {
 			Int32.TryParse(xmlNode.Attributes?["typr"]?.Value, out Type);
 			Double.TryParse(xmlNode.Attributes?["ts"]?.Value, out Ts);
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
+				Children.Add(NodeImporter.Import(childNode, game));
+			}
+		}
+
+		public override void Process() {
+			foreach (LogNode curLogNode in Children) {
+				if (curLogNode.GetType() == typeof(ActionNode)) {
+					((ActionNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(FullEntityNode)) {
+					((FullEntityNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(TagChangeNode)) {
+					((TagChangeNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(MetaDataNode)) {
+					((MetaDataNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(ShowEntityNode)) {
+					((ShowEntityNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(HideEntityNode)) {
+					((HideEntityNode)curLogNode).Process();
+				} else {
+					throw new NotSupportedException();
+				}
 			}
 		}
 	}

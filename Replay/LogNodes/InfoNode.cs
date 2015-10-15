@@ -1,4 +1,4 @@
-﻿// <copyright file="Target.cs" company="SpectralCoding.com">
+﻿// <copyright file="Info.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -23,20 +23,24 @@ using System;
 using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class Target : LogNode {
+	internal class InfoNode : LogNode {
 		private Game _game;
-		public Int32 Entity;
 		public Int32 Index;
+		public Int32 Id;
 		public String Ts;
 
-		public Target(XmlNode xmlNode, Game game) {
-			// entity %entity; #REQUIRED
+		public InfoNode(XmlNode xmlNode, Game game) {
 			// index NMTOKEN #REQUIRED
+			// id % entity; #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
 			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
+			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
+		}
+
+		public override void Process() {
+			
 		}
 	}
 }

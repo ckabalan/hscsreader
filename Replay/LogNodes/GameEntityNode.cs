@@ -1,4 +1,4 @@
-﻿// <copyright file="Choice.cs" company="SpectralCoding.com">
+﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -20,23 +20,36 @@
 // <author>Caesar Kabalan</author>
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
+using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class Choice : LogNode {
+	public class GameEntityNode : LogNode {
 		private Game _game;
-		public Int32 Entity;
-		public Int32 Index;
-		public String Ts;
+		public List<LogNode> Children = new List<LogNode>();
+		public Int32 Id;
 
-		public Choice(XmlNode xmlNode, Game game) {
-			// entity %entity; #REQUIRED
-			// index NMTOKEN #REQUIRED
-			// ts NMTOKEN #IMPLIED
+		public GameEntityNode(XmlNode xmlNode, Game game) {
+			// id %entity; #REQUIRED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
-			Ts = xmlNode.Attributes?["ts"]?.Value;
+			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			foreach (XmlNode childNode in xmlNode.ChildNodes) {
+				Children.Add(NodeImporter.Import(childNode, game));
+			}
+		}
+
+		public override void Process() {
+			GameEntityState tempState = new GameEntityState();
+			tempState.Id = Id;
+			_game.ActorStates.Add(Id, tempState);
+			foreach (LogNode curLogNode in Children) {
+				if (curLogNode.GetType() == typeof(TagNode)) {
+					((TagNode)curLogNode).Process(Id);
+				} else {
+					throw new NotSupportedException();
+				}
+			}
 		}
 	}
 }

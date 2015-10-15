@@ -22,26 +22,41 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class ShowEntity : LogNode {
+	internal class ShowEntityNode : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
-		private String cardId;
-		private Int32 Entity;
-		private String Ts;
+		public List<LogNode> Children = new List<LogNode>();
+		public String CardId;
+		public Int32 Entity;
+		public String Ts;
 
-		public ShowEntity(XmlNode xmlNode, Game game) {
+		public ShowEntityNode(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
 			// entity % entity; #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			cardId = xmlNode.Attributes?["cardID"]?.Value;
+			CardId = xmlNode.Attributes?["cardID"]?.Value;
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
+				Children.Add(NodeImporter.Import(childNode, game));
 			}
+		}
+
+		public override void Process() {
+			//ShowEntityState tempState = new ShowEntityState();
+			//tempState.CardId = CardId;
+			//tempState.Ts = Ts;
+			//_game.ActorStates.Add(Id, tempState);
+			//foreach (LogNode curLogNode in Children) {
+			//	if (curLogNode.GetType() == typeof(TagNode)) {
+			//		((TagNode)curLogNode).Process(Id);
+			//	} else {
+			//		throw new NotSupportedException();
+			//	}
+			//}
 		}
 	}
 }

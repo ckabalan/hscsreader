@@ -1,4 +1,4 @@
-﻿// <copyright file="GameEntity.cs" company="SpectralCoding.com">
+﻿// <copyright file="Options.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -24,18 +24,25 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class GameEntity : LogNode {
+	internal class OptionsNode : LogNode {
 		private Game _game;
-		public List<object> Children = new List<object>();
+		public List<LogNode> Children = new List<LogNode>();
 		public Int32 Id;
+		public String Ts;
 
-		public GameEntity(XmlNode xmlNode, Game game) {
-			// id %entity; #REQUIRED
+		public OptionsNode(XmlNode xmlNode, Game game) {
+			// id NMTOKEN #REQUIRED
+			// ts NMTOKEN #IMPLIED
 			_game = game;
 			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			Ts = xmlNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
-				Children.Add(NodeProcessor.Process(childNode, game));
+				Children.Add(NodeImporter.Import(childNode, game));
 			}
+		}
+
+		public override void Process() {
+
 		}
 	}
 }

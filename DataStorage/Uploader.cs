@@ -33,7 +33,6 @@ using Logger = Cassandra.Logger;
 namespace HSCSReader.DataStorage {
 	public static class Uploader {
 		private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
-		/*
 		private static ISession session;
 
 		/// <summary>
@@ -139,6 +138,5 @@ namespace HSCSReader.DataStorage {
 			// We found a matching hash, so return false.
 			return false;
 		}
-	*/
 	}
 }

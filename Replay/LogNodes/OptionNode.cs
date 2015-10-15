@@ -1,4 +1,4 @@
-﻿// <copyright file="Info.cs" company="SpectralCoding.com">
+﻿// <copyright file="Options.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -21,22 +21,31 @@
 
 using System;
 using System.Xml;
+using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class Info : LogNode {
+	internal class OptionNode : LogNode {
 		private Game _game;
+		public Int32 Entity;
 		public Int32 Index;
-		public Int32 Id;
+		public OptionType Type;
 		public String Ts;
 
-		public Info(XmlNode xmlNode, Game game) {
+		public OptionNode(XmlNode xmlNode, Game game) {
+			// entity % entity; #IMPLIED
 			// index NMTOKEN #REQUIRED
-			// id % entity; #REQUIRED
+			// type NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
+			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
 			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
-			Int32.TryParse(xmlNode.Attributes?["id"]?.Value, out Id);
+			if (xmlNode.Attributes?["type"]?.Value == null) { throw new NullReferenceException(); }
+			Type = (OptionType)Enum.Parse(typeof(OptionType), xmlNode.Attributes?["type"]?.Value);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
+		}
+
+		public override void Process() {
+
 		}
 	}
 }

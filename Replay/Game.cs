@@ -34,9 +34,9 @@ using NLog;
 namespace HSCSReader.Replay {
 	public class Game {
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-		private List<LogNode> _nodes = new List<LogNode>();
+		private readonly List<LogNode> _nodes = new List<LogNode>();
 		public Boolean IsNewGame;
-		//public Dictionary<Int32, Entity> Entities = new Dictionary<Int32, Entity>();
+		public Dictionary<Int32, EntityState> ActorStates = new Dictionary<Int32, EntityState>();
 		//public GameEntity GameEntityObj;
 		public String Md5Hash;
 		public String Ts;
@@ -51,7 +51,7 @@ namespace HSCSReader.Replay {
 				Ts = gameNode.Attributes?["ts"]?.Value;
 				foreach (XmlNode childNode in gameNode.ChildNodes) {
 					// Import all the Node XML into C# objects
-					_nodes.Add(NodeProcessor.Process(childNode, this));
+					_nodes.Add(NodeImporter.Import(childNode, this));
 				}
 				foreach (LogNode curNode in _nodes) {
 					// Process each node's data.

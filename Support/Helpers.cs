@@ -61,7 +61,6 @@ namespace HSCSReader.Support {
 			return enumValue.ToString();
 		}
 
-		/*
 		/// <summary>
 		/// Combines all metrics together by removing duplicate entries, overriding previous values, or adding to a list.
 		/// </summary>
@@ -110,7 +109,6 @@ namespace HSCSReader.Support {
 			}
 			return metricsExisting;
 		}
-		*/
 
 		/// <summary>
 		/// Returns the MD5 Hash of the input string.

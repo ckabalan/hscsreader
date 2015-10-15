@@ -1,4 +1,4 @@
-﻿// <copyright file="TagChange.cs" company="SpectralCoding.com">
+﻿// <copyright file="MetaData.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -24,24 +24,28 @@ using System.Xml;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class TagChange : LogNode {
+	internal class MetaDataNode : LogNode {
 		private Game _game;
-		public Int32 Entity;
-		public GameTag Tag;
-		public Int32 Value;
+		public MetaDataType Meta;
+		public Int32 Data;
+		public Int32 Info;
 		public String Ts;
 
-		public TagChange(XmlNode xmlNode, Game game) {
-			// entity % entity; #REQUIRED
-			// tag % gameTag; #REQUIRED
-			// value NMTOKEN #REQUIRED
+		public MetaDataNode(XmlNode xmlNode, Game game) {
+			// meta NMTOKEN #REQUIRED
+			// data % entity; #IMPLIED
+			// info NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			_game = game;
-			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			if (xmlNode.Attributes?["tag"]?.Value == null) { throw new NullReferenceException(); }
-			Tag = (GameTag)Enum.Parse(typeof(GameTag), xmlNode.Attributes?["tag"]?.Value);
-			Int32.TryParse(xmlNode.Attributes?["value"]?.Value, out Value);
+			if (xmlNode.Attributes?["meta"]?.Value == null) { throw new NullReferenceException(); }
+			Meta = (MetaDataType)Enum.Parse(typeof(MetaDataType), xmlNode.Attributes?["meta"]?.Value);
+			Int32.TryParse(xmlNode.Attributes?["data"]?.Value, out Data);
+			Int32.TryParse(xmlNode.Attributes?["info"]?.Value, out Info);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
+		}
+
+		public override void Process() {
+
 		}
 	}
 }
