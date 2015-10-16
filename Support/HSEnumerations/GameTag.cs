@@ -22,7 +22,11 @@
 namespace HSCSReader.Support.HSEnumerations {
 	public enum GameTag {
 		IGNORE_DAMAGE = 1,
-		MISSION_EVENT = 6,
+		TAG_SCRIPT_DATA_NUM_1 = 2,
+		TAG_SCRIPT_DATA_NUM_2 = 3,
+		TAG_SCRIPT_DATA_ENT_1 = 4,
+		TAG_SCRIPT_DATA_ENT_2 = 5,
+        MISSION_EVENT = 6,
 		TIMEOUT = 7,
 		TURN_START = 8,
 		TURN_TIMER_SLUSH = 9,
