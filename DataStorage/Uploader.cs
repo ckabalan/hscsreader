@@ -91,13 +91,12 @@ namespace HSCSReader.DataStorage {
 						// Example: Total Card Mulligan appearances
 						Int32 oldValue = 0;
 						if (result?[metricName] != null) {
-							oldValue = Convert.ToInt32(result?[metricName]);
+							oldValue = Convert.ToInt32(result[metricName]);
 						}
 						String cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
 						PreparedStatement statement = _session.Prepare(cql);
-						_session.Execute(statement.Bind(new { CARDID = cardId, NEWVALUE = (oldValue + curMetric.Values[0]) }));
-						Logger.Debug(
-									 $"Updating {cardId}: {metricName} {oldValue} -> {(oldValue + curMetric.Values[0])}");
+						_session.Execute(statement.Bind(new {CARDID = cardId, NEWVALUE = (oldValue + curMetric.Values[0])}));
+						Logger.Debug($"Updating {cardId}: {metricName} {oldValue} -> {(oldValue + curMetric.Values[0])}");
 					}
 				} else if (metricType == "COUNTGAME") {
 					// For game counters 
@@ -109,9 +108,8 @@ namespace HSCSReader.DataStorage {
 					}
 					String cql = $"UPDATE cards SET \"{metricName}\"[{curMetric.Values[0]}] = :NEWVALUE WHERE cardid = :CARDID";
 					PreparedStatement statement = _session.Prepare(cql);
-					_session.Execute(statement.Bind(new { CARDID = cardId, NEWVALUE = (oldValue + 1) }));
-					Logger.Debug(
-								 $"Updating {cardId}: {metricName}[{curMetric.Values[0]}] {oldValue} -> {(oldValue + 1)}");
+					_session.Execute(statement.Bind(new {CARDID = cardId, NEWVALUE = (oldValue + 1)}));
+					Logger.Debug($"Updating {cardId}: {metricName}[{curMetric.Values[0]}] {oldValue} -> {(oldValue + 1)}");
 				} else if (metricType == "MAX") {
 					// For high scores
 					if (Convert.ToInt32(result?[metricName]) < curMetric.Values[0]) {

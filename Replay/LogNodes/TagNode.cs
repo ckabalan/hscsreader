@@ -20,10 +20,7 @@
 // <author>Caesar Kabalan</author>
 
 using System;
-using System.Collections.Generic;
 using System.Xml;
-using HSCSReader.Support;
-using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {

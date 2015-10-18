@@ -21,9 +21,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
+using System.Linq;
 using System.Xml;
-using Cassandra;
 using HSCSReader.Support;
 using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
@@ -64,28 +63,23 @@ namespace HSCSReader.Replay.LogNodes {
 					FullEntityNode tempFullEntityNode = (FullEntityNode)curLogNode;
 					if (Type == PowSubType.TRIGGER) {
 						// Determine the new entity's starting zone
-						Zone newEntityZone = Zone.INVALID;
-						foreach (LogNode tempSubLogNode in tempFullEntityNode.Children) {
-							if (tempSubLogNode.GetType() == typeof(TagNode)) {
-								if (((TagNode)tempSubLogNode).Name == GameTag.ZONE) {
-									newEntityZone = (Zone)((TagNode)tempSubLogNode).Value;
-									break;
-								}
-							}
-						}
+						Zone newEntityZone = (from tempSubLogNode in tempFullEntityNode.Children
+											where tempSubLogNode.GetType() == typeof(TagNode)
+											where ((TagNode)tempSubLogNode).Name == GameTag.ZONE
+											select (Zone)((TagNode)tempSubLogNode).Value).FirstOrDefault();
 						// Determine what to do based on the zone
 						switch (newEntityZone) {
 							case Zone.HAND:
 								// Create Card to Hand
 								Helpers.IntegrateMetrics(
-									new List<Metric>() { new Metric("COUNTGAME_CARDS_CREATED", MetricType.AddToValue, 1) },
-									_game.ActorStates[Entity].Metrics);
+														 new List<Metric> {new Metric("COUNTGAME_CARDS_CREATED", MetricType.AddToValue, 1)},
+														_game.ActorStates[Entity].Metrics);
 								break;
 							case Zone.PLAY:
 								// Summon Creature
 								Helpers.IntegrateMetrics(
-									new List<Metric>() { new Metric("COUNTGAME_MINIONS_SUMMONED", MetricType.AddToValue, 1) },
-									_game.ActorStates[Entity].Metrics);
+														 new List<Metric> {new Metric("COUNTGAME_MINIONS_SUMMONED", MetricType.AddToValue, 1)},
+														_game.ActorStates[Entity].Metrics);
 								break;
 							case Zone.SETASIDE:
 								// ToDo: Not Implemented.
@@ -93,7 +87,7 @@ namespace HSCSReader.Replay.LogNodes {
 							default:
 								throw new NotImplementedException();
 						}
-                    }
+					}
 					tempFullEntityNode.Process();
 				} else if (curLogNode.GetType() == typeof(TagChangeNode)) {
 					TagChangeNode tempTagChangeNode = (TagChangeNode)curLogNode;
@@ -107,8 +101,10 @@ namespace HSCSReader.Replay.LogNodes {
 								// Prevents certain attacks from showing up as a negative armor gain
 								// Example: Boom Bot
 								Helpers.IntegrateMetrics(
-									new List<Metric>() {new Metric("COUNTGAME_ARMOR_GAIN", MetricType.AddToValue, (tempTagChangeNode.Value - oldValue))},
-									_game.ActorStates[Entity].Metrics);
+														 new List<Metric> {
+																			new Metric("COUNTGAME_ARMOR_GAIN", MetricType.AddToValue, (tempTagChangeNode.Value - oldValue))
+																		},
+														_game.ActorStates[Entity].Metrics);
 							}
 						}
 					}

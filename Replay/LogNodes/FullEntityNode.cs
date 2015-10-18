@@ -54,8 +54,9 @@ namespace HSCSReader.Replay.LogNodes {
 																Ts = Ts
 															};
 			_game.ActorStates.Add(Id, tempState);
-			List<Metric> newMetrics = new List<Metric>();
-			newMetrics.Add(new Metric("COUNT_SEEN", MetricType.AddToValue, 1));
+			List<Metric> newMetrics = new List<Metric>() {
+															new Metric("COUNT_SEEN", MetricType.AddToValue, 1)
+														};
 			Helpers.IntegrateMetrics(newMetrics, _game.ActorStates[Id].Metrics);
 			foreach (LogNode curLogNode in Children) {
 				if (curLogNode.GetType() == typeof(TagNode)) {

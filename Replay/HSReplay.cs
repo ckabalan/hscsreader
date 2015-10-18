@@ -99,7 +99,7 @@ namespace HSCSReader.Replay {
 		/// Print all the metrics from this replay.
 		/// </summary>
 		/// <param name="metrics">A Dictionary containing a list of Metrics by card.</param>
-		public void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
+		private void PrintMetrics(Dictionary<String, List<Metric>> metrics) {
 			foreach (KeyValuePair<String, List<Metric>> curCardId in metrics) {
 				Logger.Debug("Entity: " + CardDefs.Cards[curCardId.Key].ShortDescription);
 				foreach (Metric curMetric in curCardId.Value) {

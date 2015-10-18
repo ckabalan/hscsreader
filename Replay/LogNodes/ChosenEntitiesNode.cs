@@ -1,4 +1,4 @@
-﻿// <copyright file="ChoicesNode.cs" company="SpectralCoding.com">7
+﻿// <copyright file="ChosenEntitiesNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -22,16 +22,13 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using HSCSReader.Support;
-using HSCSReader.Support.Enumerations;
-using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ChosenEntitiesNode : LogNode {
 		private readonly Game _game;
 		public readonly List<LogNode> Children = new List<LogNode>();
-		public readonly Int32 Entity;
 		public readonly Int32 Count;
+		public readonly Int32 Entity;
 		public readonly Int32 PlayerId;
 		public readonly String Ts;
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="ChoicesNode.cs" company="SpectralCoding.com">7
+﻿// <copyright file="ChoicesNode.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -66,8 +66,8 @@ namespace HSCSReader.Replay.LogNodes {
 					if (curLogNode.GetType() == typeof(ChoiceNode)) {
 						ChoiceNode curChoiceNode = (ChoiceNode)curLogNode;
 						Helpers.IntegrateMetrics(
-							new List<Metric>() {new Metric("COUNT_MULLIGAN_OPPORTUNITY", MetricType.AddToValue, 1)},
-							_game.ActorStates[curChoiceNode.Entity].Metrics);
+												 new List<Metric> {new Metric("COUNT_MULLIGAN_OPPORTUNITY", MetricType.AddToValue, 1)},
+												_game.ActorStates[curChoiceNode.Entity].Metrics);
 					}
 				}
 			}

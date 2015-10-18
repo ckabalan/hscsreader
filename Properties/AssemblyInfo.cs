@@ -1,4 +1,4 @@
-// <copyright file="AssemblyInfo.cs" company="SpectralCoding.com">
+﻿// <copyright file="AssemblyInfo.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>

@@ -54,8 +54,8 @@ namespace HSCSReader.Replay.LogNodes {
 					if (curLogNode.GetType() == typeof(ChoiceNode)) {
 						ChoiceNode curChoiceNode = (ChoiceNode)curLogNode;
 						Helpers.IntegrateMetrics(
-							new List<Metric>() { new Metric("COUNT_MULLIGAN_KEEP", MetricType.AddToValue, 1) },
-							_game.ActorStates[curChoiceNode.Entity].Metrics);
+												 new List<Metric> {new Metric("COUNT_MULLIGAN_KEEP", MetricType.AddToValue, 1)},
+												_game.ActorStates[curChoiceNode.Entity].Metrics);
 					}
 				}
 			}
