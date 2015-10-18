@@ -74,6 +74,8 @@ namespace HSCSReader.DataStorage {
 				String metricType = nameSplit[0];
 				if (metricType == "COUNT") {
 					if (nameValSplit.Length == 2) {
+						// For updating map counters
+						// Example: Zone Changes on Turn
 						SortedDictionary<Int32, Int32> existingMap = (SortedDictionary<Int32, Int32>)result?[metricName];
 						Int32 oldValue = 0;
 						if ((existingMap != null) && (existingMap.ContainsKey(metricSubIndex))) {
@@ -84,8 +86,34 @@ namespace HSCSReader.DataStorage {
 						_session.Execute(statement.Bind(new {CARDID = cardId, NEWVALUE = (oldValue + curMetric.Values[0])}));
 						Logger.Debug(
 									 $"Updating {cardId}: {metricName}[{nameValSplit[1]}] {oldValue} -> {(oldValue + curMetric.Values[0])}");
+					} else {
+						// For updating non-map counters
+						// Example: Total Card Mulligan appearances
+						Int32 oldValue = 0;
+						if (result?[metricName] != null) {
+							oldValue = Convert.ToInt32(result?[metricName]);
+						}
+						String cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
+						PreparedStatement statement = _session.Prepare(cql);
+						_session.Execute(statement.Bind(new { CARDID = cardId, NEWVALUE = (oldValue + curMetric.Values[0]) }));
+						Logger.Debug(
+									 $"Updating {cardId}: {metricName} {oldValue} -> {(oldValue + curMetric.Values[0])}");
 					}
+				} else if (metricType == "COUNTGAME") {
+					// For game counters 
+					// Example: Card Drew X Cards in Game
+					SortedDictionary<Int32, Int32> existingMap = (SortedDictionary<Int32, Int32>)result?[metricName];
+					Int32 oldValue = 0;
+					if ((existingMap != null) && (existingMap.ContainsKey(curMetric.Values[0]))) {
+						oldValue = existingMap[curMetric.Values[0]];
+					}
+					String cql = $"UPDATE cards SET \"{metricName}\"[{curMetric.Values[0]}] = :NEWVALUE WHERE cardid = :CARDID";
+					PreparedStatement statement = _session.Prepare(cql);
+					_session.Execute(statement.Bind(new { CARDID = cardId, NEWVALUE = (oldValue + 1) }));
+					Logger.Debug(
+								 $"Updating {cardId}: {metricName}[{curMetric.Values[0]}] {oldValue} -> {(oldValue + 1)}");
 				} else if (metricType == "MAX") {
+					// For high scores
 					if (Convert.ToInt32(result?[metricName]) < curMetric.Values[0]) {
 						String cql = $"UPDATE cards SET \"{metricName}\" = :NEWVALUE WHERE cardid = :CARDID";
 						PreparedStatement statement = _session.Prepare(cql);

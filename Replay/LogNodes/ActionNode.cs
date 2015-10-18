@@ -21,7 +21,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Xml;
+using Cassandra;
+using HSCSReader.Support;
+using HSCSReader.Support.Enumerations;
+using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ActionNode : LogNode {
@@ -31,7 +36,7 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Int32 Index;
 		public readonly Int32 Target;
 		public readonly Double Ts;
-		public readonly Int32 Type;
+		public readonly PowSubType Type;
 
 		public ActionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
@@ -43,7 +48,8 @@ namespace HSCSReader.Replay.LogNodes {
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
 			Int32.TryParse(xmlNode.Attributes?["index"]?.Value, out Index);
 			Int32.TryParse(xmlNode.Attributes?["target"]?.Value, out Target);
-			Int32.TryParse(xmlNode.Attributes?["typr"]?.Value, out Type);
+			if (xmlNode.Attributes?["type"]?.Value == null) { throw new NullReferenceException(); }
+			Type = (PowSubType)Enum.Parse(typeof(ChoiceType), xmlNode.Attributes?["type"]?.Value);
 			Double.TryParse(xmlNode.Attributes?["ts"]?.Value, out Ts);
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				Children.Add(NodeImporter.Import(childNode, game));
@@ -55,9 +61,58 @@ namespace HSCSReader.Replay.LogNodes {
 				if (curLogNode.GetType() == typeof(ActionNode)) {
 					((ActionNode)curLogNode).Process();
 				} else if (curLogNode.GetType() == typeof(FullEntityNode)) {
-					((FullEntityNode)curLogNode).Process();
+					FullEntityNode tempFullEntityNode = (FullEntityNode)curLogNode;
+					if (Type == PowSubType.TRIGGER) {
+						// Determine the new entity's starting zone
+						Zone newEntityZone = Zone.INVALID;
+						foreach (LogNode tempSubLogNode in tempFullEntityNode.Children) {
+							if (tempSubLogNode.GetType() == typeof(TagNode)) {
+								if (((TagNode)tempSubLogNode).Name == GameTag.ZONE) {
+									newEntityZone = (Zone)((TagNode)tempSubLogNode).Value;
+									break;
+								}
+							}
+						}
+						// Determine what to do based on the zone
+						switch (newEntityZone) {
+							case Zone.HAND:
+								// Create Card to Hand
+								Helpers.IntegrateMetrics(
+									new List<Metric>() { new Metric("COUNTGAME_CARDS_CREATED", MetricType.AddToValue, 1) },
+									_game.ActorStates[Entity].Metrics);
+								break;
+							case Zone.PLAY:
+								// Summon Creature
+								Helpers.IntegrateMetrics(
+									new List<Metric>() { new Metric("COUNTGAME_MINIONS_SUMMONED", MetricType.AddToValue, 1) },
+									_game.ActorStates[Entity].Metrics);
+								break;
+							case Zone.SETASIDE:
+								// ToDo: Not Implemented.
+								break;
+							default:
+								throw new NotImplementedException();
+						}
+                    }
+					tempFullEntityNode.Process();
 				} else if (curLogNode.GetType() == typeof(TagChangeNode)) {
-					((TagChangeNode)curLogNode).Process();
+					TagChangeNode tempTagChangeNode = (TagChangeNode)curLogNode;
+					if (Type == PowSubType.TRIGGER) {
+						if (tempTagChangeNode.Tag == GameTag.ARMOR) {
+							Int32 oldValue = 0;
+							if (_game.ActorStates[tempTagChangeNode.Entity].Tags.ContainsKey(GameTag.ARMOR)) {
+								oldValue = _game.ActorStates[tempTagChangeNode.Entity].Tags[GameTag.ARMOR];
+							}
+							if (tempTagChangeNode.Value > oldValue) {
+								// Prevents certain attacks from showing up as a negative armor gain
+								// Example: Boom Bot
+								Helpers.IntegrateMetrics(
+									new List<Metric>() {new Metric("COUNTGAME_ARMOR_GAIN", MetricType.AddToValue, (tempTagChangeNode.Value - oldValue))},
+									_game.ActorStates[Entity].Metrics);
+							}
+						}
+					}
+					tempTagChangeNode.Process();
 				} else if (curLogNode.GetType() == typeof(MetaDataNode)) {
 					((MetaDataNode)curLogNode).Process();
 				} else if (curLogNode.GetType() == typeof(ShowEntityNode)) {

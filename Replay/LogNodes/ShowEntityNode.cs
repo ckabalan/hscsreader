@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using HSCSReader.Replay.EntityStates;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class ShowEntityNode : LogNode {
@@ -45,17 +46,22 @@ namespace HSCSReader.Replay.LogNodes {
 		}
 
 		public override void Process() {
-			//ShowEntityState tempState = new ShowEntityState();
-			//tempState.CardId = CardId;
-			//tempState.Ts = Ts;
-			//_game.ActorStates.Add(Id, tempState);
-			//foreach (LogNode curLogNode in Children) {
-			//	if (curLogNode.GetType() == typeof(TagNode)) {
-			//		((TagNode)curLogNode).Process(Id);
-			//	} else {
-			//		throw new NotSupportedException();
-			//	}
-			//}
+			if (_game.ActorStates.ContainsKey(Entity)) {
+				if (_game.ActorStates[Entity].GetType() == typeof(FullEntityState)) {
+					FullEntityState curState = (FullEntityState)_game.ActorStates[Entity];
+					if ((curState.Ts == null) && (Ts != null)) { curState.Ts = Ts; }
+					if ((curState.CardId == null) && (CardId != null)) { curState.CardId = CardId; }
+				}
+			} else {
+				throw new NotSupportedException();
+			}
+			foreach (LogNode curLogNode in Children) {
+				if (curLogNode.GetType() == typeof(TagNode)) {
+					((TagNode)curLogNode).Process(Entity);
+				} else {
+					throw new NotSupportedException();
+				}
+			}
 		}
 	}
 }

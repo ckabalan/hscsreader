@@ -22,12 +22,16 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Cassandra;
 using HSCSReader.Support;
 using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
+using NLog;
+using Logger = NLog.Logger;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class TagChangeNode : LogNode {
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 		private readonly Game _game;
 		public readonly Int32 Entity;
 		public readonly GameTag Tag;
@@ -63,6 +67,21 @@ namespace HSCSReader.Replay.LogNodes {
 			_game.ActorStates[Entity].Tags[Tag] = Value;
 			List<Metric> newMetrics = new List<Metric>();
 			switch (Tag) {
+				case GameTag.STEP:
+					//Logger.Debug($"Step Changed: {Helpers.GameTagValueToString(GameTag.STEP, oldValue)} -> {Helpers.GameTagValueToString(GameTag.STEP, Value)}");
+					break;
+				case GameTag.TURN:
+					//Logger.Debug($"Turn Changed: {oldValue} -> {Value}");
+					foreach (KeyValuePair<Int32, EntityState> curKVP in _game.ActorStates) {
+						List<Metric> innerMetrics = new List<Metric>();
+						if (curKVP.Value.Tags.ContainsKey(GameTag.ZONE)) {
+							Zone entityZone = (Zone)curKVP.Value.Tags[GameTag.ZONE];
+							innerMetrics.Add(new Metric("COUNT_IN_ZONE_" + entityZone + "." + oldValue, MetricType.Overwrite, 1));
+							innerMetrics.Add(new Metric("COUNT_IN_ZONE_" + entityZone + "." + Value, MetricType.Overwrite, 1));
+						}
+						Helpers.IntegrateMetrics(innerMetrics, curKVP.Value.Metrics);
+					}
+					break;
 				case GameTag.NUM_TURNS_IN_PLAY:
 					newMetrics.Add(new Metric("VALUE.LATEST.NUM_TURNS_IN_PLAY", MetricType.Overwrite, Value));
 					newMetrics.Add(new Metric("MAX_NUM_TURNS_IN_PLAY", MetricType.OverwriteMax, Value));
@@ -76,10 +95,9 @@ namespace HSCSReader.Replay.LogNodes {
 					break;
 				case GameTag.ZONE:
 					if ((Enum.IsDefined(typeof(Zone), oldValue)) && (Enum.IsDefined(typeof(Zone), Value))) {
-						newMetrics.Add(
-									 new Metric(
-										"COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN],
-										MetricType.AddToValue, 1));
+						newMetrics.Add(new Metric("COUNT_ZONE_" + ((Zone)oldValue) + "_TO_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN], MetricType.AddToValue, 1));
+						newMetrics.Add(new Metric("COUNT_IN_ZONE_" + ((Zone)oldValue) + "." + _game.ActorStates[1].Tags[GameTag.TURN], MetricType.Overwrite, 1));
+						newMetrics.Add(new Metric("COUNT_IN_ZONE_" + ((Zone)Value) + "." + _game.ActorStates[1].Tags[GameTag.TURN], MetricType.Overwrite, 1));
 					} else if (oldValue == -1) {
 						newMetrics.Add(new Metric("COUNT_SEEN", MetricType.AddToValue, 1));
 					}

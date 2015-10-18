@@ -1,0 +1,95 @@
+CREATE KEYSPACE hscs
+WITH replication = {
+	'class' : 'SimpleStrategy',
+	'replication_factor' : 1
+};
+
+CREATE TABLE hscs.cards (
+	cardid text,
+"COUNTGAME_ARMOR_GAIN" MAP<int, int>,
+	"COUNTGAME_CARDS_CREATED" MAP<int, int>,
+	"COUNTGAME_MINIONS_SUMMONED" MAP<int, int>,
+	"COUNT_ATK" MAP<int, int>,
+	"COUNT_DAMAGE" MAP<int, int>,
+	"COUNT_IN_ZONE_DECK" MAP<int, int>,
+	"COUNT_IN_ZONE_GRAVEYARD" MAP<int, int>,
+	"COUNT_IN_ZONE_HAND" MAP<int, int>,
+	"COUNT_IN_ZONE_PLAY" MAP<int, int>,
+	"COUNT_IN_ZONE_REMOVEDFROMGAME" MAP<int, int>,
+	"COUNT_IN_ZONE_SECRET" MAP<int, int>,
+	"COUNT_IN_ZONE_SETASIDE" MAP<int, int>,
+	"COUNT_MULLIGAN_KEEP" int,
+	"COUNT_MULLIGAN_OPPORTUNITY" int,
+	"COUNT_SEEN" int,
+	"COUNT_ZONE_DECK_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_DECK_TO_HAND" MAP<int, int>,
+	"COUNT_ZONE_DECK_TO_PLAY" MAP<int, int>,
+	"COUNT_ZONE_DECK_TO_SECRET" MAP<int, int>,
+	"COUNT_ZONE_DECK_TO_SETASIDE" MAP<int, int>,
+	"COUNT_ZONE_GRAVEYARD_TO_HAND" MAP<int, int>,
+	"COUNT_ZONE_HAND_TO_DECK" MAP<int, int>,
+	"COUNT_ZONE_HAND_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_HAND_TO_PLAY" MAP<int, int>,
+	"COUNT_ZONE_HAND_TO_SECRET" MAP<int, int>,
+	"COUNT_ZONE_HAND_TO_SETASIDE" MAP<int, int>,
+	"COUNT_ZONE_PLAY_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_PLAY_TO_HAND" MAP<int, int>,
+	"COUNT_ZONE_PLAY_TO_PLAY" MAP<int, int>,
+	"COUNT_ZONE_PLAY_TO_REMOVEDFROMGAME" MAP<int, int>,
+	"COUNT_ZONE_PLAY_TO_SETASIDE" MAP<int, int>,
+	"COUNT_ZONE_POSITION" MAP<int, int>,
+	"COUNT_ZONE_REMOVEDFROMGAME_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_SECRET_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_SETASIDE_TO_HAND" MAP<int, int>,
+	"COUNT_ZONE_SETASIDE_TO_PLAY" MAP<int, int>,
+	"MAX_ATK" int,
+	"MAX_DAMAGE" int,
+	"MAX_NUM_TURNS_IN_PLAY" int,
+	PRIMARY KEY (cardid)
+) WITH bloom_filter_fp_chance = 0.01
+AND comment = ''
+AND dclocal_read_repair_chance = 0.1
+AND default_time_to_live = 0
+AND gc_grace_seconds = 864000
+AND max_index_interval = 2048
+AND memtable_flush_period_in_ms = 0
+AND min_index_interval = 128
+AND read_repair_chance = 0.0
+AND speculative_retry = '99.0PERCENTILE'
+AND caching = {
+	'keys' : 'ALL',
+	'rows_per_partition' : 'NONE'
+}
+AND compression = {
+	'sstable_compression' : 'LZ4Compressor'
+}
+AND compaction = {
+	'class' : 'SizeTieredCompactionStrategy'
+};
+
+CREATE TABLE hscs.games (
+	id uuid,
+	filename text,
+	submitted timestamp,
+	xmlmd5 text,
+	PRIMARY KEY (id)
+) WITH bloom_filter_fp_chance = 0.01
+AND comment = ''
+AND dclocal_read_repair_chance = 0.1
+AND default_time_to_live = 0
+AND gc_grace_seconds = 864000
+AND max_index_interval = 2048
+AND memtable_flush_period_in_ms = 0
+AND min_index_interval = 128
+AND read_repair_chance = 0.0
+AND speculative_retry = '99.0PERCENTILE'
+AND caching = {
+	'keys' : 'ALL',
+	'rows_per_partition' : 'NONE'
+}
+AND compression = {
+	'sstable_compression' : 'LZ4Compressor'
+}
+AND compaction = {
+	'class' : 'SizeTieredCompactionStrategy'
+};

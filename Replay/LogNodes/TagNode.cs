@@ -20,7 +20,10 @@
 // <author>Caesar Kabalan</author>
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
+using HSCSReader.Support;
+using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
@@ -45,7 +48,11 @@ namespace HSCSReader.Replay.LogNodes {
 
 		public void Process(Int32 id) {
 			Process();
-			_game.ActorStates[id].Tags.Add(Name, Value);
+			if (_game.ActorStates[id].Tags.ContainsKey(Name)) {
+				_game.ActorStates[id].Tags[Name] = Value;
+			} else {
+				_game.ActorStates[id].Tags.Add(Name, Value);
+			}
 		}
 	}
 }

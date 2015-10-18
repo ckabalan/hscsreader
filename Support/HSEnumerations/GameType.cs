@@ -30,7 +30,7 @@ namespace HSCSReader.Support.HSEnumerations {
 		GT_RANKED = 7,
 		GT_UNRANKED = 8,
 		GT_TAVERNBRAWL = 16,
-		GT_TB_2P_COOP = 18,
-        GT_LAST = 17
+		GT_LAST = 17,
+		GT_TB_2P_COOP = 18
 	}
 }

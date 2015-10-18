@@ -62,6 +62,7 @@
     <Compile Include="Replay\EntityStates\GameEntityState.cs" />
     <Compile Include="Replay\LogNodes\ActionNode.cs" />
     <Compile Include="Replay\LogNodes\ChoiceNode.cs" />
+    <Compile Include="Replay\LogNodes\ChosenEntitiesNode.cs" />
     <Compile Include="Replay\LogNodes\ChoicesNode.cs" />
     <Compile Include="Replay\LogNodes\FullEntityNode.cs" />
     <Compile Include="Replay\Game.cs" />

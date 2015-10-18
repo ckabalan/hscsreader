@@ -1,4 +1,4 @@
-﻿// <copyright file="SendChoicesNode.cs" company="SpectralCoding.com">
+﻿// <copyright file="ChoicesNode.cs" company="SpectralCoding.com">7
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -27,21 +27,20 @@ using HSCSReader.Support.Enumerations;
 using HSCSReader.Support.HSEnumerations;
 
 namespace HSCSReader.Replay.LogNodes {
-	internal class SendChoicesNode : LogNode {
+	internal class ChosenEntitiesNode : LogNode {
 		private readonly Game _game;
 		public readonly List<LogNode> Children = new List<LogNode>();
 		public readonly Int32 Entity;
+		public readonly Int32 Count;
+		public readonly Int32 PlayerId;
 		public readonly String Ts;
-		public readonly ChoiceType Type;
 
-		public SendChoicesNode(XmlNode xmlNode, Game game) {
-			// entity % entity; #REQUIRED
-			// type NMTOKEN #REQUIRED
-			// ts NMTOKEN #IMPLIED
+		public ChosenEntitiesNode(XmlNode xmlNode, Game game) {
+			// ToDo: Not Fully Implemented. Still waiting on official DTD File to finish.
 			_game = game;
 			Int32.TryParse(xmlNode.Attributes?["entity"]?.Value, out Entity);
-			if (xmlNode.Attributes?["type"]?.Value == null) { throw new NullReferenceException(); }
-			Type = (ChoiceType)Enum.Parse(typeof(ChoiceType), xmlNode.Attributes?["type"]?.Value);
+			Int32.TryParse(xmlNode.Attributes?["playerID"]?.Value, out PlayerId);
+			Int32.TryParse(xmlNode.Attributes?["count"]?.Value, out Count);
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 			foreach (XmlNode childNode in xmlNode.ChildNodes) {
 				Children.Add(NodeImporter.Import(childNode, game));
@@ -49,16 +48,7 @@ namespace HSCSReader.Replay.LogNodes {
 		}
 
 		public override void Process() {
-			if (Type == ChoiceType.MULLIGAN) {
-				foreach (LogNode curLogNode in Children) {
-					if (curLogNode.GetType() == typeof(ChoiceNode)) {
-						ChoiceNode curChoiceNode = (ChoiceNode)curLogNode;
-						Helpers.IntegrateMetrics(
-							new List<Metric>() { new Metric("COUNT_MULLIGAN_KEEP", MetricType.AddToValue, 1) },
-							_game.ActorStates[curChoiceNode.Entity].Metrics);
-					}
-				}
-			}
+			// ToDo: Not Implemented.
 		}
 	}
 }

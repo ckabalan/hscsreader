@@ -23,6 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using HSCSReader.Replay.EntityStates;
+using HSCSReader.Support;
+using HSCSReader.Support.Enumerations;
 
 namespace HSCSReader.Replay.LogNodes {
 	internal class FullEntityNode : LogNode {
@@ -52,6 +54,9 @@ namespace HSCSReader.Replay.LogNodes {
 																Ts = Ts
 															};
 			_game.ActorStates.Add(Id, tempState);
+			List<Metric> newMetrics = new List<Metric>();
+			newMetrics.Add(new Metric("COUNT_SEEN", MetricType.AddToValue, 1));
+			Helpers.IntegrateMetrics(newMetrics, _game.ActorStates[Id].Metrics);
 			foreach (LogNode curLogNode in Children) {
 				if (curLogNode.GetType() == typeof(TagNode)) {
 					((TagNode)curLogNode).Process(Id);

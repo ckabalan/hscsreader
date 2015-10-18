@@ -33,6 +33,8 @@ namespace HSCSReader.Replay {
 					return Choice(xmlNode, game);
 				case "Choices":
 					return Choices(xmlNode, game);
+				case "ChosenEntities":
+					return ChosenEntities(xmlNode, game);
 				case "FullEntity":
 					return FullEntity(xmlNode, game);
 				case "GameEntity":
@@ -91,6 +93,11 @@ namespace HSCSReader.Replay {
 			// max NMTOKEN #IMPLIED
 			// ts NMTOKEN #IMPLIED
 			return new ChoicesNode(xmlNode, game);
+		}
+
+		private static ChosenEntitiesNode ChosenEntities(XmlNode xmlNode, Game game) {
+			// ToDo: Not Fully Implemented. Still waiting on official DTD to finish.
+			return new ChosenEntitiesNode(xmlNode, game);
 		}
 
 		private static FullEntityNode FullEntity(XmlNode xmlNode, Game game) {
