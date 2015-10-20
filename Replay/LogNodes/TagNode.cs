@@ -30,6 +30,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly String Ts;
 		public readonly Int32 Value;
 
+		/// <summary>
+		/// Initializes an instance of the TagNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public TagNode(XmlNode xmlNode, Game game) {
 			// tag % gameTag; #REQUIRED
 			// value NMTOKEN #REQUIRED
@@ -41,8 +46,14 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() { }
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public void Process(Int32 id) {
 			Process();
 			if (_game.ActorStates[id].Tags.ContainsKey(Name)) {

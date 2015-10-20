@@ -40,9 +40,10 @@ namespace HSCSReader {
 			Logger.Info("HSCSReader v" + Assembly.GetExecutingAssembly().GetName().Version + " started.");
 			CardDefs.Load(@"E:\Programming\C#\150920 HSCSReader\_External\CardDefs.xml");
 			HSReplay Temp;
+			Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\ComplicatedControlWar.xml");
 			Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\ControlWarRecording.xml");
 			Temp = new HSReplay(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\jleclanche.xml");
-			String[] logFiles = Directory.GetFiles(@"E:\Programming\C#\150920 HSCSReader\_External\Samples\DandelockLogs\");
+			String[] logFiles = Directory.GetFiles(@"E:\Programming\C#\150920 HSCSReader\_External\Master Logs\{Combined XML\");
 			foreach (String fileName in logFiles) {
 				Temp = new HSReplay(fileName);
 			}

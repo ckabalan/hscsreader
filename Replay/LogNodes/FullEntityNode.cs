@@ -34,6 +34,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Int32 Id;
 		public readonly String Ts;
 
+		/// <summary>
+		/// Initializes an instance of the FullEntityNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public FullEntityNode(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
 			// id % gameTag; #REQUIRED
@@ -47,13 +52,24 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			FullEntityState tempState = new FullEntityState {
 																Id = Id,
 																CardId = CardId,
 																Ts = Ts
 															};
-			_game.ActorStates.Add(Id, tempState);
+			if (_game.ActorStates.ContainsKey(Id)) {
+				if (_game.ActorStates[Id].GetType() == typeof(FullEntityState)) {
+					FullEntityState curState = (FullEntityState)_game.ActorStates[Id];
+					if ((curState.Ts == null) && (Ts != null)) { curState.Ts = Ts; }
+					if ((curState.CardId == null) && (CardId != null)) { curState.CardId = CardId; }
+				}
+			} else {
+				_game.ActorStates.Add(Id, tempState);
+			}
 			List<Metric> newMetrics = new List<Metric>() {
 															new Metric("COUNT_SEEN", MetricType.AddToValue, 1)
 														};

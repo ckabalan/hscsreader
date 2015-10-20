@@ -32,6 +32,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Int32 Entity;
 		public readonly String Ts;
 
+		/// <summary>
+		/// Initializes an instance of the ShowEntityNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public ShowEntityNode(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
 			// entity % entity; #REQUIRED
@@ -45,6 +50,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			if (_game.ActorStates.ContainsKey(Entity)) {
 				if (_game.ActorStates[Entity].GetType() == typeof(FullEntityState)) {

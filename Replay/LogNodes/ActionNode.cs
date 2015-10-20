@@ -37,6 +37,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Double Ts;
 		public readonly PowSubType Type;
 
+		/// <summary>
+		/// Initializes an instance of the ActionNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public ActionNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// index NMTOKEN #IMPLIED
@@ -55,6 +60,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			foreach (LogNode curLogNode in Children) {
 				if (curLogNode.GetType() == typeof(ActionNode)) {
@@ -82,6 +90,12 @@ namespace HSCSReader.Replay.LogNodes {
 														_game.ActorStates[Entity].Metrics);
 								break;
 							case Zone.SETASIDE:
+								// ToDo: Not Implemented.
+								break;
+							case Zone.DECK:
+								// ToDo: Not Implemented.
+								break;
+							case Zone.INVALID:
 								// ToDo: Not Implemented.
 								break;
 							default:
@@ -112,9 +126,52 @@ namespace HSCSReader.Replay.LogNodes {
 				} else if (curLogNode.GetType() == typeof(MetaDataNode)) {
 					((MetaDataNode)curLogNode).Process();
 				} else if (curLogNode.GetType() == typeof(ShowEntityNode)) {
-					((ShowEntityNode)curLogNode).Process();
+					ShowEntityNode tempShowEntityNode = (ShowEntityNode)curLogNode;
+					if (Type == PowSubType.TRIGGER) {
+						// Determine the new entity's starting zone
+						Zone newEntityZone = (from tempSubLogNode in tempShowEntityNode.Children
+											  where tempSubLogNode.GetType() == typeof(TagNode)
+											  where ((TagNode)tempSubLogNode).Name == GameTag.ZONE
+											  select (Zone)((TagNode)tempSubLogNode).Value).FirstOrDefault();
+						// Determine what to do based on the zone
+						switch (newEntityZone) {
+							case Zone.HAND:
+								// Create Card to Hand
+								Helpers.IntegrateMetrics(
+														 new List<Metric> { new Metric("COUNTGAME_CARDS_DRAWN", MetricType.AddToValue, 1) },
+														_game.ActorStates[Entity].Metrics);
+								break;
+							case Zone.PLAY:
+								// Summon Creature
+								Helpers.IntegrateMetrics(
+														 new List<Metric> { new Metric("COUNTGAME_MINIONS_SUMMONED", MetricType.AddToValue, 1) },
+														_game.ActorStates[Entity].Metrics);
+								break;
+							case Zone.SETASIDE:
+								// ToDo: Not Implemented.
+								break;
+							case Zone.GRAVEYARD:
+								// ToDo: Not Implemented.
+								break;
+							case Zone.SECRET:
+								// ToDo: Not Implemented.
+								break;
+							case Zone.INVALID:
+								// ToDo: Not Implemented.
+								break;
+							default:
+								throw new NotImplementedException();
+						}
+					}
+					tempShowEntityNode.Process();
 				} else if (curLogNode.GetType() == typeof(HideEntityNode)) {
 					((HideEntityNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(OptionsNode)) {
+					((OptionsNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(SendOptionNode)) {
+					((SendOptionNode)curLogNode).Process();
+				} else if (curLogNode.GetType() == typeof(SendChoicesNode)) {
+					((SendChoicesNode)curLogNode).Process();
 				} else {
 					throw new NotSupportedException();
 				}

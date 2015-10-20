@@ -34,6 +34,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly String Ts;
 		public readonly ChoiceType Type;
 
+		/// <summary>
+		/// Initializes an instance of the SendChoicesNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public SendChoicesNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// type NMTOKEN #REQUIRED
@@ -48,6 +53,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			if (Type == ChoiceType.MULLIGAN) {
 				foreach (LogNode curLogNode in Children) {

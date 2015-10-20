@@ -32,6 +32,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Int32 PlayerId;
 		public readonly String Ts;
 
+		/// <summary>
+		/// Initializes an instance of the ChosenEntitiesNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public ChosenEntitiesNode(XmlNode xmlNode, Game game) {
 			// ToDo: Not Fully Implemented. Still waiting on official DTD File to finish.
 			_game = game;
@@ -44,6 +49,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			// ToDo: Not Implemented.
 		}

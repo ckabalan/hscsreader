@@ -36,6 +36,10 @@ namespace HSCSReader.Replay {
 		//public GameEntity GameEntityObj;
 		public readonly String Md5Hash;
 
+		/// <summary>
+		/// Initializes a new instance of the Game class.
+		/// </summary>
+		/// <param name="gameNode">The XML Node describing the Game.</param>
 		public Game(XmlNode gameNode) {
 			Md5Hash = Helpers.GetMd5Hash(MD5.Create(), gameNode.OuterXml);
 			Logger.Trace($"Calculated MD5 from Game XML: {Md5Hash}");

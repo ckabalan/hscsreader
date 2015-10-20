@@ -30,6 +30,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly List<LogNode> Children = new List<LogNode>();
 		public readonly Int32 Id;
 
+		/// <summary>
+		/// Initializes an instance of the GameEntityNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public GameEntityNode(XmlNode xmlNode, Game game) {
 			// id %entity; #REQUIRED
 			_game = game;
@@ -39,6 +44,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			GameEntityState tempState = new GameEntityState {Id = Id};
 			_game.ActorStates.Add(Id, tempState);

@@ -31,6 +31,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly MetaDataType Meta;
 		public readonly String Ts;
 
+		/// <summary>
+		/// Initializes an instance of the MetaDataNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public MetaDataNode(XmlNode xmlNode, Game game) {
 			// meta NMTOKEN #REQUIRED
 			// data % entity; #IMPLIED
@@ -44,6 +49,9 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() { }
 	}
 }

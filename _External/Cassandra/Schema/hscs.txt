@@ -6,8 +6,9 @@ WITH replication = {
 
 CREATE TABLE hscs.cards (
 	cardid text,
-"COUNTGAME_ARMOR_GAIN" MAP<int, int>,
+	"COUNTGAME_ARMOR_GAIN" MAP<int, int>,
 	"COUNTGAME_CARDS_CREATED" MAP<int, int>,
+	"COUNTGAME_CARDS_DRAWN" MAP<int, int>,
 	"COUNTGAME_MINIONS_SUMMONED" MAP<int, int>,
 	"COUNT_ATK" MAP<int, int>,
 	"COUNT_DAMAGE" MAP<int, int>,
@@ -26,12 +27,16 @@ CREATE TABLE hscs.cards (
 	"COUNT_ZONE_DECK_TO_PLAY" MAP<int, int>,
 	"COUNT_ZONE_DECK_TO_SECRET" MAP<int, int>,
 	"COUNT_ZONE_DECK_TO_SETASIDE" MAP<int, int>,
+	"COUNT_ZONE_GRAVEYARD_TO_DECK" MAP<int, int>,
+	"COUNT_ZONE_GRAVEYARD_TO_GRAVEYARD" MAP<int, int>,
 	"COUNT_ZONE_GRAVEYARD_TO_HAND" MAP<int, int>,
 	"COUNT_ZONE_HAND_TO_DECK" MAP<int, int>,
 	"COUNT_ZONE_HAND_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_HAND_TO_HAND" MAP<int, int>,
 	"COUNT_ZONE_HAND_TO_PLAY" MAP<int, int>,
 	"COUNT_ZONE_HAND_TO_SECRET" MAP<int, int>,
 	"COUNT_ZONE_HAND_TO_SETASIDE" MAP<int, int>,
+	"COUNT_ZONE_PLAY_TO_DECK" MAP<int, int>,
 	"COUNT_ZONE_PLAY_TO_GRAVEYARD" MAP<int, int>,
 	"COUNT_ZONE_PLAY_TO_HAND" MAP<int, int>,
 	"COUNT_ZONE_PLAY_TO_PLAY" MAP<int, int>,
@@ -39,9 +44,11 @@ CREATE TABLE hscs.cards (
 	"COUNT_ZONE_PLAY_TO_SETASIDE" MAP<int, int>,
 	"COUNT_ZONE_POSITION" MAP<int, int>,
 	"COUNT_ZONE_REMOVEDFROMGAME_TO_GRAVEYARD" MAP<int, int>,
+	"COUNT_ZONE_REMOVEDFROMGAME_TO_REMOVEDFROMGAME" MAP<int, int>,
 	"COUNT_ZONE_SECRET_TO_GRAVEYARD" MAP<int, int>,
 	"COUNT_ZONE_SETASIDE_TO_HAND" MAP<int, int>,
 	"COUNT_ZONE_SETASIDE_TO_PLAY" MAP<int, int>,
+	"COUNT_ZONE_SETASIDE_TO_SETASIDE" MAP<int, int>,
 	"MAX_ATK" int,
 	"MAX_DAMAGE" int,
 	"MAX_NUM_TURNS_IN_PLAY" int,
@@ -66,6 +73,7 @@ AND compression = {
 AND compaction = {
 	'class' : 'SizeTieredCompactionStrategy'
 };
+
 
 CREATE TABLE hscs.games (
 	id uuid,

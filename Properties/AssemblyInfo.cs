@@ -1,4 +1,4 @@
-﻿// <copyright file="AssemblyInfo.cs" company="SpectralCoding.com">
+// <copyright file="AssemblyInfo.cs" company="SpectralCoding.com">
 //     Copyright (c) 2015 SpectralCoding
 // </copyright>
 // <license>
@@ -57,7 +57,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyFileVersion("0.0.392.16725")]
-[assembly: AssemblyVersion("0.0.392.16725")]
+[assembly: AssemblyFileVersion("0.1.419.16727")]
+[assembly: AssemblyVersion("0.1.419.16727")]
 
 // Keeps Lines after Versions

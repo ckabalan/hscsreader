@@ -37,6 +37,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly String Ts;
 		public readonly Int32 Value;
 
+		/// <summary>
+		/// Initializes an instance of the TagChangeNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public TagChangeNode(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// tag % gameTag; #REQUIRED
@@ -50,10 +55,14 @@ namespace HSCSReader.Replay.LogNodes {
 			Ts = xmlNode.Attributes?["ts"]?.Value;
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			if (Entity == 0) {
 				// What?! Invalid Replay?
 				// Hopefully we can just ignore this tag change?
+				// This may belong in some of the other nodes as well.
 				// Maybe we should discard the whole game?
 				return;
 			}

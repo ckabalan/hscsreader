@@ -25,6 +25,13 @@ using HSCSReader.Replay.LogNodes;
 
 namespace HSCSReader.Replay {
 	internal static class NodeImporter {
+
+		/// <summary>
+		/// Converts an XmlNode into a LogNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The LogNode derived from the input XmlNode.</returns>
 		public static LogNode Import(XmlNode xmlNode, Game game) {
 			switch (xmlNode.Name) {
 				case "Action":
@@ -68,6 +75,12 @@ namespace HSCSReader.Replay {
 			}
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a ActionNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The ActionNode derived from the input XmlNode.</returns>
 		private static ActionNode Action(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// index NMTOKEN #IMPLIED
@@ -77,6 +90,12 @@ namespace HSCSReader.Replay {
 			return new ActionNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a ChoiceNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The ChoiceNode derived from the input XmlNode.</returns>
 		private static ChoiceNode Choice(XmlNode xmlNode, Game game) {
 			// entity %entity; #REQUIRED
 			// index NMTOKEN #REQUIRED
@@ -84,6 +103,12 @@ namespace HSCSReader.Replay {
 			return new ChoiceNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a ChoicesNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The ChoicesNode derived from the input XmlNode.</returns>
 		private static ChoicesNode Choices(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// playerID NMTOKEN #REQUIRED
@@ -95,11 +120,23 @@ namespace HSCSReader.Replay {
 			return new ChoicesNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a ChosenEntitiesNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The ChosenEntitiesNode derived from the input XmlNode.</returns>
 		private static ChosenEntitiesNode ChosenEntities(XmlNode xmlNode, Game game) {
 			// ToDo: Not Fully Implemented. Still waiting on official DTD to finish.
 			return new ChosenEntitiesNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a FullEntityNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The FullEntityNode derived from the input XmlNode.</returns>
 		private static FullEntityNode FullEntity(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
 			// id % gameTag; #REQUIRED
@@ -107,11 +144,23 @@ namespace HSCSReader.Replay {
 			return new FullEntityNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a GameEntityNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The GameEntityNode derived from the input XmlNode.</returns>
 		private static GameEntityNode GameEntity(XmlNode xmlNode, Game game) {
 			// id %entity; #REQUIRED
 			return new GameEntityNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a HideEntityNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The HideEntityNode derived from the input XmlNode.</returns>
 		private static HideEntityNode HideEntity(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// tag % gameTag; #REQUIRED
@@ -120,6 +169,12 @@ namespace HSCSReader.Replay {
 			return new HideEntityNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a MetaDataNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The MetaDataNode derived from the input XmlNode.</returns>
 		private static MetaDataNode MetaData(XmlNode xmlNode, Game game) {
 			// meta NMTOKEN #REQUIRED
 			// data % entity; #IMPLIED
@@ -128,6 +183,12 @@ namespace HSCSReader.Replay {
 			return new MetaDataNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a InfoNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The InfoNode derived from the input XmlNode.</returns>
 		private static InfoNode Info(XmlNode xmlNode, Game game) {
 			// index NMTOKEN #REQUIRED
 			// id % entity; #REQUIRED
@@ -135,6 +196,12 @@ namespace HSCSReader.Replay {
 			return new InfoNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a OptionNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The OptionNode derived from the input XmlNode.</returns>
 		private static OptionNode Option(XmlNode xmlNode, Game game) {
 			// entity % entity; #IMPLIED
 			// index NMTOKEN #REQUIRED
@@ -143,12 +210,24 @@ namespace HSCSReader.Replay {
 			return new OptionNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a OptionsNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The OptionsNode derived from the input XmlNode.</returns>
 		private static OptionsNode Options(XmlNode xmlNode, Game game) {
 			// id NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
 			return new OptionsNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a PlayerNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The PlayerNode derived from the input XmlNode.</returns>
 		private static PlayerNode Player(XmlNode xmlNode, Game game) {
 			// id NMTOKEN #REQUIRED
 			// playerID NMTOKEN #REQUIRED
@@ -159,6 +238,12 @@ namespace HSCSReader.Replay {
 			return new PlayerNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a SendChoicesNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The SendChoicesNode derived from the input XmlNode.</returns>
 		private static SendChoicesNode SendChoices(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// type NMTOKEN #REQUIRED
@@ -166,6 +251,12 @@ namespace HSCSReader.Replay {
 			return new SendChoicesNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a SendOptionNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The SendOptionNode derived from the input XmlNode.</returns>
 		private static SendOptionNode SendOption(XmlNode xmlNode, Game game) {
 			// option NMTOKEN #REQUIRED
 			// subOption NMTOKEN #IMPLIED
@@ -175,6 +266,12 @@ namespace HSCSReader.Replay {
 			return new SendOptionNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a ShowEntityNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The ShowEntityNode derived from the input XmlNode.</returns>
 		private static ShowEntityNode ShowEntity(XmlNode xmlNode, Game game) {
 			// cardID NMTOKEN #IMPLIED
 			// entity % entity; #REQUIRED
@@ -182,6 +279,12 @@ namespace HSCSReader.Replay {
 			return new ShowEntityNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a TagNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The TagNode derived from the input XmlNode.</returns>
 		private static TagNode Tag(XmlNode xmlNode, Game game) {
 			// 	tag %gameTag; #REQUIRED
 			//	value NMTOKEN #REQUIRED
@@ -189,6 +292,12 @@ namespace HSCSReader.Replay {
 			return new TagNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a TagChangeNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The TagChangeNode derived from the input XmlNode.</returns>
 		private static TagChangeNode TagChange(XmlNode xmlNode, Game game) {
 			// entity % entity; #REQUIRED
 			// tag % gameTag; #REQUIRED
@@ -203,6 +312,12 @@ namespace HSCSReader.Replay {
 			return new TagChangeNode(xmlNode, game);
 		}
 
+		/// <summary>
+		/// Converts an XmlNode into a TargetNode for later processing.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
+		/// <returns>The TargetNode derived from the input XmlNode.</returns>
 		private static TargetNode Target(XmlNode xmlNode, Game game) {
 			// entity %entity; #REQUIRED
 			// index NMTOKEN #REQUIRED

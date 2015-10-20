@@ -35,6 +35,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Int32 PlayerId;
 		public readonly String Ts;
 
+		/// <summary>
+		/// Initializes an instance of the PlayerNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public PlayerNode(XmlNode xmlNode, Game game) {
 			// id NMTOKEN #REQUIRED
 			// playerID NMTOKEN #REQUIRED
@@ -54,6 +59,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() {
 			PlayerState tempState = new PlayerState {
 														Id = Id,

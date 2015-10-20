@@ -32,6 +32,9 @@ namespace HSCSReader.Replay {
 		//public Dictionary<String, String> Attributes;
 		public Int32 Id;
 
+		/// <summary>
+		/// Initializes a new instance of the EntityState class.
+		/// </summary>
 		protected EntityState() {
 			Tags = new Dictionary<GameTag, Int32>();
 			//Attributes = new Dictionary<String, String>();

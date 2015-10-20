@@ -30,6 +30,11 @@ namespace HSCSReader.Replay.LogNodes {
 		public readonly Int32 Id;
 		public readonly String Ts;
 
+		/// <summary>
+		/// Initializes an instance of the OptionsNode class.
+		/// </summary>
+		/// <param name="xmlNode">The XML Node describing the Node.</param>
+		/// <param name="game">The game object related to the Node.</param>
 		public OptionsNode(XmlNode xmlNode, Game game) {
 			// id NMTOKEN #REQUIRED
 			// ts NMTOKEN #IMPLIED
@@ -41,6 +46,9 @@ namespace HSCSReader.Replay.LogNodes {
 			}
 		}
 
+		/// <summary>
+		/// Processes this node, deriving whatever information it can.
+		/// </summary>
 		public override void Process() { }
 	}
 }
