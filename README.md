@@ -64,3 +64,16 @@ Want more possibilities?
 - How many Grim Patrons are spawned off of one Patron?
 - What is the most damage anyone has done with Pyroblast?
 - ... and more!
+
+## Community
+
+HSReplay is a [HearthSim](http://hearthsim.info) project. All development
+happens on our IRC channel `#hearthsim` on [Freenode](https://freenode.net).
+
+## License
+
+HSCSReader is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+HSCSReader is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with HSCSReader.  If not, see <http://www.gnu.org/licenses/>.
